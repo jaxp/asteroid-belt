@@ -58,7 +58,7 @@ public class RPCClient {
     RPCClient rpcClient = new RPCClient();
     System.out.println("requesting fib(30)");
     String response = rpcClient.call("30");
-    System.out.println("got " + response + "");
+    System.out.println("got " + response);
     rpcClient.close();
   }
 }
