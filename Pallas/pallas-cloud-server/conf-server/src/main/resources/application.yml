@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        health-check-interval: 10s
+        fail-fast: true
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+        git:
+          uri: file://${user.home}/config-repo
+      fail-fast: true
+  rabbitmq:
+     host: 10.106.0.185
+     port: 5672
+     username: root
+     password: root
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

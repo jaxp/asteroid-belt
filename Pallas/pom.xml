@@ -16,7 +16,10 @@
   <name>${project.artifactId}</name>
 
   <modules>
-    <module>configuration-service</module>
+    <module>pallas-cloud-server</module>
+    <module>pallas-service</module>
+    <module>pallas-api</module>
+    <module>pallas-server</module>
   </modules>
 
   <dependencyManagement>
@@ -101,6 +104,13 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
