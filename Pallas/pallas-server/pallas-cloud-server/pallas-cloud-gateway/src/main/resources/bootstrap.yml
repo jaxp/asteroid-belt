@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: pallas-cloud-gateway
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: 127.0.0.1
+      port: 8500
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: sample_route
+        uri: lb://pallas-cloud-sample
+        predicates:
+        - Path=/sample/**
+        filters:
+          - StripPrefix=1
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

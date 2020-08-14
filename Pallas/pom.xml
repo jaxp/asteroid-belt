@@ -16,12 +16,22 @@
   <name>${project.artifactId}</name>
 
   <modules>
-    <module>pallas-cloud-server</module>
-    <module>pallas-service</module>
-    <module>pallas-api</module>
+    <module>pallas-base</module>
+    <module>pallas-module</module>
     <module>pallas-server</module>
   </modules>
-
+  <properties>
+    <java.version>1.8</java.version>
+    <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+    <guava.version>18.0</guava.version>
+    <lombok.version>1.16.20</lombok.version>
+    <junit.version>4.12</junit.version>
+    <pallas-api.version>1.0.0-SNAPSHOT</pallas-api.version>
+    <pallas-common.version>1.0.0-SNAPSHOT</pallas-common.version>
+    <pallas-user-api.version>1.0.0-SNAPSHOT</pallas-user-api.version>
+    <pallas-user-service.version>1.0.0-SNAPSHOT</pallas-user-service.version>
+    <pallas-server-common.version>1.0.0-SNAPSHOT</pallas-server-common.version>
+  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -32,20 +42,45 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-api</artifactId>
+        <version>${pallas-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-common</artifactId>
+        <version>${pallas-common.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-user-api</artifactId>
+        <version>${pallas-user-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-user-service</artifactId>
+        <version>${pallas-user-service.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-server-common</artifactId>
+        <version>${pallas-server-common.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
       </dependency>
-<!--      <dependency>-->
-<!--        <groupId>org.slf4j</groupId>-->
-<!--        <artifactId>slf4j-api</artifactId>-->
-<!--        <version>${slf4j.version}</version>-->
-<!--      </dependency>-->
-<!--      <dependency>-->
-<!--        <groupId>org.slf4j</groupId>-->
-<!--        <artifactId>jcl-over-slf4j</artifactId>-->
-<!--        <version>${slf4j.version}</version>-->
-<!--      </dependency>-->
+      <!--      <dependency>-->
+      <!--        <groupId>org.slf4j</groupId>-->
+      <!--        <artifactId>slf4j-api</artifactId>-->
+      <!--        <version>${slf4j.version}</version>-->
+      <!--      </dependency>-->
+      <!--      <dependency>-->
+      <!--        <groupId>org.slf4j</groupId>-->
+      <!--        <artifactId>jcl-over-slf4j</artifactId>-->
+      <!--        <version>${slf4j.version}</version>-->
+      <!--      </dependency>-->
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
@@ -60,15 +95,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <properties>
-    <java.version>1.8</java.version>
-    <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-
-    <guava.version>18.0</guava.version>
-    <lombok.version>1.16.20</lombok.version>
-    <junit.version>4.12</junit.version>
-  </properties>
 
   <dependencies>
     <dependency>
@@ -101,10 +127,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

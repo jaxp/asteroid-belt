@@ -8,19 +8,21 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>pallas-server</artifactId>
+  <artifactId>pallas-module</artifactId>
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
-  <modules>
-    <module>pallas-cloud-server</module>
-    <module>pallas-conf-server</module>
-    <module>pallas-server-common</module>
-  </modules>
 
+  <modules>
+    <module>pallas-user</module>
+  </modules>
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.pallas</groupId>
+      <artifactId>pallas-common</artifactId>
     </dependency>
   </dependencies>
 

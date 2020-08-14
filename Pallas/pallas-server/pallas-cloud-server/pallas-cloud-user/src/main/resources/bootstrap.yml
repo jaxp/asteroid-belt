@@ -1,0 +1,32 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: pallas-cloud-user
+  profiles:
+    active: dev
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        health-check-interval: 10s
+        fail-fast: true
+      config:
+        enabled: true
+        prefix: config
+        default-context: pallas-cloud-user
+        profile-separator: '-'
+        format: YAML
+        data-key: userConfig
+        watch:
+          enabled: true
+          delay: 1000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
