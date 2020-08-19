@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
-import { AuthModule } from './auth.module';
-import { Menu } from '../menu/model/menu'
+import { Menu } from '../model/menu';
 
 const MENUS: Menu[] = [{
   title: 'dashboard',
@@ -52,9 +51,11 @@ const MENUS: Menu[] = [{
 }]
 
 @Injectable({
-  providedIn: AuthModule
+  providedIn: "root"
 })
 export class AuthService {
+
+  menus: Menu[];
 
   getMenus(): Observable<Menu[]> {
     return of(MENUS)

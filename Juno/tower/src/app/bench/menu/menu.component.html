@@ -5,7 +5,7 @@
       <li
         *ngIf="!menu.children || menu.children.length == 0"
         nz-menu-item
-        [nzPaddingLeft]="menu.level * 24"
+        [nzPaddingLeft]="nzInlineCollapsed ? 0 : menu.level * 24"
         [nzDisabled]="menu.disabled"
         [nzSelected]="menu.selected"
       >
@@ -15,7 +15,7 @@
       <li
         *ngIf="menu.children && menu.children.length > 0"
         nz-submenu
-        [nzPaddingLeft]="menu.level * 24"
+        [nzPaddingLeft]="nzInlineCollapsed ? 0 : menu.level * 24"
         [nzOpen]="menu.open"
         [nzTitle]="menu.title"
         [nzIcon]="menu.icon"

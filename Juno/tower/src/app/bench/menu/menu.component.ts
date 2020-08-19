@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Menu } from './model/menu'
+import { Menu } from '../../model/menu'
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -8,9 +9,11 @@ import { Menu } from './model/menu'
 })
 export class MenuComponent {
 
-  @Input() menus: Menu[];
+  menus: Menu[];
   @Input() nzInlineCollapsed: boolean;
 
-  constructor() { }
+  constructor(authService: AuthService) {
+    authService.getMenus().subscribe(e => this.menus = e)
+  }
 
 }
