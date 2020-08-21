@@ -11,11 +11,12 @@ import { IconsProviderModule } from '../icons-provider.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { GeometricElfDirective } from './directives/geometric-elf.directive';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [GeometricElfDirective],
   imports: [
     CommonModule,
     IconsProviderModule,
@@ -44,7 +45,8 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     NzInputModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    GeometricElfDirective
   ]
 })
 export class SharedModule { }
