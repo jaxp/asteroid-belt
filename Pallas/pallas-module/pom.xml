@@ -22,7 +22,11 @@
     </dependency>
     <dependency>
       <groupId>com.pallas</groupId>
-      <artifactId>pallas-common</artifactId>
+      <artifactId>pallas-base-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.pallas</groupId>
+      <artifactId>pallas-base-api</artifactId>
     </dependency>
   </dependencies>
 

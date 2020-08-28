@@ -22,15 +22,22 @@
   </modules>
   <properties>
     <java.version>1.8</java.version>
-    <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-    <guava.version>18.0</guava.version>
-    <lombok.version>1.16.20</lombok.version>
-    <junit.version>4.12</junit.version>
-    <pallas-api.version>1.0.0-SNAPSHOT</pallas-api.version>
-    <pallas-common.version>1.0.0-SNAPSHOT</pallas-common.version>
+    <pallas-base-api.version>1.0.0-SNAPSHOT</pallas-base-api.version>
+    <pallas-base-common.version>1.0.0-SNAPSHOT</pallas-base-common.version>
+    <pallas-base-batis.version>1.0.0-SNAPSHOT</pallas-base-batis.version>
+    <pallas-base-cache.version>1.0.0-SNAPSHOT</pallas-base-cache.version>
     <pallas-user-api.version>1.0.0-SNAPSHOT</pallas-user-api.version>
     <pallas-user-service.version>1.0.0-SNAPSHOT</pallas-user-service.version>
     <pallas-server-common.version>1.0.0-SNAPSHOT</pallas-server-common.version>
+    <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+    <guava.version>18.0</guava.version>
+    <commons-collections.version>4.4</commons-collections.version>
+    <lombok.version>1.16.20</lombok.version>
+    <junit.version>4.12</junit.version>
+    <mybatis-plus.version>3.4.0</mybatis-plus.version>
+    <dynamic-datasource.version>3.2.0</dynamic-datasource.version>
+    <shardingsphere.version>4.1.1</shardingsphere.version>
+    <druid.version>1.1.22</druid.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -43,13 +50,23 @@
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
-        <artifactId>pallas-api</artifactId>
-        <version>${pallas-api.version}</version>
+        <artifactId>pallas-base-api</artifactId>
+        <version>${pallas-base-api.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
-        <artifactId>pallas-common</artifactId>
-        <version>${pallas-common.version}</version>
+        <artifactId>pallas-base-common</artifactId>
+        <version>${pallas-base-common.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-base-batis</artifactId>
+        <version>${pallas-base-batis.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-base-cache</artifactId>
+        <version>${pallas-base-cache.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
@@ -71,16 +88,26 @@
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
       </dependency>
-      <!--      <dependency>-->
-      <!--        <groupId>org.slf4j</groupId>-->
-      <!--        <artifactId>slf4j-api</artifactId>-->
-      <!--        <version>${slf4j.version}</version>-->
-      <!--      </dependency>-->
-      <!--      <dependency>-->
-      <!--        <groupId>org.slf4j</groupId>-->
-      <!--        <artifactId>jcl-over-slf4j</artifactId>-->
-      <!--        <version>${slf4j.version}</version>-->
-      <!--      </dependency>-->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>${commons-collections.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        <version>${dynamic-datasource.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>sharding-jdbc-core</artifactId>
+        <version>${shardingsphere.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
@@ -93,6 +120,11 @@
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -100,6 +132,10 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
     </dependency>
 
     <dependency>

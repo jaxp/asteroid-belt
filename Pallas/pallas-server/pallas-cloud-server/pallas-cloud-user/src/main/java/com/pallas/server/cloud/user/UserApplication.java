@@ -1,5 +1,6 @@
 package com.pallas.server.cloud.user;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -9,8 +10,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @time: 2020/8/13 14:29
  * @desc:
  */
-@SpringBootApplication(scanBasePackages = "com.pallas")
 @EnableFeignClients
+@SpringBootApplication(scanBasePackages = "com.pallas")
+@MapperScan("com.pallas.service")
 public class UserApplication {
   public static void main(String[] args) {
     SpringApplication.run(UserApplication.class, args);

@@ -11,8 +11,10 @@
   <artifactId>pallas-base</artifactId>
   <name>${project.artifactId}</name>
   <modules>
-    <module>pallas-common</module>
-    <module>pallas-api</module>
+    <module>pallas-base-common</module>
+    <module>pallas-base-api</module>
+    <module>pallas-base-batis</module>
+    <module>pallas-base-cache</module>
   </modules>
   <packaging>pom</packaging>
 

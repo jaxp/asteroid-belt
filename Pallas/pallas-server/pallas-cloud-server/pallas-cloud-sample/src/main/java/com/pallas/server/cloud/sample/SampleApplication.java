@@ -1,7 +1,7 @@
 package com.pallas.server.cloud.sample;
 
-import com.pallas.server.cloud.sample.clients.UserClient;
-import com.pallas.service.user.dto.UserDTO;
+import com.pallas.server.cloud.sample.clients.PlsUserClient;
+import com.pallas.service.user.dto.PlsUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication(scanBasePackages = "com.pallas")
 public class SampleApplication {
   @Autowired
-  private UserClient userClient;
+  private PlsUserClient userClient;
 
   @Value("${aaaaa}")
   private String aaaaa;
 
   @RequestMapping("/")
-  public UserDTO home() {
-    return userClient.getUser();
+  public PlsUserDTO home() {
+    return userClient.getUser("user");
   }
 
   public static void main(String[] args) {

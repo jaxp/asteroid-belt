@@ -1,9 +1,11 @@
 package com.pallas.server.cloud.user.controllers;
 
-import com.pallas.service.user.api.IUserApi;
-import com.pallas.service.user.dto.UserDTO;
-import com.pallas.service.user.service.IUserService;
+import com.pallas.service.user.api.IPlsUserApi;
+import com.pallas.service.user.dto.PlsUserDTO;
+import com.pallas.service.user.service.IPlsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @desc:
  */
 @RestController
-public class UserController implements IUserApi {
+@RequestMapping("/api/user/")
+public class UserController implements IPlsUserApi {
 
   @Autowired
-  private IUserService userService;
+  private IPlsUserService plsUserService;
 
   @Override
-  @RequestMapping("/user")
-  public UserDTO getUser() {
-    System.out.println("--------------------");
-    return userService.getUser();
+  @GetMapping("/getUser/{username}")
+  public PlsUserDTO getUser(@PathVariable String username) {
+    return plsUserService.getUser(username);
   }
 
 }

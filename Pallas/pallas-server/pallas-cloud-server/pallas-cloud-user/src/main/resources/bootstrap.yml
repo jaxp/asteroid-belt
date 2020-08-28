@@ -4,7 +4,7 @@ spring:
   application:
     name: pallas-cloud-user
   profiles:
-    active: dev
+    active: db
   cloud:
     loadbalancer:
       ribbon:
@@ -25,6 +25,14 @@ spring:
         watch:
           enabled: true
           delay: 1000
+  redis:
+    host: localhost
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: 30
 management:
   endpoints:
     web:
