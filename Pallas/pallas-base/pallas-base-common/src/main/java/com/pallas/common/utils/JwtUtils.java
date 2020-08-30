@@ -20,11 +20,6 @@ public class JwtUtils {
     KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
     String jws = Jwts.builder().setExpiration(new Date(System.currentTimeMillis() + 10000)).setIssuedAt(new Date()).setId("111222333444555666").signWith(keyPair.getPrivate()).compact();
     System.out.println(jws);
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
     Jws<Claims> claimsJwt = Jwts.parserBuilder().setSigningKey(keyPair.getPublic()).build().parseClaimsJws(jws);
     String sub = claimsJwt.getBody().getSubject();
     System.out.println(sub);

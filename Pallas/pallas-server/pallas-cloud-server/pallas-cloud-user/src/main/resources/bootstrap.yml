@@ -27,6 +27,7 @@ spring:
           delay: 1000
   redis:
     host: localhost
+    password: 123456
     lettuce:
       pool:
         max-active: 8

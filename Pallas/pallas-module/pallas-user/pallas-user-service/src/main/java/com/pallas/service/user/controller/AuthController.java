@@ -1,5 +1,6 @@
 package com.pallas.service.user.controller;
 
+import com.pallas.cache.loader.SampleDataLoader;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.dto.PlsUserDTO;
@@ -26,12 +27,15 @@ public class AuthController {
   private AuthenticationManager authenticationManager;
   @Autowired
   private PlsUserConverter userConverter;
+  @Autowired
+  private SampleDataLoader sampleDataLoader;
 
   @PostMapping("/login")
   public PlsUserDTO login(@RequestBody UserPwdLoginParam param) {
     UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(param.getUsername(), param.getPassword());
     Authentication authentication = authenticationManager.authenticate(token);
     PlsUser user = (PlsUser) authentication.getPrincipal();
+    System.out.println(sampleDataLoader.getData());
     return userConverter.do2dto(user);
   }
 

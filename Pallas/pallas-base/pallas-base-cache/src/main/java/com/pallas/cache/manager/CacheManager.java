@@ -1,12 +1,10 @@
-package com.pallas.cache.loader;
+package com.pallas.cache.manager;
 
+import com.pallas.cache.loader.IDataLoader;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author: jax
@@ -14,24 +12,23 @@ import javax.annotation.PostConstruct;
  * @desc:
  */
 @Component
-public class CacheLoader {
+public class CacheManager {
 
   private final ReactiveRedisConnectionFactory factory;
   private ReactiveRedisOperations<String, String> redisOperations;
 
-  public CacheLoader(ReactiveRedisConnectionFactory factory) {
+  public CacheManager(ReactiveRedisConnectionFactory factory) {
     this.factory = factory;
     this.redisOperations = new ReactiveStringRedisTemplate(factory);
   }
 
-  @PostConstruct
-  public void loadData() {
-    factory.getReactiveConnection().serverCommands().flushAll().thenMany(
-        Flux.just("r", "e", "d", "i", "s")
-            .flatMap(str -> redisOperations.opsForValue().set(str, str)))
-        .thenMany(redisOperations.keys("*")
-            .flatMap(redisOperations.opsForValue()::get))
-        .subscribe(System.out::println);
+  public void register(IDataLoader dataLoader) {
+    if (dataLoader.clearOnInit() && dataLoader.ifExist()) {
+      dataLoader.clear();
+    }
   }
 
+  public ReactiveRedisConnectionFactory getFactory() {
+    return this.factory;
+  }
 }
