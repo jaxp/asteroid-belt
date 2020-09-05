@@ -1,11 +1,18 @@
-package com.pallas.cache.loader;
+package com.pallas.cache.cacher;
 
 /**
  * @author: jax
  * @time: 2020/8/30 14:31
  * @desc:
  */
-public interface IDataLoader<T> {
+public interface ICacher<T> {
+
+  /**
+   * 缓存key
+   *
+   * @return
+   */
+  String getKey();
 
   /**
    * 启动时清空

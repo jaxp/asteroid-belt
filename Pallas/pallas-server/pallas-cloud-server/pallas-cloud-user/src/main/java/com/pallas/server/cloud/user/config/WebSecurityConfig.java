@@ -33,7 +33,7 @@ public class WebSecurityConfig extends AbstractWebSecurityConfig {
       http.csrf().disable()
           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
           .authorizeRequests()
-          .antMatchers("/api/user/login").permitAll()
+          .antMatchers("/api/user/*").permitAll()
           .anyRequest().authenticated();
       http.headers().cacheControl();
     }

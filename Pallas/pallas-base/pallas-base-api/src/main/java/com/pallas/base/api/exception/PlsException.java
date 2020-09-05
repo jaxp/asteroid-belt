@@ -1,6 +1,7 @@
 package com.pallas.base.api.exception;
 
 
+import com.pallas.base.api.response.ResultType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -29,6 +30,16 @@ public class PlsException extends RuntimeException {
   public PlsException(String msg, Throwable cause) {
     super(msg, cause);
     this.code = DEFAULT_CODE;
+  }
+
+  public PlsException(ResultType resultType) {
+    super(resultType.getMsg());
+    this.code = resultType.getCode();
+  }
+
+  public PlsException(ResultType resultType, String msg) {
+    super(msg);
+    this.code = resultType.getCode();
   }
 
   @Override

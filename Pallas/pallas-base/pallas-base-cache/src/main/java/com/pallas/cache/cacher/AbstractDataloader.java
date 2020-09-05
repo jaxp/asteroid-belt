@@ -1,4 +1,4 @@
-package com.pallas.cache.loader;
+package com.pallas.cache.cacher;
 
 import com.pallas.cache.manager.CacheManager;
 import lombok.Data;
@@ -12,6 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.time.Duration;
 
 /**
  * @author: jax
@@ -19,7 +20,7 @@ import java.lang.reflect.Type;
  * @desc:
  */
 @Data
-public abstract class AbstractDataloader<T> implements IDataLoader<T> {
+public abstract class AbstractDataloader<T> implements ICacher<T> {
 
   @Autowired
   private CacheManager cacheManager;
@@ -30,9 +31,9 @@ public abstract class AbstractDataloader<T> implements IDataLoader<T> {
     if (this.ifExist()) {
       return this.getCache();
     }
-    T data = this.loadData();
-    cacheData(data);
-    return data;
+    T original = this.loadData();
+    cacheData(original);
+    return original;
   }
 
   protected <T> ReactiveRedisOperations<String, T> buildOperations(Class<T> clazz) {
@@ -60,6 +61,10 @@ public abstract class AbstractDataloader<T> implements IDataLoader<T> {
   public void after() {
     this.setOperations(this.buildOperations(this.getSuperclassTypeParameter()));
     cacheManager.register(this);
+  }
+
+  public void expire(Duration duration) {
+    this.getOperations().expire(getKey(), duration).subscribe();
   }
 
 }

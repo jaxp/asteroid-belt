@@ -20,6 +20,10 @@
       <groupId>com.pallas</groupId>
       <artifactId>pallas-base-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.pallas</groupId>
+      <artifactId>pallas-user-api</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

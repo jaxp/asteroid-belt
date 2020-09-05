@@ -13,7 +13,8 @@ import lombok.Getter;
 public enum ResultType {
 
   SUCCESS(200, "成功"),
-  GENERAL_ERR(1, "请求异常");
+  GENERAL_ERR(1, "请求异常"),
+  ENCRYPTION_ERR(2, "加解密异常");
 
   private Integer code;
   private String msg;

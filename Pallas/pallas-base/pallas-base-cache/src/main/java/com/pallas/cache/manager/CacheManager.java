@@ -1,6 +1,6 @@
 package com.pallas.cache.manager;
 
-import com.pallas.cache.loader.IDataLoader;
+import com.pallas.cache.cacher.ICacher;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
@@ -22,7 +22,7 @@ public class CacheManager {
     this.redisOperations = new ReactiveStringRedisTemplate(factory);
   }
 
-  public void register(IDataLoader dataLoader) {
+  public void register(ICacher dataLoader) {
     if (dataLoader.clearOnInit() && dataLoader.ifExist()) {
       dataLoader.clear();
     }
