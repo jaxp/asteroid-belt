@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>com.pallas</groupId>
-      <artifactId>pallas-user-api</artifactId>
+      <artifactId>pallas-user-cloud-api</artifactId>
     </dependency>
     <dependency>
       <groupId>com.pallas</groupId>

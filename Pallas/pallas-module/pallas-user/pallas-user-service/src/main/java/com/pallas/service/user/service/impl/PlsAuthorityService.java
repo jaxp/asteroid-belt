@@ -20,25 +20,25 @@ import java.util.stream.Collectors;
 @Service
 public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuthority> implements IPlsAuthorityService {
 
-  @Autowired
-  private IPlsUserAuthorityService plsUserAuthorityService;
+    @Autowired
+    private IPlsUserAuthorityService plsUserAuthorityService;
 
-  @Override
-  public List<String> getAuthorities(long userId) {
-    List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
-        .eq("user_id", userId)
-        .list();
-    List<Long> authIds = userAuthorities.stream()
-        .map(e -> e.getAuthorityId())
-        .collect(Collectors.toList());
-    List<PlsAuthority> plsAuthorities = query()
-        .select("authority")
-        .in("id", authIds)
-        .eq("enabled", true)
-        .list();
-    List<String> authorities = plsAuthorities.stream()
-        .map(e -> e.getAuthority())
-        .collect(Collectors.toList());
-    return authorities;
-  }
+    @Override
+    public List<String> getAuthorities(long userId) {
+        List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
+            .eq("user_id", userId)
+            .list();
+        List<Long> authIds = userAuthorities.stream()
+            .map(e -> e.getAuthorityId())
+            .collect(Collectors.toList());
+        List<PlsAuthority> plsAuthorities = query()
+            .select("authority")
+            .in("id", authIds)
+            .eq("enabled", true)
+            .list();
+        List<String> authorities = plsAuthorities.stream()
+            .map(e -> e.getAuthority())
+            .collect(Collectors.toList());
+        return authorities;
+    }
 }

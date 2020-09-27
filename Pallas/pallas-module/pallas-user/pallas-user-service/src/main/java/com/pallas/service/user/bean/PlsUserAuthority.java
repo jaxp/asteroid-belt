@@ -20,26 +20,26 @@ import java.util.Date;
 @AllArgsConstructor
 @TableName("pls_user_authority")
 public class PlsUserAuthority {
-  @TableId
-  private Long id;
-  /**
-   * 用户编号
-   */
-  private Long userId;
-  /**
-   * 权限编号
-   */
-  private Long authorityId;
-  /**
-   * 添加用户
-   */
-  private Long addUser;
-  /**
-   * 新增时间
-   */
-  private Date addTime;
-  /**
-   * 更新时间
-   */
-  private Date updTime;
+    @TableId
+    private Long id;
+    /**
+     * 用户编号
+     */
+    private Long userId;
+    /**
+     * 权限编号
+     */
+    private Long authorityId;
+    /**
+     * 添加用户
+     */
+    private Long addUser;
+    /**
+     * 新增时间
+     */
+    private Date addTime;
+    /**
+     * 更新时间
+     */
+    private Date updTime;
 }

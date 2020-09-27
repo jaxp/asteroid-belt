@@ -13,6 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "pls.auth")
 public class AuthProperties {
-  private Long expireTime;
-  private Long refreshTime;
+    private Long expireTime;
+    private Long refreshTime;
 }

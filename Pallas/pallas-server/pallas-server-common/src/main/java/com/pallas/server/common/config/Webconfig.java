@@ -15,14 +15,14 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 @Configuration
 public class Webconfig {
 
-  @Bean
-  public ObjectMapper objectMapper() {
-    return new JsonMapper();
-  }
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new JsonMapper();
+    }
 
-  @Bean
-  public HttpMessageConverter httpMessageConverter() {
-    return new MappingJackson2HttpMessageConverter(this.objectMapper());
-  }
+    @Bean
+    public HttpMessageConverter httpMessageConverter() {
+        return new MappingJackson2HttpMessageConverter(this.objectMapper());
+    }
 
 }

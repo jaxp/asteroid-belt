@@ -18,25 +18,25 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class WebSecurityConfig extends AbstractWebSecurityConfig {
 
-  @Configuration
-  @Order(1)
-  public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    @Configuration
+    @Order(1)
+    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-      return super.authenticationManagerBean();
-    }
+        @Override
+        @Bean
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-      http.csrf().disable()
-          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-          .authorizeRequests()
-          .antMatchers("/api/user/*").permitAll()
-          .anyRequest().authenticated();
-      http.headers().cacheControl();
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                .antMatchers("/api/user/*").permitAll()
+                .anyRequest().authenticated();
+            http.headers().cacheControl();
+        }
     }
-  }
 
 }

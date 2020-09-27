@@ -17,40 +17,40 @@ import java.util.TimeZone;
  */
 public class JsonMapper extends ObjectMapper {
 
-  public JsonMapper() {
-    this(JsonInclude.Include.ALWAYS);
-  }
-
-  private JsonMapper(JsonInclude.Include include) {
-    // 设置输出时包含属性的风格
-    if (include != null) {
-      this.setSerializationInclusion(include);
+    public JsonMapper() {
+        this(JsonInclude.Include.ALWAYS);
     }
-    // Json 格式定义
-    this.enableSimple();
-    // 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
-    this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    SimpleModule simpleModule = new SimpleModule();
-    // long会精度缺失，处理成字符串
-    simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-    simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
 
-    this.registerModule(simpleModule);
-  }
+    private JsonMapper(JsonInclude.Include include) {
+        // 设置输出时包含属性的风格
+        if (include != null) {
+            this.setSerializationInclusion(include);
+        }
+        // Json 格式定义
+        this.enableSimple();
+        // 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
+        this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        SimpleModule simpleModule = new SimpleModule();
+        // long会精度缺失，处理成字符串
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
 
-  /**
-   * 不允许单引号
-   * 不允许不带引号的字段名称
-   * 禁止重复字段
-   *
-   * @return the json mapper
-   */
-  public JsonMapper enableSimple() {
-    this.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, false)
-        .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false)
-        .configure(JsonGenerator.Feature.STRICT_DUPLICATE_DETECTION, true);
-    // 时区
-    this.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-    return this;
-  }
+        this.registerModule(simpleModule);
+    }
+
+    /**
+     * 不允许单引号
+     * 不允许不带引号的字段名称
+     * 禁止重复字段
+     *
+     * @return the json mapper
+     */
+    public JsonMapper enableSimple() {
+        this.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, false)
+            .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false)
+            .configure(JsonGenerator.Feature.STRICT_DUPLICATE_DETECTION, true);
+        // 时区
+        this.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        return this;
+    }
 }

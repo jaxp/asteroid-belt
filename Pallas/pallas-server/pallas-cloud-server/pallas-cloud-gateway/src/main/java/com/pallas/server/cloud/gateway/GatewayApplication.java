@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableFeignClients
 @SpringBootApplication(scanBasePackages = "com.pallas")
 public class GatewayApplication {
-  public static void main(String[] args) {
-    SpringApplication.run(GatewayApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
 }

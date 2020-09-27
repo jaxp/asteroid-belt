@@ -1,9 +1,7 @@
 package com.pallas.cache.manager;
 
 import com.pallas.cache.cacher.ICacher;
-import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
-import org.springframework.data.redis.core.ReactiveRedisOperations;
-import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,21 +12,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class CacheManager {
 
-  private final ReactiveRedisConnectionFactory factory;
-  private ReactiveRedisOperations<String, String> redisOperations;
+    private final RedisConnectionFactory factory;
 
-  public CacheManager(ReactiveRedisConnectionFactory factory) {
-    this.factory = factory;
-    this.redisOperations = new ReactiveStringRedisTemplate(factory);
-  }
-
-  public void register(ICacher dataLoader) {
-    if (dataLoader.clearOnInit() && dataLoader.ifExist()) {
-      dataLoader.clear();
+    public CacheManager(RedisConnectionFactory factory) {
+        this.factory = factory;
     }
-  }
 
-  public ReactiveRedisConnectionFactory getFactory() {
-    return this.factory;
-  }
+    public void register(ICacher dataLoader) {
+        if (dataLoader.clearOnInit()) {
+            if (dataLoader.ifExist()) {
+                dataLoader.clear();
+            }
+        }
+    }
+
+    public RedisConnectionFactory getFactory() {
+        return this.factory;
+    }
 }

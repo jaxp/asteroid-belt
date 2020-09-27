@@ -13,8 +13,8 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @EnableConfigServer
 public class ConfApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConfApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ConfApplication.class, args);
+    }
 
 }

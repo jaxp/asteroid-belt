@@ -9,20 +9,20 @@ import com.pallas.service.user.bean.PlsUser;
  */
 public interface IAuthService {
 
-  /**
-   * 用户登录
-   *
-   * @param user
-   * @return
-   */
-  String login(PlsUser user);
+    /**
+     * 用户登录
+     *
+     * @param user
+     * @return
+     */
+    String login(PlsUser user);
 
-  /**
-   * 校验token
-   *
-   * @param token
-   * @return
-   */
-  boolean validate(String token);
+    /**
+     * 校验token
+     *
+     * @param token
+     * @return
+     */
+    Boolean validate(String token);
 
 }

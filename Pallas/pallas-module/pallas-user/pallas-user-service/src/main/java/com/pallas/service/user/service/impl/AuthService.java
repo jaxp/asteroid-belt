@@ -15,19 +15,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService implements IAuthService {
 
-  @Autowired
-  private UserInfoCacher userInfoCacher;
-  @Autowired
-  private AuthProperties authProperties;
+    @Autowired
+    private UserInfoCacher userInfoCacher;
+    @Autowired
+    private AuthProperties authProperties;
 
-  @Override
-  public String login(PlsUser user) {
-    String token = userInfoCacher.cacheUser(user, authProperties.getExpireTime());
-    return token;
-  }
+    @Override
+    public String login(PlsUser user) {
+        return userInfoCacher.cacheUser(user, authProperties.getExpireTime());
+    }
 
-  @Override
-  public boolean validate(String token) {
-    return userInfoCacher.validate(token);
-  }
+    @Override
+    public Boolean validate(String token) {
+        return userInfoCacher.validate(token);
+    }
 }

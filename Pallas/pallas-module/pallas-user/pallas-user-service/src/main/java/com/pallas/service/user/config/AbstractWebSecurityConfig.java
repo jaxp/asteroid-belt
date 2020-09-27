@@ -21,32 +21,32 @@ import java.util.stream.Collectors;
  */
 public class AbstractWebSecurityConfig {
 
-  @Autowired
-  private IPlsUserService plsUserService;
-  @Autowired
-  private IPlsAuthorityService plsAuthorityService;
-  @Autowired
-  private IPlsUserAuthorityService plsUserAuthorityService;
+    @Autowired
+    private IPlsUserService plsUserService;
+    @Autowired
+    private IPlsAuthorityService plsAuthorityService;
+    @Autowired
+    private IPlsUserAuthorityService plsUserAuthorityService;
 
-  @Bean
-  public UserDetailsService userDetailsService() {
-    UserDetailsService userDetailsService = username -> {
-      PlsUser user = plsUserService.query()
-          .eq("username", username)
-          .one();
-      List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
-          .eq("user_id", user.getId())
-          .list();
-      if (!userAuthorities.isEmpty()) {
-        Set<Long> authIds = userAuthorities.stream()
-            .map(PlsUserAuthority::getAuthorityId)
-            .collect(Collectors.toSet());
-        List<PlsAuthority> authorities = plsAuthorityService.listByIds(authIds);
-        user.setAuthorities(authorities);
-      }
-      return user;
-    };
-    return userDetailsService;
-  }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetailsService userDetailsService = username -> {
+            PlsUser user = plsUserService.query()
+                .eq("username", username)
+                .one();
+            List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
+                .eq("user_id", user.getId())
+                .list();
+            if (!userAuthorities.isEmpty()) {
+                Set<Long> authIds = userAuthorities.stream()
+                    .map(PlsUserAuthority::getAuthorityId)
+                    .collect(Collectors.toSet());
+                List<PlsAuthority> authorities = plsAuthorityService.listByIds(authIds);
+                user.setAuthorities(authorities);
+            }
+            return user;
+        };
+        return userDetailsService;
+    }
 
 }

@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: pallas-cloud-gateway
@@ -16,7 +17,7 @@ spring:
       - id: sample_route
         uri: lb://pallas-cloud-sample
         predicates:
-        - Path=/sample/**
+        - Path=/api/sample/**
       - id: user_route
         uri: lb://pallas-cloud-user
         predicates:
@@ -29,3 +30,5 @@ management:
     web:
       exposure:
         include: "*"
+server:
+  port: 8070

@@ -12,12 +12,12 @@ import java.util.List;
  */
 public interface IPlsAuthorityService extends IService<PlsAuthority> {
 
-  /**
-   * 获取权限
-   *
-   * @param userId
-   * @return
-   */
-  List<String> getAuthorities(long userId);
+    /**
+     * 获取权限
+     *
+     * @param userId
+     * @return
+     */
+    List<String> getAuthorities(long userId);
 
 }

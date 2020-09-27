@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 @Component
 public class PlsUserConverter extends CommonConverter<PlsUser, PlsUserBO, PlsUserDTO, PlsUserVO> {
 
-  @Override
-  public PlsUserBO do2bo(PlsUser d) {
-    PlsUserBO bo = super.do2bo(d);
-    List<String> authorities = d.getAuthorities().stream()
-        .map(e -> e.getAuthority())
-        .collect(Collectors.toList());
-    bo.setAuthorities(authorities);
-    return bo;
-  }
+    @Override
+    public PlsUserBO do2bo(PlsUser d) {
+        PlsUserBO bo = super.do2bo(d);
+        List<String> authorities = d.getAuthorities().stream()
+            .map(e -> e.getAuthority())
+            .collect(Collectors.toList());
+        bo.setAuthorities(authorities);
+        return bo;
+    }
 }

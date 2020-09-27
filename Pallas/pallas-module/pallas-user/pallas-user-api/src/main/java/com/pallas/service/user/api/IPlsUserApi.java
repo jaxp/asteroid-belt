@@ -9,12 +9,19 @@ import com.pallas.service.user.dto.PlsUserDTO;
  */
 public interface IPlsUserApi {
 
-  /**
-   * 获取用户
-   *
-   * @param username
-   * @return
-   */
-  PlsUserDTO getUser(String username);
+    /**
+     * 获取当前用户
+     *
+     * @return
+     */
+    PlsUserDTO getCurrent(Long userId);
+
+    /**
+     * 获取用户
+     *
+     * @param username
+     * @return
+     */
+    PlsUserDTO getUser(String username);
 
 }

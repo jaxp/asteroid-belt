@@ -22,27 +22,27 @@ import java.util.Date;
 @TableName("pls_authority")
 public class PlsAuthority implements GrantedAuthority {
 
-  @TableId
-  private Long id;
-  /**
-   * 名称
-   */
-  private String name;
-  /**
-   * 标识
-   */
-  private String authority;
-  /**
-   * 是否可用
-   */
-  private Boolean enabled;
-  /**
-   * 新增时间
-   */
-  private Date addTime;
-  /**
-   * 更新时间
-   */
-  private Date updTime;
+    @TableId
+    private Long id;
+    /**
+     * 名称
+     */
+    private String name;
+    /**
+     * 标识
+     */
+    private String authority;
+    /**
+     * 是否可用
+     */
+    private Boolean enabled;
+    /**
+     * 新增时间
+     */
+    private Date addTime;
+    /**
+     * 更新时间
+     */
+    private Date updTime;
 
 }

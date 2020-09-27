@@ -23,24 +23,24 @@ import java.util.Objects;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @Autowired
-  private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-  @ExceptionHandler(value = Exception.class)
-  @ResponseBody
-  public String handle(Exception e) throws JsonProcessingException {
-    PlsResult result = null;
-    if (e instanceof PlsException) {
-      Throwable cause = Objects.isNull(e.getCause()) ? e : e.getCause();
-      StackTraceElement stackTraceElement = cause.getStackTrace()[0];
-      log.error("{}.{}[{}]:{}", stackTraceElement.getClassName(), stackTraceElement.getMethodName(), stackTraceElement.getLineNumber(), e.getMessage(),
-          Objects.nonNull(e.getCause()) ? e.getCause() : null);
-      result = PlsResult.error(((PlsException) e).getCode(), e.getLocalizedMessage());
-    } else {
-      log.error("异常:{}", e.getMessage(), e);
-      result = PlsResult.error(ResultType.GENERAL_ERR);
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public String handle(Exception e) throws JsonProcessingException {
+        PlsResult result = null;
+        if (e instanceof PlsException) {
+            Throwable cause = Objects.isNull(e.getCause()) ? e : e.getCause();
+            StackTraceElement stackTraceElement = cause.getStackTrace()[0];
+            log.error("{}.{}[{}]:{}", stackTraceElement.getClassName(), stackTraceElement.getMethodName(), stackTraceElement.getLineNumber(), e.getMessage(),
+                Objects.nonNull(e.getCause()) ? e.getCause() : null);
+            result = PlsResult.error(((PlsException) e).getCode(), e.getLocalizedMessage());
+        } else {
+            log.error("异常:{}", e.getMessage(), e);
+            result = PlsResult.error(ResultType.GENERAL_ERR);
+        }
+        return new StringBuilder(PlsConstant.ERR_PREFIX).append(objectMapper.writeValueAsString(result)).toString();
     }
-    return new StringBuilder(PlsConstant.ERR_PREFIX).append(objectMapper.writeValueAsString(result)).toString();
-  }
 
 }

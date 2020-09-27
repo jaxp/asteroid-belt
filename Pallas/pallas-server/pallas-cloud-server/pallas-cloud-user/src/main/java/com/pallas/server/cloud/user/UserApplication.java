@@ -14,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(scanBasePackages = "com.pallas")
 @MapperScan("com.pallas.service")
 public class UserApplication {
-  public static void main(String[] args) {
-    SpringApplication.run(UserApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(UserApplication.class, args);
+    }
 }
