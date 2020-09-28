@@ -40,14 +40,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
                 if (userCacher.validate(header.get(0).substring(BEARER_TOKEN_PREFIX.length()))) {
                     exchange.getRequest().mutate().header(UserConstant.USER_ID_HEADER, userCacher.getContext() + "").build();
                     return chain.filter(exchange);
-                } else {
-                    throw new PlsException(ResultType.AUTHORIZATION_ERR);
                 }
             }
         } catch (PlsException e) {
             throw e;
         } catch (Exception e) {
-            throw new PlsException(ResultType.AUTHORIZATION_ERR);
+            throw new PlsException(ResultType.AUTHORIZATION_EXCEPTION);
         }
         exchange.getRequest().mutate().header(UserConstant.USER_ID_HEADER, "").build();
         return chain.filter(exchange);

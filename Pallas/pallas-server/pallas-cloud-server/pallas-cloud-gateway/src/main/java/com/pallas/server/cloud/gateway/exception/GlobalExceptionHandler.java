@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,8 @@ public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
         Map<String, Object> result = new HashMap<>(2);
         if (error instanceof PlsException) {
             result.put("code", ((PlsException) error).getCode());
+        } else if (error instanceof ResponseStatusException) {
+            result.put("code", ((ResponseStatusException) error).getStatus().value());
         } else {
             result.put("code", ResultType.GENERAL_ERR.getCode());
         }

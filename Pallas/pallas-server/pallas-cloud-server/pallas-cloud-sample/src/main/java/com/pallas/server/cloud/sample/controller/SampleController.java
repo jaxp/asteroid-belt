@@ -21,6 +21,6 @@ public class SampleController {
 
     @GetMapping("/sampleUser")
     public PlsUserDTO sampleUser() {
-        return plsUserClient.getCurrent(plsUserClient.getUserId());
+        return plsUserClient.getCurrent();
     }
 }

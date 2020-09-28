@@ -14,6 +14,7 @@ export class MenuComponent {
 
   constructor(authService: AuthService) {
     authService.getMenus().subscribe(e => this.menus = e)
+    authService.login().subscribe(e => console.log(e))
   }
 
 }

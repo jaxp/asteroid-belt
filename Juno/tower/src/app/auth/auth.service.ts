@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@constants/Api';
 import { of, Observable } from 'rxjs';
 import { Menu } from '../model/menu';
 
@@ -58,8 +60,16 @@ export class AuthService {
   menus: Menu[];
 
   getMenus(): Observable<Menu[]> {
-    return of(MENUS)
+    return of(MENUS);
   }
 
-  constructor() { }
+  login(): Observable<any> {
+    let data = {
+      "username": "user",
+      "password": "123456"
+    }
+    return this.http.post(Api.auth.login, data)
+  }
+
+  constructor(private http: HttpClient) { }
 }

@@ -7,11 +7,8 @@ import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.dto.PlsUserDTO;
 import com.pallas.service.user.mapper.PlsUserMapper;
 import com.pallas.service.user.service.IPlsUserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * @author: jax
@@ -27,12 +24,9 @@ public class PlsUserService extends ServiceImpl<PlsUserMapper, PlsUser> implemen
     private UserInfoCacher userInfoCacher;
 
     @Override
-    public PlsUserDTO getCurrent(Long userId) {
-        userInfoCacher.setContext(userId);
-        Map<String, String> userMap = userInfoCacher.getData();
-        PlsUserDTO plsUserDTO = new PlsUserDTO();
-        BeanUtils.copyProperties(userMap, plsUserDTO);
-        return plsUserDTO;
+    public PlsUserDTO getCurrent() {
+        userInfoCacher.setContext(getUserId());
+        return userInfoCacher.getUser();
     }
 
     @Override

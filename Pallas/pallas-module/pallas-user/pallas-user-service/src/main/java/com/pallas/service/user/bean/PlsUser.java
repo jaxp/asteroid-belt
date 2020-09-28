@@ -3,6 +3,7 @@ package com.pallas.service.user.bean;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,7 @@ public class PlsUser implements UserDetails {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
     /**
      * 手机号
@@ -74,25 +76,30 @@ public class PlsUser implements UserDetails {
     /**
      * 权限
      */
+    @JsonIgnore
     @TableField(exist = false)
     private List<PlsAuthority> authorities;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return !this.accountExpired;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return !this.accountLocked;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return !this.pwdExpired;
     }

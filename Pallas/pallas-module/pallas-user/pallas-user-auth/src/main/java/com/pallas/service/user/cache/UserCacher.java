@@ -4,8 +4,13 @@ import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.cache.cacher.AbstractHashCacher;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.IncorrectClaimException;
+import io.jsonwebtoken.InvalidClaimException;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.PublicKey;
@@ -17,6 +22,7 @@ import java.util.Objects;
  * @time: 2020/9/4 10:12
  * @desc:
  */
+@Slf4j
 public class UserCacher extends AbstractHashCacher<String> {
 
     private static final String USER_INFO_KEY = "pls:user-info-key:";
@@ -49,15 +55,25 @@ public class UserCacher extends AbstractHashCacher<String> {
     }
 
     public Boolean validate(String token) {
-        PublicKey publicKey = jwtKeyCacher.getPublicKey();
-        Jws<Claims> jws = Jwts.parserBuilder()
-            .setSigningKey(publicKey)
-            .build()
-            .parseClaimsJws(token);
-        long userId = Long.parseLong(jws.getBody().getSubject());
-        long sid = Long.parseLong(jws.getBody().getId());
-        setContext(userId);
-        tokenCacher.setContext(sid);
-        return tokenCacher.ifExist();
+        try {
+            PublicKey publicKey = jwtKeyCacher.getPublicKey();
+            Jws<Claims> jws = Jwts.parserBuilder()
+                .setSigningKey(publicKey)
+                .build()
+                .parseClaimsJws(token);
+            long userId = Long.parseLong(jws.getBody().getSubject());
+            long sid = Long.parseLong(jws.getBody().getId());
+            setContext(userId);
+            tokenCacher.setContext(sid);
+            return tokenCacher.ifExist();
+        } catch (ExpiredJwtException e) {
+            throw new PlsException(ResultType.AUTHORIZATION_EXPIRED);
+        } catch (IncorrectClaimException e) {
+            throw new PlsException(ResultType.AUTHORIZATION_INCORRECT);
+        } catch (InvalidClaimException e) {
+            throw new PlsException(ResultType.AUTHORIZATION_INVALID);
+        } catch (JwtException e) {
+            throw new PlsException(ResultType.AUTHORIZATION_EXCEPTION);
+        }
     }
 }

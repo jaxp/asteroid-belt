@@ -14,8 +14,12 @@ public enum ResultType {
 
     SUCCESS(200, "成功"),
     GENERAL_ERR(10000, "请求异常"),
-    AUTHORIZATION_ERR(10001, "登录信息异常"),
-    ENCRYPTION_ERR(10002, "加解密异常");
+    ENCRYPTION_ERR(10001, "加解密异常"),
+    AUTHORIZATION_EXCEPTION(10100, "登录信息异常"),
+    AUTHORIZATION_EXPIRED(10101, "登录信息过期，请重新登录"),
+    AUTHORIZATION_INVALID(10102, "无效的登录信息"),
+    AUTHORIZATION_INCORRECT(10103, "登录信息错误"),
+    ;
 
     private Integer code;
     private String msg;
