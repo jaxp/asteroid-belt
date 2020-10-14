@@ -15,6 +15,7 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@/*": ["src/*"],
+      "@shared/*": ["src/app/shared/*"],
       "@constants/*": ["src/constants/*"]
     }
   }

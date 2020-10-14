@@ -25,11 +25,11 @@ import java.util.Objects;
 @Slf4j
 public class UserCacher extends AbstractHashCacher<String> {
 
-    private static final String USER_INFO_KEY = "pls:user-info-key:";
+    private static final String USER_INFO_KEY = "pls:user-info:";
     private ThreadLocal<Long> context = new ThreadLocal<>();
 
     @Autowired
-    protected JwtKeyCacher jwtKeyCacher;
+    protected RsaKeyCacher rsaKeyCacher;
     @Autowired
     protected TokenCacher tokenCacher;
 
@@ -56,7 +56,7 @@ public class UserCacher extends AbstractHashCacher<String> {
 
     public Boolean validate(String token) {
         try {
-            PublicKey publicKey = jwtKeyCacher.getPublicKey();
+            PublicKey publicKey = rsaKeyCacher.getPublicKey();
             Jws<Claims> jws = Jwts.parserBuilder()
                 .setSigningKey(publicKey)
                 .build()

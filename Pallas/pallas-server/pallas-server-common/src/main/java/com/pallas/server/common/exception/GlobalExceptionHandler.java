@@ -1,8 +1,6 @@
 package com.pallas.server.common.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.PlsResult;
 import com.pallas.base.api.response.ResultType;
@@ -28,7 +26,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public String handle(Exception e) throws JsonProcessingException {
+    public PlsResult handle(Exception e) {
         PlsResult result = null;
         if (e instanceof PlsException) {
             Throwable cause = Objects.isNull(e.getCause()) ? e : e.getCause();
@@ -40,7 +38,7 @@ public class GlobalExceptionHandler {
             log.error("异常:{}", e.getMessage(), e);
             result = PlsResult.error(ResultType.GENERAL_ERR);
         }
-        return new StringBuilder(PlsConstant.ERR_PREFIX).append(objectMapper.writeValueAsString(result)).toString();
+        return result;
     }
 
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializerBase;
 
 import java.util.TimeZone;
 
@@ -32,9 +33,9 @@ public class JsonMapper extends ObjectMapper {
         this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         SimpleModule simpleModule = new SimpleModule();
         // long会精度缺失，处理成字符串
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-
+        ToStringSerializerBase toStringSerializer = ToStringSerializer.instance;
+        simpleModule.addSerializer(Long.class, toStringSerializer);
+        simpleModule.addSerializer(Long.TYPE, toStringSerializer);
         this.registerModule(simpleModule);
     }
 

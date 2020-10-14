@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.Cipher;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -23,15 +24,26 @@ import java.util.Map;
  * @desc:
  */
 @Component
-public class JwtKeyCacher extends AbstractHashCacher<String> {
+public class RsaKeyCacher extends AbstractHashCacher<String> {
 
-    private static final String KEY = "pls:jwt-security-key";
+    private static final String KEY = "pls:rsa-key";
     private static final String PRIVATE_KEY = "private";
     private static final String PUBLIC_KEY = "public";
 
     @Override
     public String getKey() {
         return KEY;
+    }
+
+    public String decrypt(String str) {
+        try {
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.DECRYPT_MODE, getPrivateKey());
+            byte[] input = Base64.getDecoder().decode(str.getBytes("UTF-8"));
+            return new String(cipher.doFinal(input));
+        } catch (Exception e) {
+            throw new PlsException(ResultType.ENCRYPTION_ERR);
+        }
     }
 
     public PrivateKey getPrivateKey() {
@@ -42,6 +54,10 @@ public class JwtKeyCacher extends AbstractHashCacher<String> {
         } catch (Exception ex) {
             throw new PlsException(ResultType.ENCRYPTION_ERR, "系统密钥异常");
         }
+    }
+
+    public String getPublicKeyStr() {
+        return getData(PUBLIC_KEY);
     }
 
     public PublicKey getPublicKey() {

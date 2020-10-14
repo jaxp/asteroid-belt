@@ -1,5 +1,6 @@
 export const Api = Object.freeze({
   auth: {
-    login: '/api/user/login'
+    getKey: '/api/anon/user/getKey',
+    login: '/api/anon/user/login'
   }
 })

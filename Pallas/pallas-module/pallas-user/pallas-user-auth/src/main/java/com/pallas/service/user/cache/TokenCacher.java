@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class TokenCacher extends AbstractHashCacher<String> {
 
-    private static final String TOKEN_KEY = "pls:token-key:";
+    private static final String TOKEN_KEY = "pls:token:";
     private ThreadLocal<Long> context = new ThreadLocal<>();
 
     @Autowired

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Menu } from '../../model/menu'
+import { Menu } from '@shared/model/menu';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -14,7 +14,6 @@ export class MenuComponent {
 
   constructor(authService: AuthService) {
     authService.getMenus().subscribe(e => this.menus = e)
-    authService.login().subscribe(e => console.log(e))
   }
 
 }

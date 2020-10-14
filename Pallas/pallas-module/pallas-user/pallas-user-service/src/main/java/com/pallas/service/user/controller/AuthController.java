@@ -1,9 +1,12 @@
 package com.pallas.service.user.controller;
 
 import com.pallas.base.api.constant.PlsConstant;
+import com.pallas.base.api.exception.PlsException;
+import com.pallas.base.api.response.PlsResult;
+import com.pallas.base.api.response.ResultType;
 import com.pallas.service.user.bean.PlsUser;
+import com.pallas.service.user.cache.RsaKeyCacher;
 import com.pallas.service.user.converter.PlsUserConverter;
-import com.pallas.service.user.dto.PlsUserDTO;
 import com.pallas.service.user.param.UserPwdLoginParam;
 import com.pallas.service.user.service.IAuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,15 +39,27 @@ public class AuthController {
     private PlsUserConverter userConverter;
     @Autowired
     private IAuthService authService;
+    @Autowired
+    private RsaKeyCacher rsaKeyCacher;
+
+    @GetMapping("/getKey")
+    public PlsResult getKey() {
+        return PlsResult.success(rsaKeyCacher.getPublicKeyStr());
+    }
 
     @PostMapping("/login")
-    public PlsUserDTO login(@RequestBody UserPwdLoginParam param, HttpServletResponse response) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(param.getUsername(), param.getPassword());
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        PlsUser user = (PlsUser) authentication.getPrincipal();
-        String token = authService.login(user);
-        response.setHeader(PlsConstant.AUTHORIZATION_HEADER, token);
-        return userConverter.do2dto(user);
+    public PlsResult login(@RequestBody UserPwdLoginParam param, HttpServletResponse response) {
+        try {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(param.getUsername(), rsaKeyCacher.decrypt(param.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            PlsUser user = (PlsUser) authentication.getPrincipal();
+            String token = authService.login(user);
+            response.setHeader(PlsConstant.AUTHORIZATION_HEADER, token);
+            return PlsResult.success(userConverter.do2dto(user));
+        } catch (AuthenticationException e) {
+            throw new PlsException(ResultType.AUTHENTICATION_ERR, e.getMessage(), e);
+        }
     }
 
 }

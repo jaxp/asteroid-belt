@@ -14,9 +14,7 @@ public class PlsConstant {
     public static final String UNDERLINE = "_";
     public static final String CROSSBAR = "-";
     public static final String DOLLOR = "$";
-    /**
-     * 错误前缀
-     */
-    public static final String ERR_PREFIX = "pls_err:";
+
+    public static final String RESULT_TYPE_HEADER = "result-type";
     public static final String AUTHORIZATION_HEADER = "authorization";
 }

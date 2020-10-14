@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Api } from '@constants/Api';
 import { of, Observable } from 'rxjs';
-import { Menu } from '../model/menu';
+import { Api } from '@constants/api';
+import { Menu } from '@shared/model/menu';
 
 const MENUS: Menu[] = [{
   title: 'dashboard',
@@ -63,12 +63,16 @@ export class AuthService {
     return of(MENUS);
   }
 
-  login(): Observable<any> {
-    let data = {
-      "username": "user",
-      "password": "123456"
-    }
+  login(data: {username: string, password: string}): Observable<any> {
     return this.http.post(Api.auth.login, data)
+  }
+
+  getAuthorizationToken() {
+    return localStorage.getItem("token");
+  }
+
+  setAuthorizationToken(token: string) {
+    localStorage.setItem("token", token);
   }
 
   constructor(private http: HttpClient) { }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.response.PlsResult;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -14,6 +15,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.stereotype.Component;
@@ -21,16 +23,16 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 /**
  * @author: jax
  * @time: 2020/8/24 16:55
  * @desc:
  */
+@Slf4j
 @Component
 public class ResponseWrapperFilter implements GlobalFilter, Ordered {
-
-    private static final String PLACEHOLDER = "$$";
-    private static final String REPLACE_PLACEHOLDER = "\"$$\"";
 
     @Autowired
     private ObjectMapper jsonMapper;
@@ -46,37 +48,39 @@ public class ResponseWrapperFilter implements GlobalFilter, Ordered {
                 try {
                     if (body instanceof Flux) {
                         Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
-                        return super.writeWith(fluxBody.map(dataBuffer -> {
-                            byte[] content = new byte[dataBuffer.readableByteCount()];
-                            dataBuffer.read(content);
-                            DataBufferUtils.release(dataBuffer);
-                            String result = new String(content, Charsets.UTF_8);
-                            if (originalResponse.getStatusCode().equals(HttpStatus.OK)) {
-                                if (result.startsWith(PlsConstant.ERR_PREFIX)) {
-                                    // 规范化的异常结果
-                                    result = result.substring(PlsConstant.ERR_PREFIX.length());
-                                } else {
-                                    PlsResult plsResult = PlsResult.success(PLACEHOLDER);
-                                    try {
-                                        String generalResult = jsonMapper.writeValueAsString(plsResult);
-                                        result = generalResult.replace(REPLACE_PLACEHOLDER, result);
-                                    } catch (JsonProcessingException e) {
-                                        return bufferFactory.wrap(content);
+                        return super.writeWith(fluxBody.buffer().map(dataBuffers -> {
+                            StringBuilder sb = new StringBuilder();
+                            dataBuffers.forEach(dataBuffer -> {
+                                byte[] content = new byte[dataBuffer.readableByteCount()];
+                                dataBuffer.read(content);
+                                DataBufferUtils.release(dataBuffer);
+                                sb.append(new String(content, Charsets.UTF_8));
+                            });
+                            String result = sb.toString();
+                            byte[] resultContent = null;
+                            try {
+                                if (originalResponse.getStatusCode().equals(HttpStatus.OK)) {
+                                    if (originalResponse.getHeaders().getContentType().isCompatibleWith(MediaType.TEXT_PLAIN)) {
+                                        result = jsonMapper.writeValueAsString(PlsResult.success(result));
+                                        originalResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                                    } else {
+                                        String className = originalResponse.getHeaders().getFirst(PlsConstant.RESULT_TYPE_HEADER);
+                                        if (!Objects.equals(PlsResult.class.getName(), className)) {
+                                            result = new StringBuilder("{\"code\":200,\"msg\":\"成功\",\"data\":").append(result).append("}").toString();
+                                        }
+                                        originalResponse.getHeaders().remove(PlsConstant.RESULT_TYPE_HEADER);
                                     }
-                                }
-                            } else {
-                                PlsResult plsResult = new PlsResult();
-                                plsResult.setCode(originalResponse.getRawStatusCode());
-                                plsResult.setMsg(originalResponse.getStatusCode().getReasonPhrase());
-                                try {
+                                } else {
+                                    PlsResult plsResult = new PlsResult();
+                                    plsResult.setCode(originalResponse.getRawStatusCode());
                                     result = jsonMapper.writeValueAsString(plsResult);
-                                } catch (JsonProcessingException e) {
-                                    return bufferFactory.wrap(content);
                                 }
+                            } catch (JsonProcessingException e) {
+                                log.error("转换错误", e);
                             }
-                            content = result.getBytes(Charsets.UTF_8);
-                            originalResponse.getHeaders().setContentLength(content.length);
-                            return bufferFactory.wrap(content);
+                            resultContent = result.getBytes(Charsets.UTF_8);
+                            originalResponse.getHeaders().setContentLength(resultContent.length);
+                            return bufferFactory.wrap(resultContent);
                         }));
                     }
                     return super.writeWith(body);

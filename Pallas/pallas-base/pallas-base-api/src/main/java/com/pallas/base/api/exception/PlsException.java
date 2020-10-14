@@ -42,6 +42,11 @@ public class PlsException extends RuntimeException {
         this.code = resultType.getCode();
     }
 
+    public PlsException(ResultType resultType, String msg, Throwable cause) {
+        super(msg, cause);
+        this.code = resultType.getCode();
+    }
+
     @Override
     public String toString() {
         return new StringBuilder("{'code':").append(code)

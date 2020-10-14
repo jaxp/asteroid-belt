@@ -12,7 +12,8 @@ import zh from '@angular/common/locales/zh';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { BenchModule } from './bench/bench.module';
-import { FormBuilder } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { httpInterceptorProviders } from './interceptors'
 
 registerLocaleData(zh);
 
@@ -29,6 +30,8 @@ registerLocaleData(zh);
     BenchModule
   ],
   providers: [
+    httpInterceptorProviders,
+    NzMessageService,
     { provide: NZ_I18N, useValue: zh_CN }
   ],
   exports: [],

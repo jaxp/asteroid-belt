@@ -72,7 +72,7 @@ public class UserInfoCacher extends UserCacher {
         tokenCacher.expire(Duration.ofMinutes(expireTime));
 
         // 生成token
-        PrivateKey privateKey = jwtKeyCacher.getPrivateKey();
+        PrivateKey privateKey = rsaKeyCacher.getPrivateKey();
         String token = Jwts.builder()
             .setExpiration(new Date(System.currentTimeMillis() + expireTime * 60 * 1000))
             .setIssuedAt(new Date())
