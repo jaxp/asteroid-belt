@@ -13,7 +13,7 @@ export class MenuComponent {
   @Input() nzInlineCollapsed: boolean;
 
   constructor(authService: AuthService) {
-    authService.getMenus().subscribe(e => this.menus = e)
+    authService.getMenus().subscribe(e => this.menus = e);
   }
 
 }

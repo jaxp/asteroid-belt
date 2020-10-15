@@ -52,10 +52,10 @@ const MENUS: Menu[] = [{
   icon: 'dashboard',
   level: 1,
   children: []
-}]
+}];
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthService {
 
@@ -70,28 +70,28 @@ export class AuthService {
   login(data: { username: string, password: string }): Observable<any> {
     return this.http.post(Api.auth.login, data).pipe(
       tap(e => this.user = e.data)
-    )
+    );
   }
 
-  logout() {
+  logout(): Observable<any>{
     return this.http.get(Api.auth.logout).pipe(
       tap(e => {
-        this.user = null;
-        localStorage.removeItem("token");
+        // this.user = null;
+        // localStorage.removeItem('token');
       })
-    )
+    );
   }
 
   isLogin(): boolean {
     return !!this.getAuthorizationToken();
   }
 
-  getAuthorizationToken() {
-    return localStorage.getItem("token");
+  getAuthorizationToken(): string {
+    return localStorage.getItem('token');
   }
 
-  setAuthorizationToken(token: string) {
-    localStorage.setItem("token", token);
+  setAuthorizationToken(token: string): void {
+    localStorage.setItem('token', token);
   }
 
   constructor(private http: HttpClient) { }

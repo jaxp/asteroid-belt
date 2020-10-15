@@ -29,5 +29,5 @@ function isMobile(value: string): boolean {
 }
 
 function validUsername(value: string): boolean {
-  return typeof value === 'string' && /^(?![0-9]+$)[0-9A-Za-z]{6,20}$/.test(value)
+  return typeof value === 'string' && /^(?![0-9]+$)[0-9A-Za-z]{6,20}$/.test(value);
 }

@@ -50,7 +50,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         } catch (PlsException e) {
             throw e;
         } catch (Exception e) {
-            throw new PlsException(ResultType.AUTHORIZATION_EXCEPTION);
+            throw new PlsException(ResultType.AUTHORIZATION_EXCEPTION, e);
         }
         exchange.getRequest().mutate().header(UserConstant.USER_ID_HEADER, "").build();
         return chain.filter(exchange);

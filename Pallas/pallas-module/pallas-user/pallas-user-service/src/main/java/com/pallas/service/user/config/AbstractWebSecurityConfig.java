@@ -1,5 +1,7 @@
 package com.pallas.service.user.config;
 
+import com.pallas.base.api.exception.PlsException;
+import com.pallas.base.api.response.ResultType;
 import com.pallas.service.user.bean.PlsAuthority;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.bean.PlsUserAuthority;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,9 @@ public class AbstractWebSecurityConfig {
             PlsUser user = plsUserService.query()
                 .eq("username", username)
                 .one();
+            if (Objects.isNull(user)) {
+                throw new PlsException(ResultType.AUTHENTICATION_ERR, "用户名或密码错误");
+            }
             List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
                 .eq("user_id", user.getId())
                 .list();

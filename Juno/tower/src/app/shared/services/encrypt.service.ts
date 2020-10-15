@@ -7,13 +7,13 @@ import { map } from 'rxjs/operators';
 import * as JsEncryptModule from 'jsencrypt';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class EncryptService {
 
   publicKey: string;
 
-  getPublicKey() {
+  getPublicKey(): Observable<string> {
     if (!this.publicKey) {
       return this.http.get(Api.auth.getKey).pipe(
         map((e: Result) => {
@@ -29,9 +29,9 @@ export class EncryptService {
   getEncrypted(str: string): Observable<string> {
     return this.getPublicKey().pipe(
       map(publicKey => {
-        let encrypt = new JsEncryptModule.JSEncrypt();
+        const encrypt = new JsEncryptModule.JSEncrypt();
         encrypt.setPublicKey(publicKey);
-        let signature = encrypt.encrypt(str);
+        const signature = encrypt.encrypt(str);
         return signature;
       })
     );

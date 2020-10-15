@@ -1,3 +1,4 @@
+import { AuthService } from '@/app/auth/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -9,6 +10,10 @@ export class LayoutComponent {
 
   isCollapsed = false;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
+
+  logout(): void {
+    this.authService.logout().subscribe(e => console.log(e));
+  }
 
 }

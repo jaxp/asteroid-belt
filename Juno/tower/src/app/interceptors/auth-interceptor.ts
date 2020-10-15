@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
       mergeMap((event: any) => {
         if (event instanceof HttpResponse) {
           code = event.body.code;
-          if (code != 200) {
+          if (code !== 200) {
             result = 'failed';
             return throwError(event.body);
           } else {
@@ -45,9 +45,9 @@ export class AuthInterceptor implements HttpInterceptor {
         return of(event);
       }),
       catchError((err: HttpErrorResponse) => {
-        let error = err.error || err
-        code = error.code
-        error.msg = error.msg || HttpStatus[code] && HttpStatus[code].zh || '服务器异常'
+        const error = err.error || err;
+        code = error.code;
+        error.msg = error.msg || HttpStatus[code] && HttpStatus[code].zh || '服务器异常';
         return throwError(error);
       }),
       finalize(() => {

@@ -6,9 +6,11 @@ import com.pallas.service.user.bean.PlsUserAuthority;
 import com.pallas.service.user.mapper.PlsAuthorityMapper;
 import com.pallas.service.user.service.IPlsAuthorityService;
 import com.pallas.service.user.service.IPlsUserAuthorityService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,17 +30,20 @@ public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuth
         List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
             .eq("user_id", userId)
             .list();
-        List<Long> authIds = userAuthorities.stream()
-            .map(e -> e.getAuthorityId())
-            .collect(Collectors.toList());
-        List<PlsAuthority> plsAuthorities = query()
-            .select("authority")
-            .in("id", authIds)
-            .eq("enabled", true)
-            .list();
-        List<String> authorities = plsAuthorities.stream()
-            .map(e -> e.getAuthority())
-            .collect(Collectors.toList());
-        return authorities;
+        if (CollectionUtils.isNotEmpty(userAuthorities)) {
+            List<Long> authIds = userAuthorities.stream()
+                .map(e -> e.getAuthorityId())
+                .collect(Collectors.toList());
+            List<PlsAuthority> plsAuthorities = query()
+                .select("authority")
+                .in("id", authIds)
+                .eq("enabled", true)
+                .list();
+            List<String> authorities = plsAuthorities.stream()
+                .map(e -> e.getAuthority())
+                .collect(Collectors.toList());
+            return authorities;
+        }
+        return new ArrayList<>();
     }
 }
