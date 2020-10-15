@@ -5,10 +5,14 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializerBase;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -36,6 +40,16 @@ public class JsonMapper extends ObjectMapper {
         ToStringSerializerBase toStringSerializer = ToStringSerializer.instance;
         simpleModule.addSerializer(Long.class, toStringSerializer);
         simpleModule.addSerializer(Long.TYPE, toStringSerializer);
+        simpleModule.addSerializer(Date.class, new DateSerializer() {
+            @Override
+            public void serialize(Date value, JsonGenerator g, SerializerProvider provider) throws IOException {
+                if (_asTimestamp(provider)) {
+                    g.writeString(_timestamp(value) + "");
+                    return;
+                }
+                _serializeAsString(value, g, provider);
+            }
+        });
         this.registerModule(simpleModule);
     }
 

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { Api } from '@constants/api';
 import { Menu } from '@shared/model/menu';
+import { User } from '@shared/model/user';
+import { tap } from 'rxjs/operators';
 
 const MENUS: Menu[] = [{
   title: 'dashboard',
@@ -58,13 +60,30 @@ const MENUS: Menu[] = [{
 export class AuthService {
 
   menus: Menu[];
+  user: User;
+  redirectUrl: string;
 
   getMenus(): Observable<Menu[]> {
     return of(MENUS);
   }
 
-  login(data: {username: string, password: string}): Observable<any> {
-    return this.http.post(Api.auth.login, data)
+  login(data: { username: string, password: string }): Observable<any> {
+    return this.http.post(Api.auth.login, data).pipe(
+      tap(e => this.user = e.data)
+    )
+  }
+
+  logout() {
+    return this.http.get(Api.auth.logout).pipe(
+      tap(e => {
+        this.user = null;
+        localStorage.removeItem("token");
+      })
+    )
+  }
+
+  isLogin(): boolean {
+    return !!this.getAuthorizationToken();
   }
 
   getAuthorizationToken() {

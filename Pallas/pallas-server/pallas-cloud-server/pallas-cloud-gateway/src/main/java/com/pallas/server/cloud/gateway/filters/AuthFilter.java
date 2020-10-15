@@ -2,9 +2,11 @@ package com.pallas.server.cloud.gateway.filters;
 
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
+import com.pallas.service.user.cache.TokenCacher;
 import com.pallas.service.user.cache.UserCacher;
 import com.pallas.service.user.constant.UserConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -13,9 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author: jax
@@ -27,18 +26,24 @@ import java.util.Objects;
 public class AuthFilter implements GlobalFilter, Ordered {
 
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String BEARER_TOKEN_HEADER = "Authorization";
 
     @Autowired
     private UserCacher userCacher;
+    @Autowired
+    private TokenCacher tokenCacher;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         try {
             HttpHeaders headers = exchange.getRequest().getHeaders();
-            List<String> header = headers.get("Authorization");
-            if (Objects.nonNull(header) && header.size() > 0) {
-                if (userCacher.validate(header.get(0).substring(BEARER_TOKEN_PREFIX.length()))) {
-                    exchange.getRequest().mutate().header(UserConstant.USER_ID_HEADER, userCacher.getContext() + "").build();
+            String authorization = headers.getFirst(BEARER_TOKEN_HEADER);
+            if (StringUtils.isNotBlank(authorization)) {
+                if (userCacher.validate(authorization.substring(BEARER_TOKEN_PREFIX.length()))) {
+                    exchange.getRequest().mutate()
+                        .header(UserConstant.USER_ID_HEADER, userCacher.getContext() + "")
+                        .header(UserConstant.TOKEN_HEADER, tokenCacher.getContext() + "")
+                        .build();
                     return chain.filter(exchange);
                 }
             }

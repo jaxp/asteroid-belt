@@ -18,6 +18,11 @@ public interface IAuthService {
     String login(PlsUser user);
 
     /**
+     * 退出
+     */
+    void logout();
+
+    /**
      * 校验token
      *
      * @param token

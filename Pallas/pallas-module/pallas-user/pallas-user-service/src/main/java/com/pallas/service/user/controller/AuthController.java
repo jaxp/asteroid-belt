@@ -36,9 +36,9 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private PlsUserConverter userConverter;
-    @Autowired
     private IAuthService authService;
+    @Autowired
+    private PlsUserConverter userConverter;
     @Autowired
     private RsaKeyCacher rsaKeyCacher;
 
@@ -60,6 +60,12 @@ public class AuthController {
         } catch (AuthenticationException e) {
             throw new PlsException(ResultType.AUTHENTICATION_ERR, e.getMessage(), e);
         }
+    }
+
+    @GetMapping("/logout")
+    public PlsResult logout() {
+        authService.logout();
+        return PlsResult.success();
     }
 
 }

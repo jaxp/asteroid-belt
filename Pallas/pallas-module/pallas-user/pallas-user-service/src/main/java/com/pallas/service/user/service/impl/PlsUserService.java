@@ -25,7 +25,6 @@ public class PlsUserService extends ServiceImpl<PlsUserMapper, PlsUser> implemen
 
     @Override
     public PlsUserDTO getCurrent() {
-        userInfoCacher.setContext(getUserId());
         return userInfoCacher.getUser();
     }
 
