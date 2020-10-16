@@ -10,6 +10,10 @@ mybatis-plus:
       update-strategy: not_null
       select-strategy: not_null
 spring:
+  flyway:
+    encoding: utf-8
+    baseline-on-migrate: true
+    baseline-version: 1
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   datasource:

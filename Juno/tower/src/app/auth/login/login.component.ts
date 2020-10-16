@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   validateForm!: FormGroup;
+  loginLoading = false;
 
   autoTips: Record<string, Record<string, string>> = {
     'zh-cn': {
@@ -27,28 +28,38 @@ export class LoginComponent implements OnInit {
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(i)) {
+        this.validateForm.controls[i].markAsDirty();
+        this.validateForm.controls[i].updateValueAndValidity();
+      }
     }
-    let params = this.validateForm.value;
+    const params = this.validateForm.value;
+    this.loginLoading = true;
     this.encryptService.getEncrypted(params.password)
       .subscribe(e => {
         if (this.validateForm.valid) {
           this.authService.login({ ...params, password: e })
             .subscribe(
-              e => {
-                console.log(e.data);
+              res => {
+                this.loginLoading = false;
                 this.router.navigate(['/page']);
               },
-              e => this.message.error(e.msg)
+              res => {
+                this.loginLoading = false;
+                this.message.error(res.msg);
+                if (res.code === 10001) {
+                  this.encryptService.clearPublicKey();
+                }
+              }
             );
+        } else {
+          this.loginLoading = false;
         }
-      })
+      });
   }
 
   constructor(private fb: FormBuilder, private authService: AuthService,
-    private message: NzMessageService, private encryptService: EncryptService,
-    private router: Router) {
+              private message: NzMessageService, private encryptService: EncryptService, private router: Router) {
   }
 
   ngOnInit(): void {

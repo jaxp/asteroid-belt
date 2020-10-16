@@ -14,4 +14,4 @@ export const HttpStatus = Object.freeze({
   502: { en: 'Bad Gateway', zh: '服务器无响应' },
   503: { en: 'Service Unavailable', zh: '服务不可用' },
   504: { en: 'Gateway Timeout', zh: '请求超时' }
-})
+});

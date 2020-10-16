@@ -4,7 +4,8 @@ import { of, Observable } from 'rxjs';
 import { Api } from '@constants/api';
 import { Menu } from '@shared/model/menu';
 import { User } from '@shared/model/user';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { Result } from '../shared/model/result';
 
 const MENUS: Menu[] = [{
   title: 'dashboard',
@@ -67,19 +68,27 @@ export class AuthService {
     return of(MENUS);
   }
 
+  getUser(): Observable<User> {
+    if (this.user) {
+      return of(this.user);
+    } else {
+      return this.http.get(Api.auth.getUser).pipe(
+        tap((res: Result<User>) => this.user = res.data),
+        map((res: Result<User>) => res.data)
+      );
+    }
+  }
+
   login(data: { username: string, password: string }): Observable<any> {
     return this.http.post(Api.auth.login, data).pipe(
       tap(e => this.user = e.data)
     );
   }
 
-  logout(): Observable<any>{
-    return this.http.get(Api.auth.logout).pipe(
-      tap(e => {
-        // this.user = null;
-        // localStorage.removeItem('token');
-      })
-    );
+  logout(): void {
+    this.user = null;
+    localStorage.removeItem('token');
+    this.http.get(Api.auth.logout).subscribe();
   }
 
   isLogin(): boolean {

@@ -4,9 +4,9 @@ import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.service.user.bean.PlsAuthority;
 import com.pallas.service.user.bean.PlsUser;
-import com.pallas.service.user.bean.PlsUserAuthority;
+import com.pallas.service.user.bean.PlsAuthoritySet;
 import com.pallas.service.user.service.IPlsAuthorityService;
-import com.pallas.service.user.service.IPlsUserAuthorityService;
+import com.pallas.service.user.service.IPlsAuthoritySetService;
 import com.pallas.service.user.service.IPlsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class AbstractWebSecurityConfig {
     @Autowired
     private IPlsAuthorityService plsAuthorityService;
     @Autowired
-    private IPlsUserAuthorityService plsUserAuthorityService;
+    private IPlsAuthoritySetService plsAuthoritySetService;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -40,12 +40,12 @@ public class AbstractWebSecurityConfig {
             if (Objects.isNull(user)) {
                 throw new PlsException(ResultType.AUTHENTICATION_ERR, "用户名或密码错误");
             }
-            List<PlsUserAuthority> userAuthorities = plsUserAuthorityService.query()
+            List<PlsAuthoritySet> userAuthorities = plsAuthoritySetService.query()
                 .eq("user_id", user.getId())
                 .list();
             if (!userAuthorities.isEmpty()) {
                 Set<Long> authIds = userAuthorities.stream()
-                    .map(PlsUserAuthority::getAuthorityId)
+                    .map(PlsAuthoritySet::getAuthorityId)
                     .collect(Collectors.toSet());
                 List<PlsAuthority> authorities = plsAuthorityService.listByIds(authIds);
                 user.setAuthorities(authorities);

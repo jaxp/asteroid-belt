@@ -3,9 +3,11 @@ package com.pallas.service.user.service.impl;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.cache.TokenCacher;
 import com.pallas.service.user.cache.UserInfoCacher;
+import com.pallas.service.user.dto.PlsUserDTO;
 import com.pallas.service.user.properties.AuthProperties;
 import com.pallas.service.user.service.IAuthService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +34,15 @@ public class AuthService implements IAuthService {
 
     @Override
     public void logout() {
-        log.info(userInfoCacher.getUser().getUsername());
-        log.info(tokenCacher.getContext() + "");
+        tokenCacher.clear();
+        if (CollectionUtils.isEmpty(tokenCacher.tokenKeysOfSameUser())) {
+            userInfoCacher.clear();
+        }
+    }
+
+    @Override
+    public PlsUserDTO getUser() {
+        return userInfoCacher.getUser();
     }
 
     @Override

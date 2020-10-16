@@ -39,6 +39,7 @@
     <mybatis-plus.version>3.4.0</mybatis-plus.version>
     <dynamic-datasource.version>3.2.0</dynamic-datasource.version>
     <shardingsphere.version>4.1.1</shardingsphere.version>
+    <flyway.version>5.0.6</flyway.version>
     <druid.version>1.1.22</druid.version>
     <jjwt.version>0.11.2</jjwt.version>
   </properties>
@@ -120,6 +121,11 @@
         <groupId>org.apache.shardingsphere</groupId>
         <artifactId>sharding-jdbc-core</artifactId>
         <version>${shardingsphere.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>${flyway.version}</version>
       </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>

@@ -64,6 +64,10 @@ nz-header {
       float: right;
       &-username {
         cursor: pointer;
+        padding-right: 10px;
+      }
+      &-logout {
+        font-size: 12px;
       }
     }
   }

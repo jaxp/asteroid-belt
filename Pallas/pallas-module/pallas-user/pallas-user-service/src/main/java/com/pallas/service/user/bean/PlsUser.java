@@ -24,7 +24,7 @@ import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("pls_user")
+@TableName("pls_u_user")
 public class PlsUser implements UserDetails {
 
     /**

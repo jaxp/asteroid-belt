@@ -1,5 +1,5 @@
-export interface Result {
+export interface Result<T> {
   msg: string;
   code: number;
-  data: object;
+  data: T;
 }

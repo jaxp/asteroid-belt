@@ -62,6 +62,11 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/getUser")
+    public PlsResult getUser() {
+        return PlsResult.success(userConverter.dto2vo(authService.getUser()));
+    }
+
     @GetMapping("/logout")
     public PlsResult logout() {
         authService.logout();

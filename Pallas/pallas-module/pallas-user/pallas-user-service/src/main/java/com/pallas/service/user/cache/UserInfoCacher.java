@@ -66,11 +66,6 @@ public class UserInfoCacher extends UserCacher {
         clear();
         // 缓存用户数据
         cacheData(toUserMap(user));
-        tokenCacher.cacheData(tokenCacher.buildToken(sid, expireTime));
-        // 设置过期时间
-        expire(Duration.ofMinutes(expireTime));
-        tokenCacher.expire(Duration.ofMinutes(expireTime));
-
         // 生成token
         PrivateKey privateKey = rsaKeyCacher.getPrivateKey();
         String token = Jwts.builder()
@@ -80,6 +75,10 @@ public class UserInfoCacher extends UserCacher {
             .setSubject(user.getId() + "")
             .signWith(privateKey)
             .compact();
+        tokenCacher.cacheData(tokenCacher.buildToken(sid, token, expireTime));
+        // 设置过期时间
+        expire(Duration.ofMinutes(expireTime));
+        tokenCacher.expire(Duration.ofMinutes(expireTime));
         return token;
     }
 

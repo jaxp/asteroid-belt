@@ -6,32 +6,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Date;
 
 /**
  * @author: jax
- * @time: 2020/8/26 10:38
- * @desc: 权限
+ * @time: 2020/10/16 15:37
+ * @desc:
  */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("pls_u_authority")
-public class PlsAuthority implements GrantedAuthority {
-
+@TableName("pls_u_role")
+public class PlsRole {
     @TableId
     private Long id;
     /**
      * 名称
      */
     private String name;
-    /**
-     * 标识
-     */
-    private String authority;
     /**
      * 是否可用
      */
@@ -44,5 +38,4 @@ public class PlsAuthority implements GrantedAuthority {
      * 更新时间
      */
     private Date updTime;
-
 }

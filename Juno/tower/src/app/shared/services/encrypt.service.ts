@@ -16,7 +16,7 @@ export class EncryptService {
   getPublicKey(): Observable<string> {
     if (!this.publicKey) {
       return this.http.get(Api.auth.getKey).pipe(
-        map((e: Result) => {
+        map((e: Result<string>) => {
           this.publicKey = `-----BEGIN PUBLIC KEY-----${e.data}-----END PUBLIC KEY-----`;
           return this.publicKey;
         })
@@ -24,6 +24,10 @@ export class EncryptService {
     } else {
       return of(this.publicKey);
     }
+  }
+
+  clearPublicKey(): void {
+    this.publicKey = null;
   }
 
   getEncrypted(str: string): Observable<string> {

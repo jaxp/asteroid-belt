@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author: jax
@@ -39,17 +40,26 @@ public class TokenCacher extends AbstractHashCacher<String> {
             .toString();
     }
 
+    public Set<String> tokenKeysOfSameUser() {
+        return this.getTemplate().keys(new StringBuilder(TOKEN_KEY)
+            .append(userCacher.getContext())
+            .append(PlsConstant.COLON)
+            .append(PlsConstant.ASTERISK)
+            .toString());
+    }
+
     @Override
     public Map<String, String> loadData() {
         return null;
     }
 
-    public Map<String, String> buildToken(long sid, long expireTime) {
+    public Map<String, String> buildToken(long sid, String token, long expireTime) {
         setContext(sid);
         Map<String, String> data = new HashMap<>(6);
         long now = System.currentTimeMillis();
         data.put("time", now + "");
         data.put("expire", now + expireTime * 60 * 1000 + "");
+        data.put("token", token);
         return data;
     }
 
