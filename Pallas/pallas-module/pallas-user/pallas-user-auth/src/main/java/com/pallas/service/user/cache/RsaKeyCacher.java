@@ -1,5 +1,6 @@
 package com.pallas.service.user.cache;
 
+import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.cache.cacher.AbstractHashCacher;
@@ -26,13 +27,12 @@ import java.util.Map;
 @Component
 public class RsaKeyCacher extends AbstractHashCacher<String> {
 
-    private static final String KEY = "pls:rsa-key";
     private static final String PRIVATE_KEY = "private";
     private static final String PUBLIC_KEY = "public";
 
     @Override
     public String getKey() {
-        return KEY;
+        return PlsConstant.RSA_CACHE_KEY;
     }
 
     public String decrypt(String str) {

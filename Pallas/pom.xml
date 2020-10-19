@@ -39,7 +39,7 @@
     <mybatis-plus.version>3.4.0</mybatis-plus.version>
     <dynamic-datasource.version>3.2.0</dynamic-datasource.version>
     <shardingsphere.version>4.1.1</shardingsphere.version>
-    <flyway.version>5.0.6</flyway.version>
+    <flyway.version>6.5.0</flyway.version>
     <druid.version>1.1.22</druid.version>
     <jjwt.version>0.11.2</jjwt.version>
   </properties>

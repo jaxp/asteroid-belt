@@ -1,5 +1,6 @@
 package com.pallas.service.user.cache;
 
+import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.cache.cacher.AbstractHashCacher;
@@ -25,7 +26,6 @@ import java.util.Objects;
 @Slf4j
 public class UserCacher extends AbstractHashCacher<String> {
 
-    private static final String USER_INFO_KEY = "pls:user-info:";
     private ThreadLocal<Long> context = new ThreadLocal<>();
 
     @Autowired
@@ -46,7 +46,7 @@ public class UserCacher extends AbstractHashCacher<String> {
         if (Objects.isNull(context.get())) {
             throw new PlsException(ResultType.GENERAL_ERR, "用户上下文未设置");
         }
-        return USER_INFO_KEY + context.get();
+        return PlsConstant.USER_INFO_KEY + context.get();
     }
 
     @Override

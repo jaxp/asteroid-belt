@@ -17,7 +17,6 @@ import java.util.Set;
 @Component
 public class TokenCacher extends AbstractHashCacher<String> {
 
-    private static final String TOKEN_KEY = "pls:token:";
     private ThreadLocal<Long> context = new ThreadLocal<>();
 
     @Autowired
@@ -33,7 +32,7 @@ public class TokenCacher extends AbstractHashCacher<String> {
 
     @Override
     public String getKey() {
-        return new StringBuilder(TOKEN_KEY)
+        return new StringBuilder(PlsConstant.TOKEN_KEY)
             .append(userCacher.getContext())
             .append(PlsConstant.COLON)
             .append(getContext())
@@ -41,7 +40,7 @@ public class TokenCacher extends AbstractHashCacher<String> {
     }
 
     public Set<String> tokenKeysOfSameUser() {
-        return this.getTemplate().keys(new StringBuilder(TOKEN_KEY)
+        return this.getTemplate().keys(new StringBuilder(PlsConstant.TOKEN_KEY)
             .append(userCacher.getContext())
             .append(PlsConstant.COLON)
             .append(PlsConstant.ASTERISK)
