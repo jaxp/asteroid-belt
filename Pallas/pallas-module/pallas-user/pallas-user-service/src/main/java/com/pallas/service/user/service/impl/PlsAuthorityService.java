@@ -26,12 +26,26 @@ import java.util.stream.Collectors;
 public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuthority> implements IPlsAuthorityService {
 
     @Autowired
+    private IPlsRoleSetService plsRoleSetService;
+    @Autowired
     private IPlsAuthoritySetService plsAuthoritySetService;
     @Autowired
-    private IPlsRoleSetService plsRoleSetService;
+    private IPlsAuthorityService plsAuthorityService;
 
     @Override
     public List<String> getAuthorities(long userId) {
+        List<PlsAuthority> plsAuthorities = this.authorities(userId);
+        if (CollectionUtils.isNotEmpty(plsAuthorities)) {
+            List<String> authorities = plsAuthorities.stream()
+                .map(e -> e.getAuthority())
+                .collect(Collectors.toList());
+            return authorities;
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<PlsAuthority> authorities(long userId) {
         List<PlsRoleSet> roleSets = plsRoleSetService.query()
             .eq("user_id", userId)
             .list();
@@ -46,16 +60,13 @@ public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuth
             List<Long> authIds = userAuthorities.stream()
                 .map(e -> e.getAuthorityId())
                 .collect(Collectors.toList());
-            List<PlsAuthority> plsAuthorities = query()
+            List<PlsAuthority> authorities = plsAuthorityService.query()
                 .select("authority")
                 .in("id", authIds)
                 .eq("enabled", true)
                 .list();
-            List<String> authorities = plsAuthorities.stream()
-                .map(e -> e.getAuthority())
-                .collect(Collectors.toList());
             return authorities;
         }
-        return new ArrayList<>();
+        return null;
     }
 }

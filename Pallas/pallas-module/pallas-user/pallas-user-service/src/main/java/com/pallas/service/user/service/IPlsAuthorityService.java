@@ -20,4 +20,11 @@ public interface IPlsAuthorityService extends IService<PlsAuthority> {
      */
     List<String> getAuthorities(long userId);
 
+    /**
+     * 获取用户权限
+     *
+     * @param userId
+     * @return
+     */
+    List<PlsAuthority> authorities(long userId);
 }

@@ -2,20 +2,14 @@ package com.pallas.service.user.config;
 
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
-import com.pallas.service.user.bean.PlsAuthority;
 import com.pallas.service.user.bean.PlsUser;
-import com.pallas.service.user.bean.PlsAuthoritySet;
 import com.pallas.service.user.service.IPlsAuthorityService;
-import com.pallas.service.user.service.IPlsAuthoritySetService;
 import com.pallas.service.user.service.IPlsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author: jax
@@ -28,8 +22,6 @@ public class AbstractWebSecurityConfig {
     private IPlsUserService plsUserService;
     @Autowired
     private IPlsAuthorityService plsAuthorityService;
-    @Autowired
-    private IPlsAuthoritySetService plsAuthoritySetService;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -40,17 +32,14 @@ public class AbstractWebSecurityConfig {
             if (Objects.isNull(user)) {
                 throw new PlsException(ResultType.AUTHENTICATION_ERR, "用户名或密码错误");
             }
-            List<PlsAuthoritySet> userAuthorities = plsAuthoritySetService.query()
-                .eq("user_id", user.getId())
-                .list();
-            if (!userAuthorities.isEmpty()) {
-                Set<Long> authIds = userAuthorities.stream()
-                    .map(PlsAuthoritySet::getAuthorityId)
-                    .collect(Collectors.toSet());
-                List<PlsAuthority> authorities = plsAuthorityService.listByIds(authIds);
-                user.setAuthorities(authorities);
+            try {
+                user.setAuthorities(plsAuthorityService.authorities(user.getId()));
+                return user;
+            } catch (PlsException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new PlsException(ResultType.GENERAL_ERR);
             }
-            return user;
         };
         return userDetailsService;
     }
