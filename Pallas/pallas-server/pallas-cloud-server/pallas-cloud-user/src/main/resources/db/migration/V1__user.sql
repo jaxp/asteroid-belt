@@ -17,6 +17,9 @@ CREATE TABLE `pls_u_user` (
   KEY `idx_add_time` (`add_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `pls_db`.`pls_u_user`(`id`, `username`, `password`, `telephone`, `email`, `add_time`, `upd_time`, `enabled`, `account_expired`, `account_locked`, `pwd_expired`)
+VALUES (1, 'admin', '{bcrypt}$2a$10$fH1GkNhHY5xVtC5l1KRm3O.PvkULJbIWqIso1xfHIDPniFaCFeGCC', NULL, NULL, now(), now(), 1, 0, 0, 0);
+
 DROP TABLE IF EXISTS `pls_u_authority`;
 CREATE TABLE `pls_u_authority` (
   `id` bigint(20) unsigned NOT NULL COMMENT '编号',
