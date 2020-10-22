@@ -1,18 +1,32 @@
 package com.pallas.service.user.cache;
 
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.cache.cacher.AbstractHashCacher;
-import com.pallas.service.user.bean.*;
+import com.pallas.service.user.bean.PlsAuthority;
+import com.pallas.service.user.bean.PlsAuthoritySet;
+import com.pallas.service.user.bean.PlsMenu;
+import com.pallas.service.user.bean.PlsMenuSet;
+import com.pallas.service.user.bean.PlsRole;
 import com.pallas.service.user.enums.TargetType;
-import com.pallas.service.user.service.*;
+import com.pallas.service.user.service.IPlsAuthorityService;
+import com.pallas.service.user.service.IPlsAuthoritySetService;
+import com.pallas.service.user.service.IPlsMenuService;
+import com.pallas.service.user.service.IPlsMenuSetService;
+import com.pallas.service.user.service.IPlsRoleService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -61,33 +75,60 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
     @Override
     public Map<String, String> loadData() {
         PlsRole role = plsRoleService.getById(context.get());
+        Map<String, String> result = new HashMap<>(3);
         if (Objects.nonNull(role)) {
-            Map<String, String> result = new HashMap<>();
             try {
                 result.put(ROLE, objectMapper.writeValueAsString(role));
+
                 List<PlsMenuSet> menuSets = plsMenuSetService.query()
                     .eq("target", role.getId())
                     .eq("target_type", TargetType.ROLE)
                     .list();
-                if (CollectionUtils.isNotEmpty(menuSets)) {
-                    Set<Long> menuIds = menuSets.stream().map(PlsMenuSet::getMenuId).collect(Collectors.toSet());
-                    List<PlsMenu> menus = plsMenuService.listByIds(menuIds);
-                    result.put(MENUS, objectMapper.writeValueAsString(menus));
-                }
+                List<PlsMenu> menus = plsMenuService.query()
+                    .select("id")
+                    .ge("rank", role.getRank())
+                    .list();
+                Set<Long> menuIds = menuSets.stream().map(PlsMenuSet::getMenuId).collect(Collectors.toSet());
+                menuIds.addAll(menus.stream().map(PlsMenu::getId).collect(Collectors.toSet()));
+                result.put(MENUS, objectMapper.writeValueAsString(menuIds));
+
                 List<PlsAuthoritySet> authoritySets = plsAuthoritySetService.query()
                     .eq("target", role.getId())
                     .eq("target_type", TargetType.ROLE)
                     .list();
-                if (CollectionUtils.isNotEmpty(authoritySets)) {
-                    Set<Long> authIds = authoritySets.stream().map(PlsAuthoritySet::getAuthorityId).collect(Collectors.toSet());
-                    List<PlsAuthority> authorities = plsAuthorityService.listByIds(authIds);
-                    result.put(AUTHORITIES, objectMapper.writeValueAsString(authorities));
+                Set<Long> authIds = authoritySets.stream().map(PlsAuthoritySet::getAuthorityId).collect(Collectors.toSet());
+                QueryChainWrapper<PlsAuthority> wrapper = plsAuthorityService.query()
+                    .select("authority")
+                    .ge("rank", role.getRank());
+                if (CollectionUtils.isNotEmpty(authIds)) {
+                    wrapper.or().in("id", authIds);
                 }
+                List<PlsAuthority> plsAuthorities = wrapper.list();
+                List<String> authorities = plsAuthorities.stream().map(PlsAuthority::getAuthority).collect(Collectors.toList());
+                result.put(AUTHORITIES, objectMapper.writeValueAsString(authorities));
             } catch (JsonProcessingException e) {
                 throw new PlsException("系统缓存加载失败");
             }
         }
-        return null;
+        return result;
+    }
+
+    public Set<Long> getMenus() {
+        String data = this.getData(MENUS);
+        try {
+            return objectMapper.readValue(data, new TypeReference<Set<Long>>(){});
+        } catch (JsonProcessingException e) {
+            throw new PlsException("系统缓存读取失败");
+        }
+    }
+
+    public List<String> getAuthorities() {
+        String data = this.getData(AUTHORITIES);
+        try {
+            return objectMapper.readValue(data, new TypeReference<List<String>>(){});
+        } catch (JsonProcessingException e) {
+            throw new PlsException("系统缓存读取失败");
+        }
     }
 }
 

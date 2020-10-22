@@ -1,10 +1,5 @@
-package com.pallas.service.user.bean;
+package com.pallas.service.user.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pallas.service.user.enums.menu.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,16 +9,14 @@ import java.util.Date;
 
 /**
  * @author: jax
- * @time: 2020/10/16 14:06
- * @desc: 菜单bean
+ * @time: 2020/10/21 16:54
+ * @desc:
  */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("pls_u_menu")
-public class PlsMenu {
-    @TableId
+public class PlsMenuVO {
     private Long id;
     /**
      * 父级编号
@@ -48,7 +41,7 @@ public class PlsMenu {
     /**
      * 菜单类型
      */
-    private MenuType type;
+    private Integer type;
     /**
      * 菜单url
      */
@@ -68,11 +61,9 @@ public class PlsMenu {
     /**
      * 添加时间
      */
-    @TableField(fill = FieldFill.INSERT)
     private Date addTime;
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updTime;
 }

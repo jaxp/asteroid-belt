@@ -6,6 +6,7 @@ import com.pallas.base.api.response.PlsResult;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.cache.RsaKeyCacher;
+import com.pallas.service.user.converter.PlsMenuConverter;
 import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.param.UserPwdLoginParam;
 import com.pallas.service.user.service.IAuthService;
@@ -40,6 +41,8 @@ public class AuthController {
     @Autowired
     private PlsUserConverter userConverter;
     @Autowired
+    private PlsMenuConverter menuConverter;
+    @Autowired
     private RsaKeyCacher rsaKeyCacher;
 
     @GetMapping("/getKey")
@@ -65,6 +68,16 @@ public class AuthController {
     @GetMapping("/getUser")
     public PlsResult getUser() {
         return PlsResult.success(userConverter.dto2vo(authService.getUser()));
+    }
+
+    @GetMapping("/getMenus")
+    public PlsResult getMenus() {
+        return PlsResult.success(menuConverter.dto2vo(authService.getMenus()));
+    }
+
+    @GetMapping("/getAuthorities")
+    public PlsResult getAuthorities() {
+        return PlsResult.success(authService.getAuthorities());
     }
 
     @GetMapping("/logout")

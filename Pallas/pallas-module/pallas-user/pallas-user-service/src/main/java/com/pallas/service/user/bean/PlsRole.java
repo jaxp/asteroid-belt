@@ -23,9 +23,21 @@ public class PlsRole {
     @TableId
     private Long id;
     /**
+     * 父角色
+     */
+    private Long pid;
+    /**
+     * 角色
+     */
+    private String role;
+    /**
      * 名称
      */
     private String name;
+    /**
+     * 等级
+     */
+    private Integer rank;
     /**
      * 是否可用
      */

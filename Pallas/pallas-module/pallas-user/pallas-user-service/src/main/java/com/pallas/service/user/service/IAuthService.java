@@ -1,7 +1,10 @@
 package com.pallas.service.user.service;
 
 import com.pallas.service.user.bean.PlsUser;
+import com.pallas.service.user.dto.PlsMenuDTO;
 import com.pallas.service.user.dto.PlsUserDTO;
+
+import java.util.List;
 
 /**
  * @author: jax
@@ -29,6 +32,20 @@ public interface IAuthService {
      * @return
      */
     PlsUserDTO getUser();
+
+    /**
+     * 获取菜单
+     *
+     * @return
+     */
+    List<PlsMenuDTO> getMenus();
+
+    /**
+     * 获取权限
+     *
+     * @return
+     */
+    List<String> getAuthorities();
 
     /**
      * 校验token

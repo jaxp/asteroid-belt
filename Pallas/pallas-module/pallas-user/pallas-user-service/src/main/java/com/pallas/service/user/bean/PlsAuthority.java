@@ -33,6 +33,10 @@ public class PlsAuthority implements GrantedAuthority {
      */
     private String authority;
     /**
+     * 等级
+     */
+    private Integer rank;
+    /**
      * 是否可用
      */
     private Boolean enabled;

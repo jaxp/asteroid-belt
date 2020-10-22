@@ -1,10 +1,16 @@
-export interface Menu {
+import { id_ID } from 'ng-zorro-antd/i18n';
+export class Menu {
+  id: string;
+  pid?: string;
+  disabled: boolean;
   title: string;
   icon: string;
-  open?: boolean;
-  disabled?: boolean;
-  selected?: boolean;
-  level?: number;
+  enabled?: boolean;
+  rank?: number;
   url?: string;
-  children?: Menu[];
+  type?: number;
+  addTime?: string;
+  addUser?: string;
+  updTime?: string;
+  updUser?: string;
 }

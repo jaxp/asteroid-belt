@@ -38,17 +38,12 @@ public abstract class AbstractHashCacher<T> extends AbstractDataloader<Map<Strin
         return this.ops().entries(getKey());
     }
 
-    public T loadData(String key) {
-        return null;
-    }
-
     public T getData(String key) {
         if (this.ifExist(key)) {
           return this.getCache(key);
         }
-        T data = this.loadData(key);
-        cacheData(key, data);
-        return data;
+        Map<String, T> data = this.getData();
+        return data.get(key);
     }
 
     public Boolean ifExist(String key) {

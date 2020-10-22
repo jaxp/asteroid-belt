@@ -67,11 +67,11 @@ public class UserCacher extends AbstractHashCacher<String> {
             tokenCacher.setContext(sid);
             return tokenCacher.ifExist();
         } catch (ExpiredJwtException e) {
-            throw new PlsException(ResultType.AUTHORIZATION_EXPIRED, e);
+            throw new PlsException(ResultType.AUTHORIZATION_EXPIRED);
         } catch (IncorrectClaimException e) {
-            throw new PlsException(ResultType.AUTHORIZATION_INCORRECT, e);
+            throw new PlsException(ResultType.AUTHORIZATION_INCORRECT);
         } catch (InvalidClaimException e) {
-            throw new PlsException(ResultType.AUTHORIZATION_INVALID, e);
+            throw new PlsException(ResultType.AUTHORIZATION_INVALID);
         } catch (JwtException e) {
             throw new PlsException(ResultType.AUTHORIZATION_EXCEPTION, e);
         }

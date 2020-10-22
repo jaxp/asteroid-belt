@@ -5,55 +5,7 @@ import { Api } from '@constants/api';
 import { Menu } from '@shared/model/menu';
 import { User } from '@shared/model/user';
 import { map, tap } from 'rxjs/operators';
-import { Result } from '../shared/model/result';
-
-const MENUS: Menu[] = [{
-  title: 'dashboard',
-  icon: 'dashboard',
-  level: 1,
-  children: [{
-    title: 'menu1',
-    url: '/welcome',
-    icon: 'dashboard',
-    level: 2,
-    children: []
-  }, {
-    title: 'menu2',
-    url: '/menu2',
-    icon: 'dashboard',
-    level: 2,
-    children: []
-  }, {
-    title: 'menu3',
-    url: '/menu3',
-    icon: 'dashboard',
-    level: 2,
-    children: [{
-      title: 'menu4',
-      url: '/menu4',
-      icon: 'dashboard',
-      level: 3,
-      children: []
-    }, {
-      title: 'menu5',
-      url: '/menu5',
-      icon: 'dashboard',
-      level: 3,
-      children: []
-    }, {
-      title: 'menu6',
-      url: '/menu6',
-      icon: 'dashboard',
-      level: 3,
-      children: []
-    }]
-  }]
-}, {
-  title: 'dashboard1',
-  icon: 'dashboard',
-  level: 1,
-  children: []
-}];
+import { Result } from '@shared/model/result';
 
 @Injectable({
   providedIn: 'root'
@@ -64,19 +16,25 @@ export class AuthService {
   user: User;
   redirectUrl: string;
 
-  getMenus(): Observable<Menu[]> {
-    return of(MENUS);
-  }
-
   getUser(): Observable<User> {
     if (this.user) {
       return of(this.user);
     } else {
-      return this.http.get(Api.auth.getUser).pipe(
-        tap((res: Result<User>) => this.user = res.data),
-        map((res: Result<User>) => res.data)
+      return this.http.get<Result<User>>(Api.auth.getUser).pipe(
+        tap(res => this.user = res.data),
+        map(res => res.data)
       );
     }
+  }
+
+  getMenus(): Observable<Menu[]> {
+    return this.http.get<Result<Menu[]>>(Api.auth.getMenus).pipe(
+      map(res => res.data)
+    );
+  }
+
+  getAuthorities(): void {
+    this.http.get(Api.auth.getAuthorities).subscribe(e => console.log(e));
   }
 
   login(data: { username: string, password: string }): Observable<any> {
