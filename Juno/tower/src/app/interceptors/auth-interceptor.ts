@@ -32,6 +32,9 @@ export class AuthInterceptor implements HttpInterceptor {
         if (event instanceof HttpResponse) {
           code = event.body.code;
           if (code !== 200) {
+            if (code >= 10100 && code < 10200) {
+              this.authService.clearAuthorizationToken();
+            }
             result = 'failed';
             return throwError(event.body);
           } else {

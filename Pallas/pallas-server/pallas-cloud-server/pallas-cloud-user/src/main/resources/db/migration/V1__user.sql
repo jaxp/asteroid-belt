@@ -64,9 +64,11 @@ CREATE TABLE `pls_u_menu` (
   KEY `idx_pid` (`pid`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
- VALUES (1, null, '系统管理', 'project', 1, 0, 1, null, 0, 1, 1, now(), now());
+VALUES (0, null, '主页', 'home', 1, 0, 0, '', 0, 1, 1, now(), now());
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
- VALUES (2, 1, '菜单管理', 'menu', 1, 0, 0, '/menu', 0, 1, 1, now(), now());
+VALUES (1, null, '系统管理', 'project', 1, 0, 1, null, 0, 1, 1, now(), now());
+INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
+VALUES (2, 1, '菜单管理', 'menu', 1, 0, 0, '/menu', 0, 1, 1, now(), now());
 
 DROP TABLE IF EXISTS `pls_u_menu_set`;
 CREATE TABLE `pls_u_menu_set` (

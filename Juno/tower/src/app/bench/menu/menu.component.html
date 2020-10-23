@@ -8,6 +8,7 @@
         [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24"
         [nzDisabled]="node.disabled"
         [nzSelected]="node.selected"
+        [nzMatchRouter]="true"
       >
         <a [routerLink]="'/page' + node.raw.url"><i nz-icon [nzType]="node.raw.icon" *ngIf="node.raw.icon"></i>{{ node.title }}</a>
       </li>

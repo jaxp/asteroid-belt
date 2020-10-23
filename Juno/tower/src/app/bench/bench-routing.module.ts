@@ -10,12 +10,17 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: '',
+        path: 'home',
         component: HomeComponent
       },
       {
         path: 'menu',
         component: MenuManagementComponent
+      },
+      {
+        path: '',
+        redirectTo: '/page/home',
+        pathMatch: 'full'
       }
     ]
   },

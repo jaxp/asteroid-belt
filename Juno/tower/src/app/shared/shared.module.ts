@@ -11,12 +11,14 @@ import { IconsProviderModule } from '../icons-provider.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { GeometricElfDirective } from './directives/geometric-elf.directive';
+import { GraphDirective } from './directives/graph.directive';
 
 
 
 @NgModule({
-  declarations: [GeometricElfDirective],
+  declarations: [GeometricElfDirective, GraphDirective],
   imports: [
     CommonModule,
     IconsProviderModule,
@@ -28,6 +30,7 @@ import { GeometricElfDirective } from './directives/geometric-elf.directive';
     NzCheckboxModule,
     NzGridModule,
     NzInputModule,
+    NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
@@ -43,10 +46,12 @@ import { GeometricElfDirective } from './directives/geometric-elf.directive';
     NzCheckboxModule,
     NzGridModule,
     NzInputModule,
+    NgxEchartsModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule,
-    GeometricElfDirective
+    GeometricElfDirective,
+    GraphDirective,
+    HttpClientModule
   ]
 })
 export class SharedModule { }

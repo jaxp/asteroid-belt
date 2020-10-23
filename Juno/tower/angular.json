@@ -36,7 +36,9 @@
               "src/theme.less",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/echarts/dist/echarts.js"
+            ]
           },
           "configurations": {
             "production": {
