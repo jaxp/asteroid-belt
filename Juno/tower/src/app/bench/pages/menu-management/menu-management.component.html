@@ -1,1 +1,4 @@
-<p>menu-management works!</p>
+<nz-tree class="container" [nzData]="nodes" nzCheckable nzMultiple [nzCheckedKeys]="defaultCheckedKeys"
+  [nzExpandedKeys]="defaultExpandedKeys" [nzSelectedKeys]="defaultSelectedKeys" (nzClick)="nzEvent($event)"
+  (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
+</nz-tree>

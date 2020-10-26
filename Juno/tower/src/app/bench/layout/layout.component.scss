@@ -81,3 +81,8 @@ nz-content {
     height: 100%;
   }
 }
+
+:host ::ng-deep .container {
+  display: flex;
+  height: 100%;
+}

@@ -7,6 +7,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { IconsProviderModule } from '../icons-provider.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,6 +31,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzCheckboxModule,
     NzGridModule,
     NzInputModule,
+    NzTreeModule,
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -46,6 +48,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzCheckboxModule,
     NzGridModule,
     NzInputModule,
+    NzTreeModule,
     NgxEchartsModule,
     ReactiveFormsModule,
     FormsModule,
