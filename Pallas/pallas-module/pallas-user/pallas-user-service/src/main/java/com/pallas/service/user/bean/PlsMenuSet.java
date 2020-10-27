@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pallas.service.user.enums.Permission;
 import com.pallas.service.user.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,10 @@ public class PlsMenuSet {
      * 目标类型
      */
     private TargetType targetType;
+    /**
+     * 权限类别
+     */
+    private Permission permission;
     /**
      * 添加用户
      */

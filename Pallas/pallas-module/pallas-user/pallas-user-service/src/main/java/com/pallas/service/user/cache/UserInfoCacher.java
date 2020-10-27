@@ -56,7 +56,7 @@ public class UserInfoCacher extends UserCacher {
     @Override
     public Map<String, String> loadData() {
         PlsUser user = plsUserService.query()
-            .eq("id", getContext())
+            .eq("id", getUserId())
             .one();
         return toUserMap(user);
     }
@@ -70,7 +70,7 @@ public class UserInfoCacher extends UserCacher {
      */
     public String cacheUser(PlsUser user, Long expireTime) {
         // 设置当前上下文
-        setContext(user.getId());
+        setUserId(user.getId());
         long sid = IdWorker.getId();
         // 清空用户数据
         clear();
@@ -100,7 +100,7 @@ public class UserInfoCacher extends UserCacher {
         userMap.put(TELEPHONE, user.getTelephone());
         Set<Long> roles = plsRoleService.getRoles(user.getId());
         List<String> authorities = plsAuthorityService.getAuthorities(user.getId());
-        Set<Long> menus = plsMenuService.getMenus(user.getId());
+        Set<Long> menus = plsMenuService.getMenusIds(user.getId());
         try {
             ObjectMapper mapper = new ObjectMapper();
             userMap.put(DATA, mapper.writeValueAsString(user));

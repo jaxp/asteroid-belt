@@ -3,11 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Api } from '@constants/api';
-import { Menu } from '@shared/model/menu';
-import { User } from '@shared/model/user';
+import { Menu, User, Result, MenuTreeNode, TreeNode } from '@shared/model';
 import { map, tap } from 'rxjs/operators';
-import { Result } from '@shared/model/result';
-import { TreeNode } from '@shared/model/tree';
 import TreeService from '../shared/services/tree.service';
 
 @Injectable({
@@ -15,7 +12,7 @@ import TreeService from '../shared/services/tree.service';
 })
 export class AuthService {
 
-  nodeMap: Map<any, TreeNode<Menu>>;
+  nodeMap: Map<any, MenuTreeNode<Menu>>;
   user: User;
   authorities: string[];
   currentUrl: string;
@@ -40,17 +37,18 @@ export class AuthService {
 
   buildMenuTree(data: Menu[]): {level: number, tree: TreeNode<any>[]} {
     const nodes = data.map(e => {
-      const node = new TreeNode<Menu>();
+      const node = new MenuTreeNode<Menu>();
       node.id = e.id;
       node.pid = e.pid;
       node.title = e.title;
+      node.icon = e.icon;
       node.disabled = !!e.disabled;
       node.selected = false;
-      node.open = false;
-      node.raw = e;
+      node.expanded = false;
+      node.origin = e;
       return node;
     });
-    this.nodeMap = new Map<any, TreeNode<Menu>>();
+    this.nodeMap = new Map<any, MenuTreeNode<Menu>>();
     nodes.forEach(node => this.nodeMap[node.id] = node);
     this.openMenu(this.currentUrl);
     return this.treeService.getTree(nodes);
@@ -59,11 +57,12 @@ export class AuthService {
   openMenu(url: string): void {
     this.currentUrl = url;
     if (this.nodeMap) {
-      const target = Object.values(this.nodeMap).filter(e => '/page' + e.raw.url === url);
+      const target = Object.values(this.nodeMap).filter(e => '/page' + e.origin.url === url);
       if (target.length > 0) {
+        target[0].selected = true;
         let id = target[0].pid;
         while (this.nodeMap[id]) {
-          this.nodeMap[id].open = true;
+          this.nodeMap[id].expanded = true;
           id = this.nodeMap[id].pid;
         }
       }

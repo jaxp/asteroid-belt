@@ -1,6 +1,6 @@
 import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import {TreeNode} from '../model/tree';
+import {TreeNode} from '../model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,7 @@ export default class TreeService {
       if (e.pid && map[e.pid]) {
         delete map[e.id];
       }
+      e.isLeaf = !e.children || e.children.length === 0;
     });
     let level = 1;
     let nodes = Object.values(map);

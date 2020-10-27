@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Menu } from '@shared/model/menu';
+import { Menu, TreeNode } from '@shared/model';
 import { AuthService } from '../../auth/auth.service';
-import { TreeNode } from '@shared/model/tree';
-import TreeService from '@shared/services/tree.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',

@@ -64,7 +64,7 @@ CREATE TABLE `pls_u_menu` (
   KEY `idx_pid` (`pid`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
-VALUES (0, null, '主页', 'home', 1, 0, 0, '', 0, 1, 1, now(), now());
+VALUES (0, null, '主页', 'home', 1, 0, 0, '/home', 0, 1, 1, now(), now());
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
 VALUES (1, null, '系统管理', 'project', 1, 0, 1, null, 0, 1, 1, now(), now());
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
@@ -76,6 +76,7 @@ CREATE TABLE `pls_u_menu_set` (
   `menu_id` bigint(20) unsigned NOT NULL COMMENT '菜单编号',
   `target` bigint(20) unsigned NOT NULL COMMENT '目标',
   `target_type` tinyint(1) DEFAULT NULL COMMENT '目标类型',
+  `permission` tinyint(1) DEFAULT NULL COMMENT '权限',
   `add_user` bigint(20) unsigned NOT NULL COMMENT '添加用户',
   `add_time` datetime DEFAULT NULL COMMENT '新增时间',
   PRIMARY KEY (`id`),

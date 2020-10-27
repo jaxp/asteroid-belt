@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/user/auth")
 public class AuthController {
 
     @Autowired

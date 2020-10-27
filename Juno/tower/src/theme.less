@@ -291,15 +291,16 @@
 @grid-columns: 24;
 @grid-gutter-width: 0;
 
+@dark-color: #001529;
 // Layout
-@layout-body-background: #f0f2f5;
-@layout-header-background: #001529;
+@layout-body-background: #fff;
+@layout-header-background: #fff;
 @layout-header-height: 64px;
-@layout-header-padding: 0 50px;
+@layout-header-padding: 0 24px;
 @layout-header-color: @text-color;
-@layout-footer-padding: 24px 50px;
+@layout-footer-padding: 24px 24px;
 @layout-footer-background: @layout-body-background;
-@layout-sider-background: @layout-header-background;
+@layout-sider-background: @dark-color;
 @layout-trigger-height: 48px;
 @layout-trigger-background: #002140;
 @layout-trigger-color: #fff;
@@ -517,7 +518,7 @@
 
 // dark theme
 @menu-dark-color: @text-color-secondary-dark;
-@menu-dark-bg: @layout-header-background;
+@menu-dark-bg: @dark-color;
 @menu-dark-arrow-color: #fff;
 @menu-dark-submenu-bg: #000c17;
 @menu-dark-highlight-color: #fff;

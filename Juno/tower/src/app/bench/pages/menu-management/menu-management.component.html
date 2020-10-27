@@ -1,4 +1,20 @@
-<nz-tree class="container" [nzData]="nodes" nzCheckable nzMultiple [nzCheckedKeys]="defaultCheckedKeys"
-  [nzExpandedKeys]="defaultExpandedKeys" [nzSelectedKeys]="defaultSelectedKeys" (nzClick)="nzEvent($event)"
-  (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
-</nz-tree>
+<nz-layout>
+  <nz-sider nzTheme="light">
+    <nz-layout>
+      <nz-header>
+        <button nz-button nzType="primary" nzSize="small" nzShape="circle"><i nz-icon nzType="reload"></i></button>
+      </nz-header>
+      <nz-content>
+        <nz-tree [nzData]="tree$ | async" [nzShowIcon]="true" (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"
+          (nzCheckBoxChange)="nzEvent($event)">
+        </nz-tree>
+      </nz-content>
+    </nz-layout>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      123
+    </nz-header>
+    <nz-content>Content</nz-content>
+  </nz-layout>
+</nz-layout>

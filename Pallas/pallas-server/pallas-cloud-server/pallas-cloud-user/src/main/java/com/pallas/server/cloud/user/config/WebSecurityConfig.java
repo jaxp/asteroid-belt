@@ -1,6 +1,7 @@
 package com.pallas.server.cloud.user.config;
 
 import com.pallas.service.user.config.AbstractWebSecurityConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
  * @time: 2020/8/21 17:10
  * @desc:
  */
+@Slf4j
 @EnableWebSecurity
 public class WebSecurityConfig extends AbstractWebSecurityConfig {
 
@@ -33,8 +35,7 @@ public class WebSecurityConfig extends AbstractWebSecurityConfig {
             http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/user/*").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
             http.headers().cacheControl();
         }
     }

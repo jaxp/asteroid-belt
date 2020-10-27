@@ -8,17 +8,16 @@
         [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24"
         [nzDisabled]="node.disabled"
         [nzSelected]="node.selected"
-        [nzMatchRouter]="true"
       >
-        <a [routerLink]="'/page' + node.raw.url"><i nz-icon [nzType]="node.raw.icon" *ngIf="node.raw.icon"></i>{{ node.title }}</a>
+        <a [routerLink]="'/page' + node.origin.url"><i nz-icon [nzType]="node.origin.icon" *ngIf="node.origin.icon"></i>{{ node.title }}</a>
       </li>
       <li
         *ngIf="node.children && node.children.length > 0"
         nz-submenu
         [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24"
-        [nzOpen]="node.open"
+        [nzOpen]="node.expanded"
         [nzTitle]="node.title"
-        [nzIcon]="node.raw.icon"
+        [nzIcon]="node.origin.icon"
         [nzDisabled]="node.disabled"
       >
         <ul>

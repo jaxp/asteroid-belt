@@ -1,5 +1,6 @@
 package com.pallas.service.user.vo;
 
+import com.pallas.service.user.enums.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,6 @@ public class PlsMenuVO {
      */
     private String icon;
     /**
-     * 是否可用
-     */
-    private Boolean enabled;
-    /**
      * 是否显示禁用
      */
     private Boolean disabled;
@@ -43,13 +40,21 @@ public class PlsMenuVO {
      */
     private Integer type;
     /**
+     * 等级
+     */
+    private Integer rank;
+    /**
      * 菜单url
      */
     private String url;
     /**
-     * 等级
+     * 权限
      */
-    private Integer rank;
+    private Permission permission;
+    /**
+     * 是否可用
+     */
+    private Boolean enabled;
     /**
      * 添加用户
      */

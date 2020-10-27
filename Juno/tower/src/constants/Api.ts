@@ -1,10 +1,13 @@
 export const Api = Object.freeze({
   auth: {
-    getKey: '/api/anon/user/getKey',
-    login: '/api/anon/user/login',
-    logout: '/api/user/logout',
-    getUser: '/api/user/getUser',
-    getMenus: '/api/user/getMenus',
-    getAuthorities: '/api/user/getAuthorities'
+    getKey: '/api/anon/user/auth/getKey',
+    login: '/api/anon/user/auth/login',
+    logout: '/api/user/auth/logout',
+    getUser: '/api/user/auth/getUser',
+    getMenus: '/api/user/auth/getMenus',
+    getAuthorities: '/api/user/auth/getAuthorities'
+  },
+  menu: {
+    getMenus: '/api/user/menu/getMenus'
   }
-})
+});

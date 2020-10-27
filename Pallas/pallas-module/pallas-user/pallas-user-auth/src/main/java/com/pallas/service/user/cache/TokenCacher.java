@@ -33,7 +33,7 @@ public class TokenCacher extends AbstractHashCacher<String> {
     @Override
     public String getKey() {
         return new StringBuilder(PlsConstant.TOKEN_KEY)
-            .append(userCacher.getContext())
+            .append(userCacher.getUserId())
             .append(PlsConstant.COLON)
             .append(getContext())
             .toString();
@@ -41,7 +41,7 @@ public class TokenCacher extends AbstractHashCacher<String> {
 
     public Set<String> tokenKeysOfSameUser() {
         return this.getTemplate().keys(new StringBuilder(PlsConstant.TOKEN_KEY)
-            .append(userCacher.getContext())
+            .append(userCacher.getUserId())
             .append(PlsConstant.COLON)
             .append(PlsConstant.ASTERISK)
             .toString());

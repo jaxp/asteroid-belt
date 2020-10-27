@@ -41,7 +41,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
             if (StringUtils.isNotBlank(authorization)) {
                 if (userCacher.validate(authorization.substring(BEARER_TOKEN_PREFIX.length()))) {
                     exchange.getRequest().mutate()
-                        .header(UserConstant.USER_ID_HEADER, userCacher.getContext() + "")
+                        .header(UserConstant.USER_ID_HEADER, userCacher.getUserId() + "")
                         .header(UserConstant.TOKEN_HEADER, tokenCacher.getContext() + "")
                         .build();
                     return chain.filter(exchange);

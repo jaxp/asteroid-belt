@@ -2,7 +2,9 @@ package com.pallas.service.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pallas.service.user.bean.PlsMenu;
+import com.pallas.service.user.dto.PlsMenuDTO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,5 +19,13 @@ public interface IPlsMenuService extends IService<PlsMenu> {
      * @param target
      * @return
      */
-    Set<Long> getMenus(Long target);
+    Set<Long> getMenusIds(Long target);
+
+    /**
+     * 获取可编辑菜单
+     *
+     * @return
+     */
+    List<PlsMenuDTO> getUserMenus();
+
 }

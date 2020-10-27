@@ -33,11 +33,11 @@ public class UserCacher extends AbstractHashCacher<String> {
     @Autowired
     protected TokenCacher tokenCacher;
 
-    public void setContext(long id) {
+    public void setUserId(long id) {
         context.set(id);
     }
 
-    public Long getContext() {
+    public Long getUserId() {
         return context.get();
     }
 
@@ -63,7 +63,7 @@ public class UserCacher extends AbstractHashCacher<String> {
                 .parseClaimsJws(token);
             long userId = Long.parseLong(jws.getBody().getSubject());
             long sid = Long.parseLong(jws.getBody().getId());
-            setContext(userId);
+            setUserId(userId);
             tokenCacher.setContext(sid);
             return tokenCacher.ifExist();
         } catch (ExpiredJwtException e) {

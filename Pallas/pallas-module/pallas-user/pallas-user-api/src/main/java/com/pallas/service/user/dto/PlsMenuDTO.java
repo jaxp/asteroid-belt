@@ -1,5 +1,6 @@
 package com.pallas.service.user.dto;
 
+import com.pallas.service.user.enums.Permission;
 import com.pallas.service.user.enums.menu.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,10 +33,6 @@ public class PlsMenuDTO {
      */
     private String icon;
     /**
-     * 是否可用
-     */
-    private Boolean enabled;
-    /**
      * 是否显示禁用
      */
     private Boolean disabled;
@@ -47,6 +44,14 @@ public class PlsMenuDTO {
      * 菜单url
      */
     private String url;
+    /**
+     * 权限
+     */
+    private Permission permission;
+    /**
+     * 是否可用
+     */
+    private Boolean enabled;
     /**
      * 等级
      */

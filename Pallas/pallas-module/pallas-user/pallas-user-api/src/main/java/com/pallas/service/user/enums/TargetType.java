@@ -1,5 +1,7 @@
 package com.pallas.service.user.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,6 +17,8 @@ public enum TargetType {
     USER(0, "用户"),
     ROLE(1, "角色");
 
+    @JsonValue
+    @EnumValue
     private Integer value;
     private String desc;
 }
