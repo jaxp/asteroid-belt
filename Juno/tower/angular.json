@@ -7,7 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "less"
         }
       },
       "root": "",
@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["rxjs", "@ant-design/colors"],
             "outputPath": "dist/tower",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -34,7 +35,7 @@
             ],
             "styles": [
               "src/theme.less",
-              "src/styles.scss"
+              "src/styles.less"
             ],
             "scripts": [
               "node_modules/echarts/dist/echarts.js"
@@ -100,7 +101,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.less"
             ],
             "scripts": []
           }

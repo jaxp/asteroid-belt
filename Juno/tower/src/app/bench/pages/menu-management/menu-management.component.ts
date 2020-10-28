@@ -7,7 +7,7 @@ import { Menu, TreeNode } from '@/app/shared/model';
 @Component({
   selector: 'app-menu-management',
   templateUrl: './menu-management.component.html',
-  styleUrls: ['./menu-management.component.scss']
+  styleUrls: ['./menu-management.component.less']
 })
 export class MenuManagementComponent implements OnInit {
 

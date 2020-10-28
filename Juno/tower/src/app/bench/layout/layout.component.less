@@ -1,3 +1,4 @@
+@import "../../../styles.less";
 :host {
   display: flex;
   text-rendering: optimizeLegibility;
@@ -10,8 +11,20 @@
   height: 100%;
 }
 :host ::ng-deep nz-header {
-  height: 30px;
+  height: 40px;
   line-height: 30px;
+  padding: 5px 10px;
+  position: relative;
+  &::after {
+    content: "";
+    width: 90%;
+    left: 5%;
+    bottom: 0;
+    height: 0;
+    padding: 0 20px;
+    border-bottom: solid 1px @border-color-base;
+    position: absolute;
+  }
 }
 
 .app-layout {
@@ -55,6 +68,9 @@ nz-header {
   z-index: 2;
   height: 64px;
   line-height: 64px;
+  &::after {
+    display: none;
+  }
   .app-header {
     position: relative;
     padding: 0 24px;
@@ -86,7 +102,7 @@ nz-header {
 nz-content {
   .inner-content {
     padding: 16px;
-    background: #fff;
+    background: #F5F5F6;
     height: 100%;
   }
 }
