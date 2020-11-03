@@ -35,7 +35,7 @@ public class PlsAuthority implements GrantedAuthority {
     /**
      * 等级
      */
-    private Integer rank;
+    private Integer grade;
     /**
      * 是否可用
      */

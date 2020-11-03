@@ -1,20 +1,85 @@
 <nz-layout>
-  <nz-sider nzTheme="light">
+  <nz-content>
     <nz-layout>
       <nz-header>
-        <button nz-button nzType="primary" nzSize="small" nzShape="circle"><i nz-icon nzType="reload"></i></button>
+        <div nz-row>
+          <div nz-col nzSpan="12">
+            <nz-space>
+              <nz-space-item>
+                <button nz-button nzType="default" nzSize="small" nzShape="round" (click)="refresh()"><i nz-icon
+                    nzType="reload"></i>刷新</button>
+              </nz-space-item>
+              <nz-space-item>
+                <button nz-button nzType="primary" nzSize="small" nzShape="round" (click)="expandAll(true)"><i nz-icon
+                    nzType="down-circle"></i>展开</button>
+              </nz-space-item>
+              <nz-space-item>
+                <button nz-button nzType="primary" nzSize="small" nzShape="round" (click)="expandAll(false)"><i nz-icon
+                    nzType="up-circle"></i>合拢</button>
+              </nz-space-item>
+            </nz-space>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-space class="search-area">
+              <nz-space-item>
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                  <input type="text" nz-input placeholder="input search text" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                  <button nz-button nzType="default" nzSearch><i nz-icon nzType="search"></i></button>
+                </ng-template>
+              </nz-space-item>
+            </nz-space>
+          </div>
+        </div>
       </nz-header>
       <nz-content>
-        <nz-tree [nzData]="tree$ | async" [nzShowIcon]="true" (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"
-          (nzCheckBoxChange)="nzEvent($event)">
-        </nz-tree>
+        <nz-spin nzSimple nzSize="large">
+          <nz-tree [nzData]="tree$ | async" [nzShowIcon]="true" [nzTreeTemplate]="treeTemplate"
+            (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
+          </nz-tree>
+        </nz-spin>
+        <ng-template #treeTemplate let-node>
+          <nz-space title="" class="tree-node-template"
+            [ngClass]="{'selected-tree-node': selected && selected.key === node.key}">
+            <nz-space-item>
+              <i nz-icon [nzType]="node.icon" nzTheme="outline"></i>
+            </nz-space-item>
+            <nz-space-item>
+              {{node.title}}
+            </nz-space-item>
+            <nz-space-item class="tree-node-btn">
+              <span nz-tooltip nzTooltipTitle="新增">
+                <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="newMenu($event, node)">
+                  <i nz-icon nzType="plus"></i>
+                </button>
+              </span>
+            </nz-space-item>
+            <nz-space-item class="tree-node-btn">
+              <span nz-tooltip nzTooltipTitle="修改">
+                <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="newMenu($event, node)">
+                  <i nz-icon nzType="edit"></i>
+                </button>
+              </span>
+            </nz-space-item>
+            <nz-space-item class="tree-node-btn">
+              <span nz-tooltip nzTooltipTitle="删除">
+                <button nz-button nzType="primary" nzSize="small" nzShape="circle" nzDanger>
+                  <i nz-icon nzType="delete"></i>
+                </button>
+              </span>
+            </nz-space-item>
+          </nz-space>
+        </ng-template>
       </nz-content>
     </nz-layout>
-  </nz-sider>
-  <nz-layout>
-    <nz-header>
-      123
-    </nz-header>
-    <nz-content>Content</nz-content>
-  </nz-layout>
+  </nz-content>
 </nz-layout>
+
+<nz-modal [(nzVisible)]="visible" nzTitle="菜单配置" [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false"
+  (nzOnCancel)="close()" (nzOnOk)="close()">
+  <p>Content one</p>
+  <p>Content two</p>
+  <p>Content three</p>
+  <p>Content three</p>
+</nz-modal>

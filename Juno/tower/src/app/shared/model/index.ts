@@ -5,7 +5,7 @@ export class Menu {
   title: string;
   icon: string;
   enabled?: boolean;
-  rank?: number;
+  grade?: number;
   url?: string;
   type?: number;
   permission?: number;

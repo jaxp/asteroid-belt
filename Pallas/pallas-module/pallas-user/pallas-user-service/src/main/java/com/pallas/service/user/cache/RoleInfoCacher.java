@@ -86,7 +86,7 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
                     .list();
                 List<PlsMenu> menus = plsMenuService.query()
                     .select("id")
-                    .ge("rank", role.getRank())
+                    .ge("grade", role.getGrade())
                     .list();
                 Set<Long> menuIds = menuSets.stream().map(PlsMenuSet::getMenuId).collect(Collectors.toSet());
                 menuIds.addAll(menus.stream().map(PlsMenu::getId).collect(Collectors.toSet()));
@@ -99,7 +99,7 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
                 Set<Long> authIds = authoritySets.stream().map(PlsAuthoritySet::getAuthorityId).collect(Collectors.toSet());
                 QueryChainWrapper<PlsAuthority> wrapper = plsAuthorityService.query()
                     .select("authority")
-                    .ge("rank", role.getRank());
+                    .ge("grade", role.getGrade());
                 if (CollectionUtils.isNotEmpty(authIds)) {
                     wrapper.or().in("id", authIds);
                 }

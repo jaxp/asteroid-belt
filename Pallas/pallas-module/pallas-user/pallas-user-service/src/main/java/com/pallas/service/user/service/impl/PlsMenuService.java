@@ -61,7 +61,7 @@ public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implemen
             List<PlsRoleSet> roleSets = plsRoleSetService.query()
                 .eq("user_id", userId)
                 .list();
-            Integer rank = null;
+            Integer grade = null;
             List<Long> targets = new ArrayList<>();
             targets.add(userId);
             if (CollectionUtils.isNotEmpty(roleSets)) {
@@ -76,12 +76,12 @@ public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implemen
                 // 获取绑定的菜单
                 targets.addAll(roles.stream().map(PlsRole::getId).collect(Collectors.toSet()));
                 // 获取角色等级下的菜单
-                rank = roles.stream().map(PlsRole::getRank).min(Integer::compareTo).get();
+                grade = roles.stream().map(PlsRole::getGrade).min(Integer::compareTo).get();
             }
             List<PlsMenuSet> menuSets = plsMenuSetService.query()
                 .in("target", targets)
                 .list();
-            if (CollectionUtils.isEmpty(menuSets) && Objects.isNull(rank)) {
+            if (CollectionUtils.isEmpty(menuSets) && Objects.isNull(grade)) {
                 return null;
             }
             QueryChainWrapper<PlsMenu> wrapper = query();
@@ -91,19 +91,19 @@ public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implemen
                     .collect(Collectors.toMap(PlsMenuSet::getMenuId, PlsMenuSet::getPermission));
                 wrapper.in("id", menuSetMap.keySet());
             }
-            if (Objects.nonNull(rank)) {
+            if (Objects.nonNull(grade)) {
                 if (CollectionUtils.isNotEmpty(menuSets)) {
                     wrapper.or();
                 }
-                wrapper.ge("rank", rank);
+                wrapper.ge("grade", grade);
             } else {
-                rank = Integer.MAX_VALUE;
+                grade = Integer.MAX_VALUE;
             }
             List<PlsMenu> menus = wrapper.list();
             List<PlsMenuDTO> menuDTOS = plsMenuConverter.do2dto(menus);
             for (PlsMenuDTO menuDTO : menuDTOS) {
                 menuDTO.setPermission(Permission.QUERY);
-                if (rank <= menuDTO.getRank()) {
+                if (grade <= menuDTO.getGrade()) {
                     menuDTO.setPermission(Permission.EDIT_DELETE);
                 }
                 if (CollectionUtils.isNotEmpty(menuSetMap) && menuSetMap.containsKey(menuDTO.getId())) {

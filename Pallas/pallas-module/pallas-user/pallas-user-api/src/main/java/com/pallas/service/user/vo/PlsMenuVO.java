@@ -42,7 +42,7 @@ public class PlsMenuVO {
     /**
      * 等级
      */
-    private Integer rank;
+    private Integer grade;
     /**
      * 菜单url
      */

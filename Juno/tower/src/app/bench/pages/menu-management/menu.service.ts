@@ -16,12 +16,11 @@ export class MenuService {
 
   getMenus(): Observable<TreeNode<any>[]> {
     return this.http.get<Result<Menu[]>>(Api.menu.getMenus).pipe(
-      map(res => this.buildMenuTree(res.data)),
-      tap(e => console.log(e))
+      map(res => this.buildMenuTree(res.data))
     );
   }
 
-  buildMenuTree(data: Menu[]): TreeNode<any>[] {
+  buildMenuTree(data: Menu[]): TreeNode<Menu>[] {
     const nodes = data.map(e => {
       const node = new NormalTreeNode<Menu>();
       node.id = e.id;
@@ -37,6 +36,18 @@ export class MenuService {
       node.disableCheckbox = true;
       return node;
     });
-    return this.treeService.getTree(nodes).tree;
+    const tree = this.treeService.getTree(nodes).tree;
+    const root = new NormalTreeNode<Menu>();
+    root.id = root.key = 'root';
+    root.title = '菜单树';
+    root.icon = 'folder';
+    root.selected = false;
+    root.expanded = true;
+    root.origin = null;
+    root.checked = false;
+    root.selectable = true;
+    root.disableCheckbox = true;
+    root.children = tree;
+    return [root];
   }
 }

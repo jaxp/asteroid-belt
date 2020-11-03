@@ -1,0 +1,35 @@
+.search-area {
+  width: 100%;
+  flex-direction: row-reverse;
+}
+.tree-node-template {
+  &:hover {
+    .tree-node-btn {
+      display: block;
+    }
+  }
+  .tree-node-btn {
+    display: none;
+    opacity: .3;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  .ant-space-item {
+    .ant-btn {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      padding: 3px 0;
+      i {
+        display: block;
+      }
+    }
+  }
+}
+.selected-tree-node {
+  .tree-node-btn {
+    display: block;
+    opacity: 1;
+  }
+}

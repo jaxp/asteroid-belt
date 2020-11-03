@@ -56,7 +56,7 @@ public class PlsMenu {
     /**
      * 等级
      */
-    private Integer rank;
+    private Integer grade;
     /**
      * 添加用户
      */

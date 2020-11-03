@@ -25,7 +25,7 @@ CREATE TABLE `pls_u_authority` (
   `id` bigint(20) unsigned NOT NULL COMMENT '编号',
   `name` varchar(32) DEFAULT NULL COMMENT '名称',
   `authority` varchar(128) DEFAULT NULL COMMENT '标识',
-  `rank` tinyint(3) DEFAULT NULL COMMENT '等级',
+  `grade` tinyint(3) DEFAULT NULL COMMENT '等级',
   `enabled` tinyint(1) DEFAULT NULL COMMENT '是否可用',
   `add_time` datetime DEFAULT NULL COMMENT '新增时间',
   `upd_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -55,7 +55,7 @@ CREATE TABLE `pls_u_menu` (
   `disabled` tinyint(1) DEFAULT NULL COMMENT '是否显示禁用',
   `type` tinyint(1) DEFAULT NULL COMMENT '菜单类型',
   `url` varchar(128) DEFAULT NULL COMMENT '菜单url',
-  `rank` tinyint(3) DEFAULT NULL COMMENT '等级',
+  `grade` tinyint(3) DEFAULT NULL COMMENT '等级',
   `add_user` bigint(20) unsigned NOT NULL COMMENT '添加用户',
   `upd_user` bigint(20) unsigned NOT NULL COMMENT '更新用户',
   `add_time` datetime DEFAULT NULL COMMENT '添加时间',
@@ -63,11 +63,11 @@ CREATE TABLE `pls_u_menu` (
   PRIMARY KEY (`id`),
   KEY `idx_pid` (`pid`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
+INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `grade`, `add_user`, `upd_user`, `add_time`, `upd_time`)
 VALUES (0, null, '主页', 'home', 1, 0, 0, '/home', 0, 1, 1, now(), now());
-INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
+INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `grade`, `add_user`, `upd_user`, `add_time`, `upd_time`)
 VALUES (1, null, '系统管理', 'project', 1, 0, 1, null, 0, 1, 1, now(), now());
-INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `rank`, `add_user`, `upd_user`, `add_time`, `upd_time`)
+INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `grade`, `add_user`, `upd_user`, `add_time`, `upd_time`)
 VALUES (2, 1, '菜单管理', 'menu', 1, 0, 0, '/menu', 0, 1, 1, now(), now());
 
 DROP TABLE IF EXISTS `pls_u_menu_set`;
@@ -90,13 +90,13 @@ CREATE TABLE `pls_u_role` (
   `pid` bigint(20) unsigned DEFAULT NULL COMMENT '父角色',
   `role` varchar(20) DEFAULT NULL COMMENT '角色',
   `name` varchar(20) DEFAULT NULL COMMENT '名称',
-  `rank` tinyint(3) DEFAULT NULL COMMENT '等级',
+  `grade` tinyint(3) DEFAULT NULL COMMENT '等级',
   `enabled` tinyint(1) DEFAULT NULL COMMENT '是否可用',
   `add_time` datetime DEFAULT NULL COMMENT '新增时间',
   `upd_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO `pls_u_role`(`id`, `pid`, `role`, `name`, `rank`, `enabled`, `add_time`, `upd_time`)
+INSERT INTO `pls_u_role`(`id`, `pid`, `role`, `name`, `grade`, `enabled`, `add_time`, `upd_time`)
  VALUES(1, null, 'admin', '超级管理员', 0, 1, now(), now());
 
 DROP TABLE IF EXISTS `pls_u_role_set`;

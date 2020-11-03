@@ -12,6 +12,14 @@ import { IconsProviderModule } from '../icons-provider.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { GeometricElfDirective } from './directives/geometric-elf.directive';
 import { GraphDirective } from './directives/graph.directive';
@@ -32,6 +40,14 @@ import { GraphDirective } from './directives/graph.directive';
     NzGridModule,
     NzInputModule,
     NzTreeModule,
+    NzPageHeaderModule,
+    NzTagModule,
+    NzBreadCrumbModule,
+    NzSpaceModule,
+    NzDrawerModule,
+    NzModalModule,
+    NzToolTipModule,
+    NzSpinModule,
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -49,6 +65,14 @@ import { GraphDirective } from './directives/graph.directive';
     NzGridModule,
     NzInputModule,
     NzTreeModule,
+    NzPageHeaderModule,
+    NzTagModule,
+    NzBreadCrumbModule,
+    NzSpaceModule,
+    NzDrawerModule,
+    NzModalModule,
+    NzToolTipModule,
+    NzSpinModule,
     NgxEchartsModule,
     ReactiveFormsModule,
     FormsModule,
