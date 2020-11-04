@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { TowerValidators } from '@/constants/validators';
 import { AuthService } from '../auth.service';
 import { EncryptService } from '@shared/services/encrypt.service';
@@ -32,33 +31,17 @@ export class LoginComponent implements OnInit {
         this.validateForm.controls[i].updateValueAndValidity();
       }
     }
-    const params = this.validateForm.value;
-    this.loginLoading = true;
-    this.encryptService.getEncrypted(params.password)
-      .subscribe(e => {
-        if (this.validateForm.valid) {
-          this.authService.login({ ...params, password: e })
-            .subscribe(
-              res => {
-                this.loginLoading = false;
-                this.router.navigate(['/page']);
-              },
-              res => {
-                this.loginLoading = false;
-                this.message.error(res.msg);
-                if (res.code === 10001) {
-                  this.encryptService.clearPublicKey();
-                }
-              }
-            );
-        } else {
+    if (this.validateForm.valid) {
+      const params = this.validateForm.value;
+      this.loginLoading = true;
+      this.authService.login(params)
+        .subscribe(e => {
           this.loginLoading = false;
-        }
-      });
+        });
+    }
   }
 
-  constructor(private fb: FormBuilder, private authService: AuthService,
-              private message: NzMessageService, private encryptService: EncryptService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
   }
 
   ngOnInit(): void {

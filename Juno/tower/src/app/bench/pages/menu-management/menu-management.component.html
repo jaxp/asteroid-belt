@@ -34,35 +34,35 @@
         </div>
       </nz-header>
       <nz-content>
-        <nz-spin nzSimple nzSize="large">
-          <nz-tree [nzData]="tree$ | async" [nzShowIcon]="true" [nzTreeTemplate]="treeTemplate"
-            (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
-          </nz-tree>
+        <nz-spin nzSimple nzSize="large" [nzSpinning]="treeLoading">
         </nz-spin>
+        <nz-tree [nzData]="tree$ | async" [nzShowIcon]="true" [nzTreeTemplate]="treeTemplate"
+          (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
+        </nz-tree>
         <ng-template #treeTemplate let-node>
           <nz-space title="" class="tree-node-template"
-            [ngClass]="{'selected-tree-node': selected && selected.key === node.key}">
-            <nz-space-item>
+            [ngClass]="{'selected-tree-node': selected && selected.key === node.key, 'tree-branch-node': !node.isLeaf}">
+            <nz-space-item class="tree-node-title">
               <i nz-icon [nzType]="node.icon" nzTheme="outline"></i>
             </nz-space-item>
-            <nz-space-item>
+            <nz-space-item class="tree-node-title">
               {{node.title}}
             </nz-space-item>
-            <nz-space-item class="tree-node-btn">
-              <span nz-tooltip nzTooltipTitle="新增">
+            <nz-space-item class="tree-node-btn" *ngIf="!node.isLeaf">
+              <span nz-tooltip nzTooltipTitle="新增子菜单">
                 <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="newMenu($event, node)">
                   <i nz-icon nzType="plus"></i>
                 </button>
               </span>
             </nz-space-item>
-            <nz-space-item class="tree-node-btn">
+            <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
               <span nz-tooltip nzTooltipTitle="修改">
-                <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="newMenu($event, node)">
+                <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="editMenu($event, node)">
                   <i nz-icon nzType="edit"></i>
                 </button>
               </span>
             </nz-space-item>
-            <nz-space-item class="tree-node-btn">
+            <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
               <span nz-tooltip nzTooltipTitle="删除">
                 <button nz-button nzType="primary" nzSize="small" nzShape="circle" nzDanger>
                   <i nz-icon nzType="delete"></i>
@@ -76,7 +76,7 @@
   </nz-content>
 </nz-layout>
 
-<nz-modal [(nzVisible)]="visible" nzTitle="菜单配置" [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false"
+<nz-modal [(nzVisible)]="menuOp" [nzTitle]="menuOp?.title" [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false"
   (nzOnCancel)="close()" (nzOnOk)="close()">
   <p>Content one</p>
   <p>Content two</p>

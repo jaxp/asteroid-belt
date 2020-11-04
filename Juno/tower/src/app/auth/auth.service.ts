@@ -4,8 +4,10 @@ import { of, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Api } from '@constants/api';
 import { Menu, User, Result, MenuTreeNode, TreeNode } from '@shared/model';
-import { map, tap } from 'rxjs/operators';
+import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import TreeService from '../shared/services/tree.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { EncryptService } from '../shared/services/encrypt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,13 +31,13 @@ export class AuthService {
     }
   }
 
-  getMenus(): Observable<{level: number, tree: TreeNode<any>[]}> {
+  getMenus(): Observable<{ level: number, tree: TreeNode<any>[] }> {
     return this.http.get<Result<Menu[]>>(Api.auth.getMenus).pipe(
       map(res => this.buildMenuTree(res.data))
     );
   }
 
-  buildMenuTree(data: Menu[]): {level: number, tree: TreeNode<any>[]} {
+  buildMenuTree(data: Menu[]): { level: number, tree: TreeNode<any>[] } {
     const nodes = data.map(e => {
       const node = new MenuTreeNode<Menu>();
       node.id = e.id;
@@ -74,10 +76,20 @@ export class AuthService {
       .subscribe(e => this.authorities = e.data);
   }
 
-  login(data: { username: string, password: string }): Observable<any> {
-    return this.http.post(Api.auth.login, data).pipe(
-      tap(e => this.user = e.data)
-    );
+  login(data: { username: string, password: string }): Observable<Result<User>> {
+    return this.encryptService.getEncrypted(data.password).pipe(
+      flatMap(encryptedPwd => this.http.post<Result<User>>(Api.auth.login, { username: data.username, password: encryptedPwd }).pipe(
+        tap(res => {
+          this.user = res.data;
+          this.router.navigate(['/page']);
+        }),
+        catchError(err => {
+          if (err.code === 10001) {
+            this.encryptService.clearPublicKey();
+          }
+          return of(null);
+        })
+      )));
   }
 
   logout(): void {
@@ -103,5 +115,6 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  constructor(private http: HttpClient, private router: Router, private treeService: TreeService) { }
+  constructor(private http: HttpClient, private router: Router, private treeService: TreeService,
+    private message: NzMessageService, private encryptService: EncryptService) { }
 }

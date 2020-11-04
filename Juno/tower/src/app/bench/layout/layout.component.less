@@ -17,6 +17,15 @@
   padding: 5px 10px;
   position: relative;
 }
+:host ::ng-deep nz-content {
+  position: relative;
+}
+
+.inner-content {
+  padding: 16px;
+  background: #f5f5f6;
+  height: 100%;
+}
 
 .app-layout {
   height: 100vh;
@@ -87,13 +96,5 @@ nz-header {
         font-size: 12px;
       }
     }
-  }
-}
-
-nz-content {
-  .inner-content {
-    padding: 16px;
-    background: #F5F5F6;
-    height: 100%;
   }
 }

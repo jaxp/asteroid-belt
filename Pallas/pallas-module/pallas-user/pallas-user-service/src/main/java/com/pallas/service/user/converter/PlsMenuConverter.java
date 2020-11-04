@@ -21,4 +21,5 @@ public class PlsMenuConverter extends CommonConverter<PlsMenu, PlsMenuBO, PlsMen
         vo.setType(plsMenuDTO.getType().getValue());
         return vo;
     }
+
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuService } from './menu.service';
 import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd/tree';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Menu, TreeNode } from '@/app/shared/model';
+import TreeService from '@/app/shared/services/tree.service';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu-management',
@@ -14,12 +16,25 @@ export class MenuManagementComponent implements OnInit {
   @ViewChild(NzTreeComponent)
   private tree: NzTreeComponent;
 
+  menuOps = {
+    new: {
+      title: '新增子菜单'
+    },
+    update: {
+      title: '修改菜单'
+    },
+    delete: {
+      title: '删除菜单'
+    }
+  };
+  menuOp = null;
+
   tree$: Observable<TreeNode<Menu>[]>;
-  visible = false;
+  treeLoading: boolean;
   checked: [];
   selected: NzTreeNode;
 
-  constructor(private menuService: MenuService) { }
+  constructor(private menuService: MenuService, private treeService: TreeService) { }
   ngOnInit(): void {
     this.refresh();
   }
@@ -37,33 +52,29 @@ export class MenuManagementComponent implements OnInit {
   newMenu(event: MouseEvent, node: NzTreeNode): void {
     node.isSelected = true;
     this.selected = node;
-    console.log(node);
     event.stopPropagation();
-    this.visible = true;
+    this.menuOp = this.menuOps.new;
   }
   editMenu(event: MouseEvent, node: NzTreeNode): void {
+    node.isSelected = true;
+    this.selected = node;
     event.stopPropagation();
-    this.visible = true;
+    this.menuOp = this.menuOps.update;
   }
   close(): void {
-    this.visible = false;
+    this.menuOp = null;
   }
 
   refresh(key?: string): void {
     this.selected = null;
-    this.tree$ = this.menuService.getMenus();
+    this.treeLoading = true;
+    this.tree$ = this.menuService.getMenus().pipe(
+      tap(() => this.treeLoading = false)
+    );
   }
 
   expandAll(flag: boolean): void {
-    let nodes = this.tree.getTreeNodes().filter(e => e.children && e.children.length > 0);
-    while (nodes.length > 0) {
-      let children = [];
-      nodes.forEach(node => {
-        node.isExpanded = flag;
-        children = [...children, ...node.children];
-      });
-      nodes = children.filter(e => e.children && e.children.length > 0);
-    }
+    this.treeService.expandAll(this.tree, flag);
   }
 
 }
