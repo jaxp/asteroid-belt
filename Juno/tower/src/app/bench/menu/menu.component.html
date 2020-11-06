@@ -9,7 +9,10 @@
         [nzDisabled]="node.disabled"
         [nzSelected]="node.selected"
       >
-        <a [routerLink]="'/page' + node.origin.url"><i nz-icon [nzType]="node.origin.icon" *ngIf="node.origin.icon"></i>{{ node.title }}</a>
+        <a [routerLink]="'/page' + node.origin.url">
+          <i nz-icon [nzType]="node.origin.icon" *ngIf="node.origin.icon"></i>
+          <span>{{ node.title }}</span>
+        </a>
       </li>
       <li
         *ngIf="node.children && node.children.length > 0"

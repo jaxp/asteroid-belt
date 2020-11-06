@@ -84,6 +84,7 @@ export class AuthService {
           this.router.navigate(['/page']);
         }),
         catchError(err => {
+          this.message.error(err.msg);
           if (err.code === 10001) {
             this.encryptService.clearPublicKey();
           }
@@ -116,5 +117,5 @@ export class AuthService {
   }
 
   constructor(private http: HttpClient, private router: Router, private treeService: TreeService,
-    private message: NzMessageService, private encryptService: EncryptService) { }
+              private message: NzMessageService, private encryptService: EncryptService) { }
 }

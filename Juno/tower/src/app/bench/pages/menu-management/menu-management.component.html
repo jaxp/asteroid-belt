@@ -42,7 +42,7 @@
         <ng-template #treeTemplate let-node>
           <nz-space title="" class="tree-node-template"
             [ngClass]="{'selected-tree-node': selected && selected.key === node.key, 'tree-branch-node': !node.isLeaf}">
-            <nz-space-item class="tree-node-title">
+            <nz-space-item class="tree-node-icon">
               <i nz-icon [nzType]="node.icon" nzTheme="outline"></i>
             </nz-space-item>
             <nz-space-item class="tree-node-title">
@@ -76,10 +76,38 @@
   </nz-content>
 </nz-layout>
 
-<nz-modal [(nzVisible)]="menuOp" [nzTitle]="menuOp?.title" [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false"
-  (nzOnCancel)="close()" (nzOnOk)="close()">
-  <p>Content one</p>
-  <p>Content two</p>
-  <p>Content three</p>
-  <p>Content three</p>
+<nz-modal nzClassName="pt100 pb100" [nzStyle]="{minHeight:'560px',maxHeight:'600px'}" [(nzVisible)]="menuOp"
+[nzBodyStyle]="{padding:'30px 10px'}"
+  [nzTitle]="menuOp?.title" [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false" (nzOnCancel)="close()"
+  (nzOnOk)="close()">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <!-- <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+        <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+        <ng-template #errorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            Please confirm your password!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">
+            Two passwords that you enter is inconsistent!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item> -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="title" nzRequired>
+        <span>名称</span>
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入菜单名称！">
+        <input nz-input id="title" formControlName="title" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="icon" nzRequired>图标</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入图标！">
+        <input nz-input id="icon" formControlName="icon" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </nz-modal>

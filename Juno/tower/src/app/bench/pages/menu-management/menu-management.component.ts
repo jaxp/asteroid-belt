@@ -4,7 +4,9 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd/tr
 import { Observable, of } from 'rxjs';
 import { Menu, TreeNode } from '@/app/shared/model';
 import TreeService from '@/app/shared/services/tree.service';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-menu-management',
@@ -34,9 +36,15 @@ export class MenuManagementComponent implements OnInit {
   checked: [];
   selected: NzTreeNode;
 
-  constructor(private menuService: MenuService, private treeService: TreeService) { }
+  validateForm!: FormGroup;
+
+  constructor(private menuService: MenuService, private treeService: TreeService, private fb: FormBuilder) { }
   ngOnInit(): void {
     this.refresh();
+    this.validateForm = this.fb.group({
+      title: [null, [Validators.required]],
+      icon: [null, [Validators.required]]
+    });
   }
 
   nzEvent(event: NzFormatEmitEvent): void {
@@ -75,6 +83,15 @@ export class MenuManagementComponent implements OnInit {
 
   expandAll(flag: boolean): void {
     this.treeService.expandAll(this.tree, flag);
+  }
+
+
+  submitForm(): void {
+    // tslint:disable-next-line: forin
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
   }
 
 }
