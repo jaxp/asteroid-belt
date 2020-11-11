@@ -3,7 +3,7 @@
     <nz-layout>
       <nz-header>
         <div nz-row>
-          <div nz-col nzSpan="12">
+          <div nz-col nzSpan="24">
             <nz-space>
               <nz-space-item>
                 <button nz-button nzType="default" nzSize="small" nzShape="round" (click)="refresh()"><i nz-icon
@@ -19,8 +19,8 @@
               </nz-space-item>
             </nz-space>
           </div>
-          <div nz-col nzSpan="12">
-            <nz-space class="search-area">
+          <div nz-col nzSpan="24">
+            <nz-space>
               <nz-space-item>
                 <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
                   <input type="text" nz-input placeholder="input search text" />
@@ -33,53 +33,85 @@
           </div>
         </div>
       </nz-header>
-      <nz-content>
+      <nz-content class="menu-tree-container">
         <nz-spin nzSimple nzSize="large" [nzSpinning]="treeLoading">
         </nz-spin>
-        <nz-tree [nzData]="tree$ | async" [nzShowIcon]="true" [nzTreeTemplate]="treeTemplate"
+        <nz-tree class="menu-tree" [nzData]="tree$ | async" [nzShowIcon]="true" [nzTreeTemplate]="treeTemplate"
           (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
         </nz-tree>
-        <ng-template #treeTemplate let-node>
-          <nz-space title="" class="tree-node-template"
-            [ngClass]="{'selected-tree-node': selected && selected.key === node.key, 'tree-branch-node': !node.isLeaf}">
-            <nz-space-item class="tree-node-icon">
-              <i nz-icon [nzType]="node.icon" nzTheme="outline"></i>
-            </nz-space-item>
-            <nz-space-item class="tree-node-title">
-              {{node.title}}
-            </nz-space-item>
-            <nz-space-item class="tree-node-btn" *ngIf="!node.isLeaf">
-              <span nz-tooltip nzTooltipTitle="新增子菜单">
-                <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="newMenu($event, node)">
-                  <i nz-icon nzType="plus"></i>
-                </button>
-              </span>
-            </nz-space-item>
-            <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
-              <span nz-tooltip nzTooltipTitle="修改">
-                <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="editMenu($event, node)">
-                  <i nz-icon nzType="edit"></i>
-                </button>
-              </span>
-            </nz-space-item>
-            <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
-              <span nz-tooltip nzTooltipTitle="删除">
-                <button nz-button nzType="primary" nzSize="small" nzShape="circle" nzDanger>
-                  <i nz-icon nzType="delete"></i>
-                </button>
-              </span>
-            </nz-space-item>
-          </nz-space>
-        </ng-template>
       </nz-content>
     </nz-layout>
   </nz-content>
+  <nz-sider nzTheme="light" nzWidth="60%">
+    <nz-descriptions nzTitle="菜单信息" nzBordered nzLayout="vertical">
+      <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Order Time">
+        2018-04-24 18:00:00
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
+        2018-04-24 18:00:00 To 2019-04-24 18:00:00
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
+        <nz-badge nzStatus="processing" nzText="Running"></nz-badge>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Negotiated Amount">$80.00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Discount">$20.00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Official Receipts">$60.00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Config Info">
+        Data disk type: MongoDB
+        <br />
+        Database version: 3.4
+        <br />
+        Package: dds.mongo.mid
+        <br />
+        Storage space: 10 GB
+        <br />
+        Replication_factor:3
+        <br />
+        Region: East China 1<br />
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </nz-sider>
 </nz-layout>
 
+<ng-template #treeTemplate let-node>
+  <nz-space title="" class="tree-node-template"
+    [ngClass]="{'selected-tree-node': selected && selected.key === node.key, 'tree-branch-node': !node.isLeaf}">
+    <nz-space-item class="tree-node-icon">
+      <i nz-icon [nzType]="node.icon" nzTheme="outline"></i>
+    </nz-space-item>
+    <nz-space-item class="tree-node-title">
+      {{node.title}}
+    </nz-space-item>
+    <nz-space-item class="tree-node-btn" *ngIf="!node.isLeaf">
+      <span nz-tooltip nzTooltipTitle="新增子菜单">
+        <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="newMenu($event, node)">
+          <i nz-icon nzType="plus"></i>
+        </button>
+      </span>
+    </nz-space-item>
+    <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
+      <span nz-tooltip nzTooltipTitle="修改">
+        <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="editMenu($event, node)">
+          <i nz-icon nzType="edit"></i>
+        </button>
+      </span>
+    </nz-space-item>
+    <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
+      <span nz-tooltip nzTooltipTitle="删除">
+        <button nz-button nzType="primary" nzSize="small" nzShape="circle" nzDanger>
+          <i nz-icon nzType="delete"></i>
+        </button>
+      </span>
+    </nz-space-item>
+  </nz-space>
+</ng-template>
+
 <nz-modal nzClassName="pt100 pb100" [nzStyle]="{minHeight:'560px',maxHeight:'600px'}" [(nzVisible)]="menuOp"
-[nzBodyStyle]="{padding:'30px 10px'}"
-  [nzTitle]="menuOp?.title" [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false" (nzOnCancel)="close()"
-  (nzOnOk)="close()">
+  [nzBodyStyle]="{padding:'30px 10px'}" [nzTitle]="menuOp?.title" [nzKeyboard]="false" [nzMaskClosable]="false"
+  [nzClosable]="false" (nzOnCancel)="close()" (nzOnOk)="close()">
   <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
     <!-- <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
