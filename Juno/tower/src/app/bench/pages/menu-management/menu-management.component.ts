@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MenuService } from './menu.service';
 import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd/tree';
 import { Observable, of } from 'rxjs';
 import { Menu, TreeNode } from '@/app/shared/model';
 import TreeService from '@/app/shared/services/tree.service';
+import { ConstantService } from '@shared/services/constant.service';
 import { tap } from 'rxjs/operators';
-import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -36,9 +36,14 @@ export class MenuManagementComponent implements OnInit {
   checked: [];
   selected: NzTreeNode;
 
+  showMenuInfoPane: boolean;
+  menuInfoNode: NzTreeNode;
+
   validateForm!: FormGroup;
 
-  constructor(private menuService: MenuService, private treeService: TreeService, private fb: FormBuilder) { }
+  constructor(private menuService: MenuService, private treeService: TreeService, private fb: FormBuilder,
+              private constantService: ConstantService) { }
+
   ngOnInit(): void {
     this.refresh();
     this.validateForm = this.fb.group({
@@ -50,22 +55,20 @@ export class MenuManagementComponent implements OnInit {
   nzEvent(event: NzFormatEmitEvent): void {
     if (event.eventName === 'click') {
       if (event.selectedKeys && event.selectedKeys.length === 1) {
-        this.selected = event.selectedKeys[0];
+        this.setSelected(event.selectedKeys[0]);
       } else {
-        this.selected = null;
+        this.setSelected(null);
       }
     }
   }
 
   newMenu(event: MouseEvent, node: NzTreeNode): void {
-    node.isSelected = true;
-    this.selected = node;
+    this.setSelected(node);
     event.stopPropagation();
     this.menuOp = this.menuOps.new;
   }
   editMenu(event: MouseEvent, node: NzTreeNode): void {
-    node.isSelected = true;
-    this.selected = node;
+    this.setSelected(node);
     event.stopPropagation();
     this.menuOp = this.menuOps.update;
   }
@@ -74,17 +77,36 @@ export class MenuManagementComponent implements OnInit {
   }
 
   refresh(key?: string): void {
-    this.selected = null;
+    this.setSelected(null);
     this.treeLoading = true;
     this.tree$ = this.menuService.getMenus().pipe(
       tap(() => this.treeLoading = false)
     );
   }
 
+  setSelected(node: NzTreeNode | null): void {
+    this.selected = node;
+    if (node) {
+      node.isSelected = true;
+      if (this.menuInfoNode) {
+        this.showMenuInfoPane = false;
+        setTimeout(() => {
+          this.showMenuInfoPane = true;
+          this.menuInfoNode = node;
+        }, 200);
+      } else {
+        this.showMenuInfoPane = true;
+        this.menuInfoNode = node;
+      }
+    } else {
+      this.showMenuInfoPane = false;
+      this.menuInfoNode = null;
+    }
+  }
+
   expandAll(flag: boolean): void {
     this.treeService.expandAll(this.tree, flag);
   }
-
 
   submitForm(): void {
     // tslint:disable-next-line: forin
@@ -92,6 +114,10 @@ export class MenuManagementComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
+  }
+
+  constant(value: object, key: string): string {
+    return this.constantService.constants.menu[key][value];
   }
 
 }

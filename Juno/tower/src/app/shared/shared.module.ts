@@ -22,6 +22,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { GeometricElfDirective } from './directives/geometric-elf.directive';
 import { GraphDirective } from './directives/graph.directive';
@@ -52,6 +53,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzSpinModule,
     NzDescriptionsModule,
     NzBadgeModule,
+    NzCarouselModule,
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -79,6 +81,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzSpinModule,
     NzDescriptionsModule,
     NzBadgeModule,
+    NzCarouselModule,
     NgxEchartsModule,
     ReactiveFormsModule,
     FormsModule,

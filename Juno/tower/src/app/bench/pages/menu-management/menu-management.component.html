@@ -42,10 +42,12 @@
       </nz-content>
     </nz-layout>
   </nz-content>
-  <nz-sider nzTheme="light" nzWidth="60%">
-    <nz-descriptions nzTitle="菜单信息" nzBordered nzLayout="vertical">
-      <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
+  <nz-sider class="menu-info-container" nzTheme="light" nzWidth="60%" [nzCollapsed]="!showMenuInfoPane"
+    [nzCollapsedWidth]="0">
+    <nz-descriptions class="menu-info-pane" nzTitle="菜单信息" nzBordered
+      nzLayout="vertical">
+      <nz-descriptions-item nzTitle="名称">{{menuInfoNode?.title}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="图标">{{menuInfoNode?.icon}}</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Order Time">
         2018-04-24 18:00:00
@@ -53,8 +55,8 @@
       <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
         2018-04-24 18:00:00 To 2019-04-24 18:00:00
       </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
-        <nz-badge nzStatus="processing" nzText="Running"></nz-badge>
+      <nz-descriptions-item nzTitle="状态" [nzSpan]="3">
+        <nz-badge nzStatus="processing" [nzText]="constant(menuInfoNode?.origin.enabled, 'enabled')"></nz-badge>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Negotiated Amount">$80.00</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Discount">$20.00</nz-descriptions-item>
