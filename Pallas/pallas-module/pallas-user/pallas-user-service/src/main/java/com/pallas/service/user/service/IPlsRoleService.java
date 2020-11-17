@@ -2,7 +2,9 @@ package com.pallas.service.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pallas.service.user.bean.PlsRole;
+import com.pallas.service.user.bo.PlsRoleBO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,5 +19,13 @@ public interface IPlsRoleService extends IService<PlsRole> {
      * @param userId
      * @return
      */
-    Set<Long> getRoles(Long userId);
+    Set<Long> getRoleIds(Long userId);
+
+    /**
+     * 获取角色
+     *
+     * @param userId
+     * @return
+     */
+    List<PlsRoleBO> getRoles(Long userId);
 }

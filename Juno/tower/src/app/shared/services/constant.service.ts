@@ -10,9 +10,17 @@ export class ConstantService {
       enabled: {
         true: '可用',
         false: '不可用'
+      },
+      type: {
+        0: '菜单',
+        1: '菜单夹'
       }
     }
   };
+
+  getConstants(): any {
+    return this.constants;
+  }
 
   constructor() { }
 }

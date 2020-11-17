@@ -13,6 +13,15 @@ export class MenuService {
 
   constructor(private http: HttpClient, private treeService: TreeService) { }
 
+  enableMenu(id: string, enabled: boolean): Observable<Result<any>> {
+    return this.http.post<Result<any>>(Api.menu.enableMenu, {id, enabled}).pipe(
+      catchError(err => {
+        console.log(err);
+        return of(err);
+      })
+    );
+  }
+
   getMenus(): Observable<TreeNode<any>[]> {
     return this.http.get<Result<Menu[]>>(Api.menu.getMenus).pipe(
       map(res => this.buildMenuTree(res.data)),
@@ -42,12 +51,14 @@ export class MenuService {
     });
     const tree = this.treeService.getTree(nodes, {isLeaf: n => n.isLeaf}).tree;
     const root = new NormalTreeNode<Menu>();
-    root.id = root.key = 'root';
-    root.title = '菜单树';
-    root.icon = 'folder';
+    root.origin = new Menu();
+
+    root.origin.id = root.id = root.key = 'root';
+    root.origin.title = root.title = '菜单树';
+    root.origin.icon = root.icon = 'folder';
+    root.origin.enabled = true;
     root.selected = false;
     root.expanded = true;
-    root.origin = null;
     root.checked = false;
     root.selectable = true;
     root.disableCheckbox = true;

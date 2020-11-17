@@ -1,8 +1,8 @@
 package com.pallas.service.user.service;
 
 import com.pallas.service.user.bean.PlsUser;
-import com.pallas.service.user.dto.PlsMenuDTO;
-import com.pallas.service.user.dto.PlsUserDTO;
+import com.pallas.service.user.bo.PlsMenuBO;
+import com.pallas.service.user.bo.PlsUserBO;
 
 import java.util.List;
 
@@ -31,14 +31,14 @@ public interface IAuthService {
      *
      * @return
      */
-    PlsUserDTO getUser();
+    PlsUserBO getUser();
 
     /**
      * 获取菜单
      *
      * @return
      */
-    List<PlsMenuDTO> getMenus();
+    List<PlsMenuBO> getMenus();
 
     /**
      * 获取权限

@@ -1,5 +1,6 @@
 package com.pallas.service.user.bo;
 
+import com.pallas.service.user.enums.Permission;
 import com.pallas.service.user.enums.menu.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author: jax
@@ -19,52 +21,21 @@ import java.util.Date;
 @AllArgsConstructor
 public class PlsMenuBO {
     private Long id;
-    /**
-     * 父级编号
-     */
     private Long pid;
-    /**
-     * 菜单名
-     */
     private String title;
-    /**
-     * 菜单icon
-     */
     private String icon;
-    /**
-     * 是否可用
-     */
     private Boolean enabled;
-    /**
-     * 是否显示禁用
-     */
     private Boolean disabled;
-    /**
-     * 菜单类型
-     */
     private MenuType type;
-    /**
-     * 菜单url
-     */
     private String url;
-    /**
-     * 等级
-     */
+    private Permission permission;
     private Integer grade;
-    /**
-     * 添加用户
-     */
     private Long addUser;
-    /**
-     * 更新用户
-     */
     private Long updUser;
-    /**
-     * 添加时间
-     */
     private Date addTime;
-    /**
-     * 更新时间
-     */
     private Date updTime;
+
+    public void loadPermission(Map<Long, Permission> permissionMap) {
+        this.permission = permissionMap.get(this.id);
+    }
 }

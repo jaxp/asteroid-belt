@@ -2,12 +2,13 @@ package com.pallas.service.user.service.impl;
 
 import com.pallas.service.user.bean.PlsMenu;
 import com.pallas.service.user.bean.PlsUser;
+import com.pallas.service.user.bo.PlsMenuBO;
+import com.pallas.service.user.bo.PlsUserBO;
 import com.pallas.service.user.cache.RoleInfoCacher;
 import com.pallas.service.user.cache.TokenCacher;
 import com.pallas.service.user.cache.UserInfoCacher;
 import com.pallas.service.user.converter.PlsMenuConverter;
-import com.pallas.service.user.dto.PlsMenuDTO;
-import com.pallas.service.user.dto.PlsUserDTO;
+import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.properties.AuthProperties;
 import com.pallas.service.user.service.IAuthService;
 import com.pallas.service.user.service.IPlsMenuService;
@@ -40,6 +41,8 @@ public class AuthService implements IAuthService {
     private IPlsMenuService plsMenuService;
     @Autowired
     private PlsMenuConverter plsMenuConverter;
+    @Autowired
+    private PlsUserConverter plsUserConverter;
 
     @Override
     public String login(PlsUser user) {
@@ -55,19 +58,19 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public PlsUserDTO getUser() {
-        return userInfoCacher.getUser();
+    public PlsUserBO getUser() {
+        return plsUserConverter.dto2bo(userInfoCacher.getUser());
     }
 
     @Override
-    public List<PlsMenuDTO> getMenus() {
+    public List<PlsMenuBO> getMenus() {
         Set<Long> menuIds = userInfoCacher.getMenuIds();
         Set<Long> roleIds = userInfoCacher.getRoleIds();
         for (Long roleId : roleIds) {
             menuIds.addAll(roleInfoCacher.role(roleId).getMenus());
         }
         List<PlsMenu> menus = plsMenuService.listByIds(menuIds);
-        return plsMenuConverter.do2dto(menus);
+        return plsMenuConverter.do2bo(menus);
     }
 
     @Override

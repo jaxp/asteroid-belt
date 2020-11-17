@@ -13,9 +13,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Permission {
+    NONE(-1, "无权限"),
     QUERY(0, "查询"),
     EDIT(1, "编辑"),
-    EDIT_DELETE(2, "编辑和删除");
+    EDIT_DELETE(2, "编辑和禁启用");
 
     @JsonValue
     @EnumValue

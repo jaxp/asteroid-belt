@@ -44,36 +44,47 @@
   </nz-content>
   <nz-sider class="menu-info-container" nzTheme="light" nzWidth="60%" [nzCollapsed]="!showMenuInfoPane"
     [nzCollapsedWidth]="0">
-    <nz-descriptions class="menu-info-pane" nzTitle="菜单信息" nzBordered
-      nzLayout="vertical">
+    <nz-descriptions class="menu-info-pane" nzTitle="菜单信息" nzBordered nzLayout="vertical">
       <nz-descriptions-item nzTitle="名称">{{menuInfoNode?.title}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="图标">{{menuInfoNode?.icon}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Order Time">
-        2018-04-24 18:00:00
+      <nz-descriptions-item nzTitle="图标">
+        <nz-space>
+          <nz-space-item>
+            <i nz-icon [nzType]="menuInfoNode?.icon" nzTheme="outline"></i>
+          </nz-space-item>
+          <nz-space-item>
+            {{menuInfoNode?.icon}}
+          </nz-space-item>
+        </nz-space>
       </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
-        2018-04-24 18:00:00 To 2019-04-24 18:00:00
-      </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="状态" [nzSpan]="3">
-        <nz-badge nzStatus="processing" [nzText]="constant(menuInfoNode?.origin.enabled, 'enabled')"></nz-badge>
-      </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Negotiated Amount">$80.00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Discount">$20.00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Official Receipts">$60.00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Config Info">
-        Data disk type: MongoDB
-        <br />
-        Database version: 3.4
-        <br />
-        Package: dds.mongo.mid
-        <br />
-        Storage space: 10 GB
-        <br />
-        Replication_factor:3
-        <br />
-        Region: East China 1<br />
-      </nz-descriptions-item>
+      <ng-container *ngIf="menuInfoNode?.id !== 'root'">
+        <nz-descriptions-item nzTitle="状态">
+          <nz-space nzSize="large">
+            <nz-space-item>
+              <nz-badge nzStatus="processing" [nzText]="menuInfoNode?.enabled | constant:'menu.enabled'"></nz-badge>
+            </nz-space-item>
+            <nz-space-item *ngIf="menuInfoNode?.enabled">
+              <button nz-button nzType="text" (click)="enableMenu(menuInfoNode.id, false)"><i nz-icon nzType="close-circle" nzTheme="twotone" nzTwotoneColor="red"></i></button>
+            </nz-space-item>
+            <nz-space-item *ngIf="!menuInfoNode?.enabled">
+              <button nz-button nzType="text" (click)="enableMenu(menuInfoNode.id, true)"><i nz-icon nzType="check-circle" nzTheme="twotone"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="类型">{{menuInfoNode?.type | constant:'menu.type'}}</nz-descriptions-item>
+        <nz-descriptions-item [nzSpan]="2" nzTitle="地址">{{menuInfoNode?.url}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="创建人">
+          {{menuInfoNode?.addUser}}
+        </nz-descriptions-item>
+        <nz-descriptions-item [nzSpan]="2" nzTitle="创建时间">
+          {{menuInfoNode?.addTime | date:"yyyy-MM-dd HH:mm:ss"}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="更新人">
+          {{menuInfoNode?.updUser}}
+        </nz-descriptions-item>
+        <nz-descriptions-item [nzSpan]="2" nzTitle="更新时间">
+          {{menuInfoNode?.updTime | date:"yyyy-MM-dd HH:mm:ss"}}
+        </nz-descriptions-item>
+      </ng-container>
     </nz-descriptions>
   </nz-sider>
 </nz-layout>
@@ -94,7 +105,7 @@
         </button>
       </span>
     </nz-space-item>
-    <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
+    <!-- <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
       <span nz-tooltip nzTooltipTitle="修改">
         <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="editMenu($event, node)">
           <i nz-icon nzType="edit"></i>
@@ -107,7 +118,7 @@
           <i nz-icon nzType="delete"></i>
         </button>
       </span>
-    </nz-space-item>
+    </nz-space-item> -->
   </nz-space>
 </ng-template>
 

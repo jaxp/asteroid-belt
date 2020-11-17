@@ -1,9 +1,5 @@
-package com.pallas.service.user.bean;
+package com.pallas.service.user.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,16 +9,14 @@ import java.util.Date;
 
 /**
  * @author: jax
- * @time: 2020/10/16 15:37
+ * @time: 2020/11/17 17:40
  * @desc:
  */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("pls_u_role")
-public class PlsRole {
-    @TableId
+public class PlsRoleDTO {
     private Long id;
     /**
      * 父角色
@@ -47,11 +41,9 @@ public class PlsRole {
     /**
      * 新增时间
      */
-    @TableField(fill = FieldFill.INSERT)
     private Date addTime;
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updTime;
 }

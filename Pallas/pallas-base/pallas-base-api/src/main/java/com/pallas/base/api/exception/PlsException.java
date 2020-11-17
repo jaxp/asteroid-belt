@@ -58,4 +58,12 @@ public class PlsException extends RuntimeException {
             .append(",'message':'").append(this.getLocalizedMessage())
             .append("'}").toString();
     }
+
+    public static final PlsException paramMissing(String paramName) {
+        return new PlsException(ResultType.PARAM_MISSING, new StringBuilder("参数【").append(paramName).append("】缺失").toString());
+    }
+
+    public static final PlsException paramInvalid(String paramName) {
+        return new PlsException(ResultType.PARAM_INVALID, new StringBuilder("非法的参数【").append(paramName).append("】").toString());
+    }
 }

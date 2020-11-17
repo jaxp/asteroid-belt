@@ -14,52 +14,62 @@ public class CommonConverter<DO, BO, DTO, VO> {
 
     private BaseConverter<DO, BO> do2boConverter;
     private BaseConverter<BO, DTO> bo2dtoConverter;
-    private BaseConverter<DTO, VO> dto2voConverter;
+    private BaseConverter<BO, VO> bo2voConverter;
 
     {
         Type[] typeArr = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
         do2boConverter = new BaseConverter<>(typeArr[0], typeArr[1]);
         bo2dtoConverter = new BaseConverter<>(typeArr[1], typeArr[2]);
-        dto2voConverter = new BaseConverter<>(typeArr[2], typeArr[3]);
+        bo2voConverter = new BaseConverter<>(typeArr[1], typeArr[3]);
     }
 
     public BO do2bo(DO d) {
         return do2boConverter.forward(d);
     }
 
-    public DTO bo2dto(BO b) {
-        return bo2dtoConverter.forward(b);
+    public DO bo2do(BO bo) {
+        return do2boConverter.reverse(bo);
     }
 
-    public VO dto2vo(DTO dto) {
-        return dto2voConverter.forward(dto);
+    public DTO bo2dto(BO bo) {
+        return bo2dtoConverter.forward(bo);
     }
 
     public BO dto2bo(DTO dto) {
         return bo2dtoConverter.reverse(dto);
     }
 
-    public List<BO> do2bo(List<DO> d) {
-        return d.stream()
-            .map(e -> this.do2bo(e))
+    public VO bo2vo(BO bo) {
+        return bo2voConverter.forward(bo);
+    }
+
+    public List<BO> do2bo(List<DO> dos) {
+        return dos.stream()
+            .map(e -> do2bo(e))
             .collect(Collectors.toList());
     }
 
-    public List<DTO> bo2dto(List<BO> b) {
-        return b.stream()
-            .map(e -> this.bo2dto(e))
+    public List<DO> bo2do(List<BO> bos) {
+        return bos.stream()
+            .map(e -> bo2do(e))
             .collect(Collectors.toList());
     }
 
-    public List<VO> dto2vo(List<DTO> dto) {
-        return dto.stream()
-            .map(e -> this.dto2vo(e))
+    public List<DTO> bo2dto(List<BO> bos) {
+        return bos.stream()
+            .map(e -> bo2dto(e))
             .collect(Collectors.toList());
     }
 
-    public List<BO> dto2bo(List<DTO> dto) {
-        return dto.stream()
-            .map(e -> this.dto2bo(e))
+    public List<BO> dto2bo(List<DTO> dtos) {
+        return dtos.stream()
+            .map(e -> dto2bo(e))
+            .collect(Collectors.toList());
+    }
+
+    public List<VO> bo2vo(List<BO> bos) {
+        return bos.stream()
+            .map(e -> bo2vo(e))
             .collect(Collectors.toList());
     }
 
@@ -67,8 +77,8 @@ public class CommonConverter<DO, BO, DTO, VO> {
         return bo2dtoConverter.forward(do2boConverter.forward(d));
     }
 
-    public List<DTO> do2dto(List<DO> d) {
-        return d.stream()
+    public List<DTO> do2dto(List<DO> dos) {
+        return dos.stream()
             .map(e -> this.do2dto(e))
             .collect(Collectors.toList());
     }

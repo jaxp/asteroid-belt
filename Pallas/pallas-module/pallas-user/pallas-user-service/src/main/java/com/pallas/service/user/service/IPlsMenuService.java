@@ -2,8 +2,9 @@ package com.pallas.service.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pallas.service.user.bean.PlsMenu;
-import com.pallas.service.user.dto.PlsMenuDTO;
+import com.pallas.service.user.bo.PlsMenuBO;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -19,13 +20,38 @@ public interface IPlsMenuService extends IService<PlsMenu> {
      * @param target
      * @return
      */
-    Set<Long> getMenusIds(Long target);
+    Set<Long> getMenuIds(Long target);
 
     /**
-     * 获取可编辑菜单
+     * 获取菜单
      *
+     * @param target
      * @return
      */
-    List<PlsMenuDTO> getUserMenus();
+    List<PlsMenuBO> getMenusWithPermission(Long target);
+
+    /**
+     * 获取菜单
+     *
+     * @param targets
+     * @return
+     */
+    List<PlsMenuBO> getMenusWithPermission(Collection<Long> targets);
+
+    /**
+     * 获取等级对应的菜单
+     *
+     * @param grade
+     * @return
+     */
+    List<PlsMenuBO> getGradeMenus(Integer grade);
+
+    /**
+     * 菜单存在
+     *
+     * @param id
+     * @return
+     */
+    boolean exists(Long id);
 
 }

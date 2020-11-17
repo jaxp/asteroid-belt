@@ -23,14 +23,17 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NgxEchartsModule } from 'ngx-echarts';
+
+import { ConstantPipe } from './pipes/constant.pipe';
 import { GeometricElfDirective } from './directives/geometric-elf.directive';
 import { GraphDirective } from './directives/graph.directive';
 
 
 
 @NgModule({
-  declarations: [GeometricElfDirective, GraphDirective],
+  declarations: [GeometricElfDirective, GraphDirective, ConstantPipe],
   imports: [
     CommonModule,
     IconsProviderModule,
@@ -54,6 +57,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzDescriptionsModule,
     NzBadgeModule,
     NzCarouselModule,
+    NzSwitchModule,
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -82,11 +86,13 @@ import { GraphDirective } from './directives/graph.directive';
     NzDescriptionsModule,
     NzBadgeModule,
     NzCarouselModule,
+    NzSwitchModule,
     NgxEchartsModule,
     ReactiveFormsModule,
     FormsModule,
     GeometricElfDirective,
     GraphDirective,
+    ConstantPipe,
     HttpClientModule
   ]
 })

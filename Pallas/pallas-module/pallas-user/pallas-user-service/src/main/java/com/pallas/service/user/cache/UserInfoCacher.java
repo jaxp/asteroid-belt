@@ -98,9 +98,9 @@ public class UserInfoCacher extends UserCacher {
         userMap.put(USERNAME, user.getUsername());
         userMap.put(EMAIL, user.getEmail());
         userMap.put(TELEPHONE, user.getTelephone());
-        Set<Long> roles = plsRoleService.getRoles(user.getId());
+        Set<Long> roles = plsRoleService.getRoleIds(user.getId());
         List<String> authorities = plsAuthorityService.getAuthorities(user.getId());
-        Set<Long> menus = plsMenuService.getMenusIds(user.getId());
+        Set<Long> menus = plsMenuService.getMenuIds(user.getId());
         try {
             ObjectMapper mapper = new ObjectMapper();
             userMap.put(DATA, mapper.writeValueAsString(user));

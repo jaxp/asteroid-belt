@@ -67,12 +67,12 @@ public class AuthController {
 
     @GetMapping("/getUser")
     public PlsResult getUser() {
-        return PlsResult.success(userConverter.dto2vo(authService.getUser()));
+        return PlsResult.success(userConverter.bo2vo(authService.getUser()));
     }
 
     @GetMapping("/getMenus")
     public PlsResult getMenus() {
-        return PlsResult.success(menuConverter.dto2vo(authService.getMenus()));
+        return PlsResult.success(menuConverter.bo2vo(authService.getMenus()));
     }
 
     @GetMapping("/getAuthorities")

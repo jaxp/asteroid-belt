@@ -13,7 +13,7 @@ import java.util.function.Function;
  * @desc:
  */
 @Slf4j
-public class PlsMapUtils {
+public class MapUtils {
 
     public static final void copyProperties(Map<String, ?> origin, Object target) {
         copyProperties(origin, target, null);

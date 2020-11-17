@@ -20,6 +20,10 @@ public enum ResultType {
     AUTHORIZATION_INVALID(10102, "无效的登录信息"),
     AUTHORIZATION_INCORRECT(10103, "登录信息错误"),
     AUTHENTICATION_ERR(10200, "用户登录异常"),
+
+    PARAM_MISSING(15000, "参数缺失"),
+    PARAM_INVALID(15001, "参数不可用"),
+    PARAM_UNAUTHORIZED(15002, "没有权限"),
     ;
 
     private Integer code;

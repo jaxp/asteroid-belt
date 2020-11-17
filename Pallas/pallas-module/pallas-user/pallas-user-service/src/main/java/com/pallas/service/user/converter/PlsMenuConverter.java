@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 public class PlsMenuConverter extends CommonConverter<PlsMenu, PlsMenuBO, PlsMenuDTO, PlsMenuVO> {
 
     @Override
-    public PlsMenuVO dto2vo(PlsMenuDTO plsMenuDTO) {
-        PlsMenuVO vo = super.dto2vo(plsMenuDTO);
-        vo.setType(plsMenuDTO.getType().getValue());
+    public PlsMenuVO bo2vo(PlsMenuBO plsMenuBO) {
+        PlsMenuVO vo = super.bo2vo(plsMenuBO);
+        vo.setType(plsMenuBO.getType().getValue());
         return vo;
     }
 

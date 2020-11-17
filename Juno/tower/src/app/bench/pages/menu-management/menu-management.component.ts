@@ -4,9 +4,9 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd/tr
 import { Observable, of } from 'rxjs';
 import { Menu, TreeNode } from '@/app/shared/model';
 import TreeService from '@/app/shared/services/tree.service';
-import { ConstantService } from '@shared/services/constant.service';
 import { tap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-menu-management',
@@ -37,12 +37,12 @@ export class MenuManagementComponent implements OnInit {
   selected: NzTreeNode;
 
   showMenuInfoPane: boolean;
-  menuInfoNode: NzTreeNode;
+  menuInfoNode: Menu;
 
   validateForm!: FormGroup;
 
   constructor(private menuService: MenuService, private treeService: TreeService, private fb: FormBuilder,
-              private constantService: ConstantService) { }
+    private modal: NzModalService) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -60,6 +60,16 @@ export class MenuManagementComponent implements OnInit {
         this.setSelected(null);
       }
     }
+  }
+
+  enableMenu(id: string, enabled: boolean): void {
+    const operation = enabled ? '启用' : '禁用';
+    this.modal.confirm({
+      nzTitle: `确定${operation}该菜单？`,
+      nzOnOk: () => this.menuService.enableMenu(id, enabled)
+        .toPromise()
+        .catch(() => console.log('Oops errors!'))
+    });
   }
 
   newMenu(event: MouseEvent, node: NzTreeNode): void {
@@ -92,11 +102,11 @@ export class MenuManagementComponent implements OnInit {
         this.showMenuInfoPane = false;
         setTimeout(() => {
           this.showMenuInfoPane = true;
-          this.menuInfoNode = node;
+          this.menuInfoNode = JSON.parse(JSON.stringify(node.origin.origin));
         }, 200);
       } else {
         this.showMenuInfoPane = true;
-        this.menuInfoNode = node;
+        this.menuInfoNode = JSON.parse(JSON.stringify(node.origin.origin));
       }
     } else {
       this.showMenuInfoPane = false;
@@ -115,9 +125,4 @@ export class MenuManagementComponent implements OnInit {
       this.validateForm.controls[i].updateValueAndValidity();
     }
   }
-
-  constant(value: object, key: string): string {
-    return this.constantService.constants.menu[key][value];
-  }
-
 }

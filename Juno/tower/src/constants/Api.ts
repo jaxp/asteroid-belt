@@ -8,6 +8,7 @@ export const Api = Object.freeze({
     getAuthorities: '/api/user/auth/getAuthorities'
   },
   menu: {
-    getMenus: '/api/user/menu/getMenus'
+    getMenus: '/api/user/menu/getMenus',
+    enableMenu: '/api/user/menu/enableMenu',
   }
 });
