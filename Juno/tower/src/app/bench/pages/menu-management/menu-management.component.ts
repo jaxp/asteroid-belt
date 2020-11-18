@@ -63,13 +63,7 @@ export class MenuManagementComponent implements OnInit {
   }
 
   enableMenu(id: string, enabled: boolean): void {
-    const operation = enabled ? '启用' : '禁用';
-    this.modal.confirm({
-      nzTitle: `确定${operation}该菜单？`,
-      nzOnOk: () => this.menuService.enableMenu(id, enabled)
-        .toPromise()
-        .catch(() => console.log('Oops errors!'))
-    });
+    this.menuService.enableMenu(id, enabled).subscribe();
   }
 
   newMenu(event: MouseEvent, node: NzTreeNode): void {

@@ -23,6 +23,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -58,6 +59,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzBadgeModule,
     NzCarouselModule,
     NzSwitchModule,
+    NzPopconfirmModule,
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -87,6 +89,7 @@ import { GraphDirective } from './directives/graph.directive';
     NzBadgeModule,
     NzCarouselModule,
     NzSwitchModule,
+    NzPopconfirmModule,
     NgxEchartsModule,
     ReactiveFormsModule,
     FormsModule,

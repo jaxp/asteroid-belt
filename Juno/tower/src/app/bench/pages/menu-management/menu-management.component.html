@@ -58,17 +58,19 @@
       </nz-descriptions-item>
       <ng-container *ngIf="menuInfoNode?.id !== 'root'">
         <nz-descriptions-item nzTitle="状态">
-          <nz-space nzSize="large">
+          <nz-badge [nzStatus]="!!menuInfoNode?.enabled ? 'processing' : 'error'"
+            [nzText]="menuInfoNode?.enabled | constant:'menu.enabled'" nz-popconfirm
+            [nzPopconfirmTitle]="'确定' + (!menuInfoNode?.enabled ? '启用' : '禁用') + '该菜单？'"
+            (nzOnConfirm)="enableMenu(menuInfoNode.id, !menuInfoNode.enabled)">
+          </nz-badge>
+          <!-- <nz-space nzSize="large">
             <nz-space-item>
-              <nz-badge nzStatus="processing" [nzText]="menuInfoNode?.enabled | constant:'menu.enabled'"></nz-badge>
             </nz-space-item>
             <nz-space-item *ngIf="menuInfoNode?.enabled">
-              <button nz-button nzType="text" (click)="enableMenu(menuInfoNode.id, false)"><i nz-icon nzType="close-circle" nzTheme="twotone" nzTwotoneColor="red"></i></button>
+              <button nz-button nzType="text" (click)="enableMenu(menuInfoNode.id, false)"><i nz-icon
+                  nzType="close-circle" nzTheme="twotone" nzTwotoneColor="red"></i></button>
             </nz-space-item>
-            <nz-space-item *ngIf="!menuInfoNode?.enabled">
-              <button nz-button nzType="text" (click)="enableMenu(menuInfoNode.id, true)"><i nz-icon nzType="check-circle" nzTheme="twotone"></i></button>
-            </nz-space-item>
-          </nz-space>
+          </nz-space> -->
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="类型">{{menuInfoNode?.type | constant:'menu.type'}}</nz-descriptions-item>
         <nz-descriptions-item [nzSpan]="2" nzTitle="地址">{{menuInfoNode?.url}}</nz-descriptions-item>
@@ -105,24 +107,10 @@
         </button>
       </span>
     </nz-space-item>
-    <!-- <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
-      <span nz-tooltip nzTooltipTitle="修改">
-        <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="editMenu($event, node)">
-          <i nz-icon nzType="edit"></i>
-        </button>
-      </span>
-    </nz-space-item>
-    <nz-space-item class="tree-node-btn" *ngIf="node.key !== 'root'">
-      <span nz-tooltip nzTooltipTitle="删除">
-        <button nz-button nzType="primary" nzSize="small" nzShape="circle" nzDanger>
-          <i nz-icon nzType="delete"></i>
-        </button>
-      </span>
-    </nz-space-item> -->
   </nz-space>
 </ng-template>
 
-<nz-modal nzClassName="pt100 pb100" [nzStyle]="{minHeight:'560px',maxHeight:'600px'}" [(nzVisible)]="menuOp"
+<nz-modal nzClassName="tile pt100 pb100" [nzStyle]="{minHeight:'560px',maxHeight:'600px'}" [(nzVisible)]="menuOp"
   [nzBodyStyle]="{padding:'30px 10px'}" [nzTitle]="menuOp?.title" [nzKeyboard]="false" [nzMaskClosable]="false"
   [nzClosable]="false" (nzOnCancel)="close()" (nzOnOk)="close()">
   <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

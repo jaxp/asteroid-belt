@@ -1,8 +1,6 @@
-@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.compact.less";
 @theme: default;
 
-@white: #fff;
-@black: #000;
 // Border color
 @border-color-base: hsv(0, 0, 85%); // base border outline a component
 @border-color-split: hsv(0, 0, 94%); // split border inside a component
@@ -39,37 +37,6 @@
 @primary-8: color(~`colorPalette('@{primary-color}', 8) `); // unused
 @primary-9: color(~`colorPalette('@{primary-color}', 9) `); // unused
 @primary-10: color(~`colorPalette('@{primary-color}', 10) `); // unused
-
-// 滚动条整体样式
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-	background-color: #777;
-}
-// 滚动条里面小方块
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: @primary-5;
-  background-image: -webkit-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.2) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.2) 75%,
-    transparent 75%,
-    transparent
-  );
-}
-// 滚动条里面轨道
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #ededed;
-  border-radius: 10px;
-}
-
 
 // Base Scaffolding Variables
 // ---
@@ -111,8 +78,8 @@
 
 // vertical paddings
 @padding-lg: 16px; // containers
-@padding-md: 12px; // small containers and buttons
-@padding-sm: 18px; // Form controls and items
+@padding-md: 14px; // small containers and buttons
+@padding-sm: 12px; // Form controls and items
 @padding-xs: 4px; // small items
 @padding-xss: 4px; // more small
 
