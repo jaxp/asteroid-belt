@@ -96,8 +96,8 @@
           </execution>
         </executions>
         <configuration>
-          <repository>172.17.0.5:5000//${project.artifactId}</repository>
-          <tag>${project.version}</tag>
+          <repository>172.17.0.5:5000//gateway</repository>
+          <tag>1.0.0</tag>
           <buildArgs>
             <PROJECT_NAME>${project.build.finalName}.zip</PROJECT_NAME>
           </buildArgs>
