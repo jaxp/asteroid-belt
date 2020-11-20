@@ -41,8 +41,7 @@ export class MenuManagementComponent implements OnInit {
 
   validateForm!: FormGroup;
 
-  constructor(private menuService: MenuService, private treeService: TreeService, private fb: FormBuilder,
-    private modal: NzModalService) { }
+  constructor(private menuService: MenuService, private treeService: TreeService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -89,8 +88,11 @@ export class MenuManagementComponent implements OnInit {
   }
 
   setSelected(node: NzTreeNode | null): void {
-    this.selected = node;
     if (node) {
+      if (node.key === this.selected?.key) {
+        return;
+      }
+      this.selected = node;
       node.isSelected = true;
       if (this.menuInfoNode) {
         this.showMenuInfoPane = false;
