@@ -99,7 +99,7 @@
           <repository>172.17.0.5:5000/${project.artifactId}</repository>
           <tag>${project.version}</tag>
           <buildArgs>
-            <PROJECT_NAME>${project.build.finalName}.zip</PROJECT_NAME>
+            <PROJECT_NAME>${project.build.finalName}</PROJECT_NAME>
           </buildArgs>
         </configuration>
       </plugin>
