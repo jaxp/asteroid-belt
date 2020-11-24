@@ -4,16 +4,16 @@ spring:
   application:
     name: pallas-cloud-gateway
   profiles:
-    active: dev
+    active: @profileActive@
   cloud:
     loadbalancer:
       ribbon:
         enabled: false
     consul:
-      host: 127.0.0.1
+      host: ${consul.host}
       port: 8500
       discovery:
-#        acl-token: 14a4ef1a-bb6e-4dcb-d7a2-9040503b57a3
+        acl-token: ${consul.token}
     gateway:
       discovery:
         locator:
