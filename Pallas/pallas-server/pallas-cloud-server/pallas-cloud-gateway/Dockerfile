@@ -3,8 +3,8 @@ MAINTAINER Jax "jax94@qq.com"
 ENV REFRESHED_AT 2020-11-19
 
 EXPOSE 8070
-ARG consul=127.0.0.1
-ARG consul_token
+ENV consul="127.0.0.1"
+ENV consul_token=""
 ARG PROJECT_NAME
 ENV HOME_PATH /home
 WORKDIR $HOME_PATH
