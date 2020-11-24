@@ -4,7 +4,7 @@ spring:
   application:
     name: pallas-cloud-user
   profiles:
-    active: dev
+    active: "@profileActive@"
   flyway:
     encoding: utf-8
     baseline-on-migrate: true
@@ -16,15 +16,15 @@ spring:
       ribbon:
         enabled: false
     consul:
-      host: localhost
+      host: ${consul.host}
       port: 8500
       discovery:
         health-check-interval: 10s
         fail-fast: true
-#        acl-token: 14a4ef1a-bb6e-4dcb-d7a2-9040503b57a3
+        acl-token: ${consul.token}
       config:
         enabled: true
-#        acl-token: 14a4ef1a-bb6e-4dcb-d7a2-9040503b57a3
+        acl-token: ${consul.token}
         prefix: config
         default-context: pallas-cloud-user
         profile-separator: '-'

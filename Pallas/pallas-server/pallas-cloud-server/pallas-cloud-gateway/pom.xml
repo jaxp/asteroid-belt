@@ -96,7 +96,7 @@
           </execution>
         </executions>
         <configuration>
-          <repository>172.17.0.5:5000/${project.artifactId}</repository>
+          <repository>registry:5000/${project.artifactId}</repository>
           <tag>${project.version}</tag>
           <buildArgs>
             <PROJECT_NAME>${project.build.finalName}</PROJECT_NAME>
