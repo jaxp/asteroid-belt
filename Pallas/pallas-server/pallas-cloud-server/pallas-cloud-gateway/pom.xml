@@ -100,6 +100,8 @@
           <tag>${project.version}</tag>
           <buildArgs>
             <PROJECT_NAME>${project.build.finalName}</PROJECT_NAME>
+            <CONSUL_HOST>${consul.host}</CONSUL_HOST>
+            <CONSUL_TOKEN>${consul.token}</CONSUL_TOKEN>
           </buildArgs>
         </configuration>
       </plugin>

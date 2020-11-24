@@ -21,6 +21,8 @@
     <module>pallas-server</module>
   </modules>
   <properties>
+    <consul.host>127.0.01</consul.host>
+    <consul.token></consul.token>
     <java.version>1.8</java.version>
     <pallas-base-api.version>1.0.0-SNAPSHOT</pallas-base-api.version>
     <pallas-base-common.version>1.0.0-SNAPSHOT</pallas-base-common.version>
