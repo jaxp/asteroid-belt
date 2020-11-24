@@ -20,9 +20,7 @@ if [ -n "$PIDS" ]; then
     exit 1
 fi
 
-
 LOGS_DIR=$DEPLOY_DIR/logs
-
 if [ ! -d $LOGS_DIR ]; then
     mkdir $LOGS_DIR
 fi
@@ -30,6 +28,14 @@ STDOUT_FILE=$LOGS_DIR/stdout.log
 
 LIB_DIR=$DEPLOY_DIR/lib
 LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
+
+JAVA_ARGS=""
+if [ "$1" = "consul" ]; then
+    JAVA_ARGS=" -Dspring.cloud.consul.host=$2 "
+fi
+if [ "$1" = "token" ]; then
+    JAVA_ARGS=" -Dspring.cloud.consul.host=$2 -Dspring.cloud.consul.discovery.acl-token=$3 "
+fi
 
 JAVA_OPTS=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
 JAVA_DEBUG_OPTS=""
@@ -52,8 +58,6 @@ echo -e "Starting the $SERVER_NAME ...\c"
 #优先从同级config目录下获取配置文件信息
 nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -jar $DEPLOY_DIR/$JAR_NAME > /dev/null 2>&1 &
 
-
-echo "OK!"
+echo "$SERVER_NAME 启动成功！"
 PIDS=`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}'`
 echo "PID: $PIDS"
-echo "STDOUT: $STDOUT_FILE"

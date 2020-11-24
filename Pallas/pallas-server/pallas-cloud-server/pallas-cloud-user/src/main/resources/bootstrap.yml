@@ -1,14 +1,16 @@
 server:
   port: 8000
-pls:
-  auth:
-    expire-time: 1000
-    refresh-time: 180
 spring:
   application:
     name: pallas-cloud-user
   profiles:
-    active: db
+    active: dev
+  flyway:
+    encoding: utf-8
+    baseline-on-migrate: true
+    baseline-version: 1
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   cloud:
     loadbalancer:
       ribbon:
@@ -19,24 +21,29 @@ spring:
       discovery:
         health-check-interval: 10s
         fail-fast: true
+#        acl-token: 14a4ef1a-bb6e-4dcb-d7a2-9040503b57a3
       config:
         enabled: true
+#        acl-token: 14a4ef1a-bb6e-4dcb-d7a2-9040503b57a3
         prefix: config
         default-context: pallas-cloud-user
         profile-separator: '-'
         format: YAML
-        data-key: userConfig
+        data-key: data
         watch:
           enabled: true
           delay: 1000
-  redis:
-    host: localhost
-    lettuce:
-      pool:
-        max-active: 8
-        min-idle: 0
-        max-idle: 8
-        max-wait: 30
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-enums-package: com.pallas.**.enums;com.pallas.**.enums.*
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+      table-prefix: pls_
+      insert-strategy: not_null
+      update-strategy: not_null
+      select-strategy: not_null
 management:
   endpoints:
     web:

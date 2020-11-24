@@ -3,6 +3,8 @@ MAINTAINER Jax "jax94@qq.com"
 ENV REFRESHED_AT 2020-11-19
 
 EXPOSE 8070
+ARG consul=127.0.0.1
+ARG consul_token
 ARG PROJECT_NAME
 ENV HOME_PATH /home
 WORKDIR $HOME_PATH
@@ -11,4 +13,4 @@ RUN unzip $PROJECT_NAME.zip
 
 WORKDIR $HOME_PATH/$PROJECT_NAME
 VOLUME ["$HOME_PATH/$PROJECT_NAME"]
-ENTRYPOINT ["./bin/start.sh"]
+ENTRYPOINT ["./bin/start.sh", "token", "$consul", "$consul_token"]

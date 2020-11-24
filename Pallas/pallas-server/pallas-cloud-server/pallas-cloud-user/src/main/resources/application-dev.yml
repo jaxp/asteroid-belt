@@ -1,21 +1,16 @@
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/*Mapper.xml
-  type-enums-package: com.pallas.**.enums;com.pallas.**.enums.*
-  global-config:
-    banner: false
-    db-config:
-      id-type: assign_id
-      table-prefix: pls_
-      insert-strategy: not_null
-      update-strategy: not_null
-      select-strategy: not_null
+pls:
+  auth:
+    expire-time: 1000
+    refresh-time: 180
 spring:
-  flyway:
-    encoding: utf-8
-    baseline-on-migrate: true
-    baseline-version: 1
-  autoconfigure:
-    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  redis:
+    host: localhost
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: 30
   datasource:
     druid:
       stat-view-servlet:
@@ -28,25 +23,15 @@ spring:
         max-active: 50
         min-idle: 20
         max-wait: 60000
-        #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
         time-between-eviction-runs-millis: 60000
-        #配置一个连接在池中最小生存的时间，单位是毫秒
         min-evictable-idle-time-millis: 25200000
-        #Druid是在获取连接时，才会做存活检测， 而并不是定时做存活
         test-while-idle: true
-        #借的时候测试连接是否可用
         test-on-borrow: true
-        #还的时候测试连接是否可用
         test-on-return: false
-        #校验sql
         validation-query: select 1
-        #校验超时时间
         validation-query-timeout: 20
-        #打开PSCache
         pool-prepared-statements: true
-        #指定每个连接上PSCache的大小
         max-pool-prepared-statement-per-connection-size: 20
-        #注意这个值和druid原生不一致，默认启动了stat,wall
         filters: stat,wall
         stat:
           merge-sql: true
@@ -63,12 +48,8 @@ spring:
           password: kI7ES+VBEmuAK3A30z6qr5S3vuBU1swuNI7kEwyr3saQFjeSmvzxRWp86MYctfxk/XvG04A5+KlMj0WujCzs9g==
           driver-class-name: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://127.0.0.1:3306/pls_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&useAffectedRows=true
-          druid: # 以下参数针对每个库可以重新设置druid参数
-            #初始化连接大小
+          druid:
             initial-size: 10
-            #连接池最大使用连接数
             max-active: 50
-            #连接池最小空闲数
             min-idle: 10
-            validation-query: select 1  #比如oracle就需要重新设置这个
             public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJG6ewGvtRdG3jzVaVjKThI3T8q0d7dVyniZ38SlgPfu5U0jyMxBXVTUveiybUvwUfNWx2hcDglcgCAP8npuIEcCAwEAAQ==

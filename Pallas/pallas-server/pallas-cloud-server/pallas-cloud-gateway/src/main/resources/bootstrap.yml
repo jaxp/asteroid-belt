@@ -1,15 +1,10 @@
-
+server:
+  port: 8070
 spring:
   application:
     name: pallas-cloud-gateway
-  redis:
-    host: localhost
-    lettuce:
-      pool:
-        max-active: 8
-        min-idle: 0
-        max-idle: 8
-        max-wait: 30
+  profiles:
+    active: dev
   cloud:
     loadbalancer:
       ribbon:
@@ -17,6 +12,8 @@ spring:
     consul:
       host: 127.0.0.1
       port: 8500
+      discovery:
+#        acl-token: 14a4ef1a-bb6e-4dcb-d7a2-9040503b57a3
     gateway:
       discovery:
         locator:
@@ -38,5 +35,3 @@ management:
     web:
       exposure:
         include: "*"
-server:
-  port: 8070
