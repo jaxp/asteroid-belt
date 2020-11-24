@@ -56,7 +56,7 @@ fi
 
 echo -e "Starting the $SERVER_NAME ...\c"
 #优先从同级config目录下获取配置文件信息
-nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -jar $DEPLOY_DIR/$JAR_NAME > /dev/null 2>&1 &
+nohup java $JAVA_OPTS $JAVA_ARGS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -jar $DEPLOY_DIR/$JAR_NAME > /dev/null 2>&1 &
 
 echo "$SERVER_NAME 启动成功！"
 PIDS=`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}'`
