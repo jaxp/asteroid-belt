@@ -14,6 +14,17 @@ spring:
       port: 8500
       discovery:
         acl-token: ${consul.token}
+      config:
+        enabled: true
+        acl-token: ${consul.token}
+        prefix: config
+        default-context: pallas-cloud-gateway
+        profile-separator: '-'
+        format: YAML
+        data-key: data
+        watch:
+          enabled: true
+          delay: 1000
     gateway:
       discovery:
         locator:
