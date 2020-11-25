@@ -1,6 +1,6 @@
-import { Menu, NormalTreeNode, Result, TreeNode } from '../../../shared/model';
-import TreeService from '../../../shared/services/tree.service';
-import { Api } from '../../../shared/constants/api';
+import { Menu, NormalTreeNode, Result, TreeNode } from '@/app/shared/model';
+import TreeService from '@/app/shared/services/tree.service';
+import { Api } from '@/constants/api';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';

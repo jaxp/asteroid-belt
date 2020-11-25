@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Menu, TreeNode } from '../../shared/model';
+import { Menu, TreeNode } from '@shared/model';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 

@@ -13,7 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { BenchModule } from './bench/bench.module';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { httpInterceptorProviders } from './interceptors';
+import { httpInterceptorProviders } from './interceptors'
 
 registerLocaleData(zh);
 

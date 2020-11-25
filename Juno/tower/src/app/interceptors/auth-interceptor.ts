@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError, finalize, mergeMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { HttpStatus } from '../shared/constants/http-status';
+import { HttpStatus } from '@/constants/http-status';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
