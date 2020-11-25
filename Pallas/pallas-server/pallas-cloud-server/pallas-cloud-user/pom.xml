@@ -50,7 +50,7 @@
       <plugin>
         <groupId>com.spotify</groupId>
         <artifactId>dockerfile-maven-plugin</artifactId>
-        <version>1.4.10</version>
+        <version>${dockerfile-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>default</id>
@@ -63,6 +63,7 @@
         <configuration>
           <repository>registry:5000/${project.artifactId}</repository>
           <tag>${project.version}</tag>
+          <skip>${dockerfile.skip}</skip>
           <buildArgs>
             <PROJECT_NAME>${project.build.finalName}</PROJECT_NAME>
           </buildArgs>
