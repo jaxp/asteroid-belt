@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Api } from '@constants/api';
-import { Result } from '@shared/model';
+import { Api } from '../constants/api';
+import { Result } from '../model';
 import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as JsEncryptModule from 'jsencrypt';

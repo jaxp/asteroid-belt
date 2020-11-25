@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TowerValidators } from '@/constants/validators';
+import { TowerValidators } from '../../shared/constants/validators';
 import { AuthService } from '../auth.service';
-import { EncryptService } from '@shared/services/encrypt.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
