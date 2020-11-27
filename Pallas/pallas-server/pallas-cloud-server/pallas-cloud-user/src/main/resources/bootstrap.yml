@@ -7,8 +7,9 @@ spring:
     active: @profileActive@
   flyway:
     encoding: utf-8
+    baseline-version: 0
     baseline-on-migrate: true
-    baseline-version: 1
+    table: flyway_user_schema_history
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   cloud:

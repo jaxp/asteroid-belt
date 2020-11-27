@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pallas.service.user.enums.TargetType;
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,13 +30,13 @@ public class PlsAuthoritySet {
      */
     private Long authorityId;
     /**
-     * 目标编号
+     * 组织编号
      */
-    private Long target;
+    private Long organization;
     /**
-     * 目标类型
+     * 组织类型
      */
-    private TargetType targetType;
+    private OrganizationType organizationType;
     /**
      * 添加用户
      */

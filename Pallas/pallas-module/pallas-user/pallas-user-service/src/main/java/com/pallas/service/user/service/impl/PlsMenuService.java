@@ -45,26 +45,26 @@ public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implemen
     private PlsMenuConverter plsMenuConverter;
 
     @Override
-    public Set<Long> getMenuIds(Long target) {
+    public Set<Long> getMenuIds(Long organization) {
         List<PlsMenuSet> menusets = plsMenuSetService.query()
-            .eq("target", target)
+            .eq("organization", organization)
             .list();
         Set<Long> menuIds = menusets.stream().map(PlsMenuSet::getMenuId).collect(Collectors.toSet());
         return menuIds;
     }
 
     @Override
-    public List<PlsMenuBO> getMenusWithPermission(Long target) {
-        return getMenusWithPermission(Arrays.asList(target));
+    public List<PlsMenuBO> getMenusWithPermission(Long organization) {
+        return getMenusWithPermission(Arrays.asList(organization));
     }
 
     @Override
-    public List<PlsMenuBO> getMenusWithPermission(Collection<Long> targets) {
-        if (CollectionUtils.isEmpty(targets)) {
+    public List<PlsMenuBO> getMenusWithPermission(Collection<Long> organizations) {
+        if (CollectionUtils.isEmpty(organizations)) {
             return new ArrayList<>();
         }
         List<PlsMenuSet> menusets = plsMenuSetService.query()
-            .in("target", targets)
+            .in("organization", organizations)
             .list();
         if (CollectionUtils.isEmpty(menusets)) {
             return new ArrayList<>();

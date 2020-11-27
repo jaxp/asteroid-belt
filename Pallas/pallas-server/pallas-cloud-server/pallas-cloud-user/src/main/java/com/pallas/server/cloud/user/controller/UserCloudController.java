@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @desc:
  */
 @RestController
-@RequestMapping("/api/user")
-public class UserController implements IPlsUserApi {
+@RequestMapping("/api/cloud/user")
+public class UserCloudController implements IPlsUserApi {
 
     @Autowired
     private IPlsUserService plsUserService;

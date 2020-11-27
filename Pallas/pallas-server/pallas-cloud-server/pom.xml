@@ -16,6 +16,7 @@
     <module>pallas-cloud-sample</module>
     <module>pallas-cloud-gateway</module>
     <module>pallas-cloud-user</module>
+    <module>pallas-cloud-file</module>
   </modules>
   <dependencies>
     <dependency>

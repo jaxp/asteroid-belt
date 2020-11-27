@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum TargetType {
+public enum OrganizationType {
 
     USER(0, "用户"),
     ROLE(1, "角色");

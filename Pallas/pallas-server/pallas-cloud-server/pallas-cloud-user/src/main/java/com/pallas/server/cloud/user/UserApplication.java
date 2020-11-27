@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @time: 2020/8/13 14:29
  * @desc:
  */
-@EnableFeignClients
+@EnableFeignClients("com.pallas")
 @SpringBootApplication(scanBasePackages = "com.pallas")
 @MapperScan("com.pallas.service")
 public class UserApplication {

@@ -8,6 +8,7 @@ package com.pallas.base.api.constant;
 public class PlsConstant {
 
     public static final String COMMA = ",";
+    public static final String DOT = ".";
     public static final String COLON = ":";
     public static final String QUOTE = "\"";
     public static final String SINGLE_QUOTE = "\"";
@@ -15,6 +16,8 @@ public class PlsConstant {
     public static final String CROSSBAR = "-";
     public static final String DOLLOR = "$";
     public static final String ASTERISK = "*";
+
+    public static final int HALF_HOUR = 30 * 60 * 1000;
 
     public static final String RESULT_TYPE_HEADER = "result-type";
     public static final String AUTHORIZATION_HEADER = "authorization";
@@ -34,4 +37,5 @@ public class PlsConstant {
      * 角色对应的缓存key
      */
     public static final String ROLE_INFO_KEY ="pls:role-info:";
+
 }

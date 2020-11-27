@@ -17,26 +17,26 @@ public interface IPlsMenuService extends IService<PlsMenu> {
     /**
      * 获取菜单
      *
-     * @param target
+     * @param organization
      * @return
      */
-    Set<Long> getMenuIds(Long target);
+    Set<Long> getMenuIds(Long organization);
 
     /**
      * 获取菜单
      *
-     * @param target
+     * @param organization
      * @return
      */
-    List<PlsMenuBO> getMenusWithPermission(Long target);
+    List<PlsMenuBO> getMenusWithPermission(Long organization);
 
     /**
      * 获取菜单
      *
-     * @param targets
+     * @param organizations
      * @return
      */
-    List<PlsMenuBO> getMenusWithPermission(Collection<Long> targets);
+    List<PlsMenuBO> getMenusWithPermission(Collection<Long> organizations);
 
     /**
      * 获取等级对应的菜单

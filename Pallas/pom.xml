@@ -30,6 +30,10 @@
     <pallas-user-cloud-api.version>1.0.0-SNAPSHOT</pallas-user-cloud-api.version>
     <pallas-user-auth.version>1.0.0-SNAPSHOT</pallas-user-auth.version>
     <pallas-user-service.version>1.0.0-SNAPSHOT</pallas-user-service.version>
+    <pallas-file-api.version>1.0.0-SNAPSHOT</pallas-file-api.version>
+    <pallas-file-service.version>1.0.0-SNAPSHOT</pallas-file-service.version>
+    <pallas-captcha-api.version>1.0.0-SNAPSHOT</pallas-captcha-api.version>
+    <pallas-captcha-sliding.version>1.0.0-SNAPSHOT</pallas-captcha-sliding.version>
     <pallas-server-common.version>1.0.0-SNAPSHOT</pallas-server-common.version>
     <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
     <guava.version>18.0</guava.version>
@@ -90,6 +94,21 @@
         <groupId>com.pallas</groupId>
         <artifactId>pallas-user-auth</artifactId>
         <version>${pallas-user-auth.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-captcha-api</artifactId>
+        <version>${pallas-captcha-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-file-api</artifactId>
+        <version>${pallas-file-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-file-service</artifactId>
+        <version>${pallas-file-service.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pallas.service.user.enums.Permission;
-import com.pallas.service.user.enums.TargetType;
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,13 +31,13 @@ public class PlsMenuSet {
      */
     private Long menuId;
     /**
-     * 目标
+     * 组织
      */
-    private Long target;
+    private Long organization;
     /**
-     * 目标类型
+     * 组织类型
      */
-    private TargetType targetType;
+    private OrganizationType organizationType;
     /**
      * 权限类别
      */

@@ -33,7 +33,7 @@ public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuth
     @Override
     public List<String> getAuthorities(long userId) {
         List<PlsAuthoritySet> userAuthorities = plsAuthoritySetService.query()
-            .eq("target", userId)
+            .eq("organization", userId)
             .list();
         if (CollectionUtils.isNotEmpty(userAuthorities)) {
             List<Long> authIds = userAuthorities.stream()

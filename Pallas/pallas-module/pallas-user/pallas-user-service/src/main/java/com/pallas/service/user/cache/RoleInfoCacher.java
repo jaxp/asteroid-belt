@@ -12,7 +12,7 @@ import com.pallas.service.user.bean.PlsAuthoritySet;
 import com.pallas.service.user.bean.PlsMenu;
 import com.pallas.service.user.bean.PlsMenuSet;
 import com.pallas.service.user.bean.PlsRole;
-import com.pallas.service.user.enums.TargetType;
+import com.pallas.service.user.enums.OrganizationType;
 import com.pallas.service.user.service.IPlsAuthorityService;
 import com.pallas.service.user.service.IPlsAuthoritySetService;
 import com.pallas.service.user.service.IPlsMenuService;
@@ -81,8 +81,8 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
                 result.put(ROLE, objectMapper.writeValueAsString(role));
 
                 List<PlsMenuSet> menuSets = plsMenuSetService.query()
-                    .eq("target", role.getId())
-                    .eq("target_type", TargetType.ROLE)
+                    .eq("organization", role.getId())
+                    .eq("organization_type", OrganizationType.ROLE)
                     .list();
                 List<PlsMenu> menus = plsMenuService.query()
                     .select("id")
@@ -93,8 +93,8 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
                 result.put(MENUS, objectMapper.writeValueAsString(menuIds));
 
                 List<PlsAuthoritySet> authoritySets = plsAuthoritySetService.query()
-                    .eq("target", role.getId())
-                    .eq("target_type", TargetType.ROLE)
+                    .eq("organization", role.getId())
+                    .eq("organization_type", OrganizationType.ROLE)
                     .list();
                 Set<Long> authIds = authoritySets.stream().map(PlsAuthoritySet::getAuthorityId).collect(Collectors.toSet());
                 QueryChainWrapper<PlsAuthority> wrapper = plsAuthorityService.query()
