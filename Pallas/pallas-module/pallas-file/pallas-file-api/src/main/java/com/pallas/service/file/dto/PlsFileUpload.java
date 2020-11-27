@@ -1,7 +1,7 @@
 package com.pallas.service.file.dto;
 
-import com.pallas.service.file.enums.OrganizationType;
-import com.pallas.service.file.enums.Sensitive;
+import com.pallas.service.file.enums.Sensibility;
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,16 +28,16 @@ public class PlsFileUpload {
     private byte[] content;
     private Integer restTimes;
     private Date expireTime;
-    private Sensitive sensitive;
+    private Sensibility sensibility;
     private List<PlsFileBelongingDTO> belongings;
 
     public PlsFileUpload authorized() {
-        return setSensitive(Sensitive.AUTHORIZED);
+        return setSensibility(Sensibility.AUTHORIZED);
     }
 
     public PlsFileUpload belongTo(OrganizationType organizationType, List<Long> organizations) {
         if (CollectionUtils.isNotEmpty(organizations)) {
-            this.setSensitive(Sensitive.ORGANIZATION);
+            this.setSensibility(Sensibility.ORGANIZATION);
             List<PlsFileBelongingDTO> belongings = organizations.stream()
                 .map(e -> new PlsFileBelongingDTO(organizationType, e))
                 .collect(Collectors.toList());

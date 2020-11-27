@@ -10,4 +10,19 @@ import com.pallas.service.file.bean.PlsFileInfo;
  * @desc:
  */
 public interface IPlsFileInfoService extends IService<PlsFileInfo>, IPlsFileApi {
+
+    /**
+     * 获取文件地址
+     *
+     * @param id
+     * @return
+     */
+    PlsFileInfo getFile(long id);
+
+    /**
+     * 下载一次，剩余下载次数减1
+     *
+     * @param id
+     */
+    void downloadOnce(Long id);
 }

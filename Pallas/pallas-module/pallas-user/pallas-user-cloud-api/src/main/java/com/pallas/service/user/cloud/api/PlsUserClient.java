@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PlsUserClient extends IPlsUserApi {
 
     @Override
-    @RequestMapping(method = RequestMethod.GET, value = "/api/user/getCurrent")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/cloud/user/getCurrent")
     PlsUserDTO getCurrent();
 
     @Override
-    @RequestMapping(method = RequestMethod.GET, value = "/user")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/cloud/user/getUser")
     PlsUserDTO getUser(@RequestParam String username);
 }

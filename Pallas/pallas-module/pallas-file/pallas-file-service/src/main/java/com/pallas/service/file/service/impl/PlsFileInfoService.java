@@ -1,23 +1,25 @@
 package com.pallas.service.file.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.base.Strings;
 import com.pallas.base.api.constant.PlsConstant;
+import com.pallas.base.api.exception.PlsException;
+import com.pallas.base.api.response.ResultType;
+import com.pallas.common.utils.FileUtils;
 import com.pallas.service.file.bean.PlsFileInfo;
 import com.pallas.service.file.dto.PlsFileUpload;
 import com.pallas.service.file.mapper.PlsFileInfoMapper;
 import com.pallas.service.file.service.IPlsFileInfoService;
-import com.pallas.service.file.util.FilePathUtils;
 import com.pallas.service.user.api.IPlsUserApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,6 +42,7 @@ public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileIn
     }
 
     @Override
+    @Transactional
     public List<Long> upload(List<PlsFileUpload> fileUploads) {
         Long addUser = Objects.nonNull(plsUserClient) ? plsUserClient.getCurrent().getId() : null;
         List<PlsFileInfo> infos = fileUploads.stream()
@@ -55,21 +58,47 @@ public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileIn
                     .setFileSize(e.getFileSize())
                     .setExtension(extension)
                     .setOriginName(fileName)
-                    .setPath(FilePathUtils.getPath(e.getModule(), extension))
-                    .setSensitive(e.getSensitive())
+                    .setSensibility(e.getSensibility())
                     .setExpireTime(e.getExpireTime())
                     .setRestTimes(e.getRestTimes())
                     .setAddUser(addUser);
             }).collect(Collectors.toList());
         saveBatch(infos);
         for (int i = 0; i < fileUploads.size(); i++) {
-            Path path = Paths.get(infos.get(i).getPath());
+            PlsFileInfo fileInfo = infos.get(i);
+            String fileName = Strings.isNullOrEmpty(fileInfo.getExtension()) ? (fileInfo.getId() + "")
+                : (fileInfo.getId() + PlsConstant.DOT + fileInfo.getExtension());
             try {
-                Files.write(path, fileUploads.get(i).getContent());
+                String filePath = FileUtils.writeFile(fileName, fileUploads.get(i).getContent(), fileInfo.getModule());
+                update().set("path", filePath)
+                    .eq("id", fileInfo.getId())
+                    .update();
             } catch (IOException e) {
-                log.error("文件上传异常：【{}】", infos.get(i).getId() + "");
+                log.error("文件上传异常：【{}】", infos.get(i).getId() + "", e);
             }
         }
-        return null;
+        return infos.stream().map(PlsFileInfo::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    public PlsFileInfo getFile(long id) {
+        PlsFileInfo fileInfo = query()
+            .eq("id", id)
+            .ne("rest_times", 0)
+            .ge("expire_time", new Date())
+            .one();
+        if (Objects.isNull(fileInfo)) {
+            throw new PlsException(ResultType.NOT_FOUND, "文件未找到");
+        }
+        // todo 权限过滤
+        return fileInfo;
+    }
+
+    @Override
+    public void downloadOnce(Long id) {
+        update().eq("id", id)
+            .gt("rest_times", 0)
+            .setSql("rest_times = rest_times - 1")
+            .update();
     }
 }

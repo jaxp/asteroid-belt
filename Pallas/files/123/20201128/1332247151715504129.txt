@@ -1,0 +1,24 @@
+r,c1,v,item_subject_id,type,all,result_col1
+r,c2,v,item_subject_id,type,result_id,result_col2
+r,c3,v,item_subject_id,type,result_id,result_col3
+
+
+删除列
+1.cell:result_id(del)
+2.row:item_subject_id(result_col)
+更改映射
+1.cell->cell:result_id(result_col1 -> result_col2)
+2.cell->row:item_subject_id(result_col1 -> result_col2)
+3.row->cell:item_subject_id(result_col1 -> result_col2)
+4.row->row:item_subject_id(result_col1 -> result_col2)
+父子列
+item_subject_id(result_col)
+列标准名
+1.cell:result_id(upd)
+2.row:item_subject_id(result_col)
+
+[{c:,r:,v:},{c:,r:,v:},{c:,r:,v:}{c:,r:,v:}]
+
+id, c, r, v, version
+id, c, r, v, version
+id, c, r, v, version

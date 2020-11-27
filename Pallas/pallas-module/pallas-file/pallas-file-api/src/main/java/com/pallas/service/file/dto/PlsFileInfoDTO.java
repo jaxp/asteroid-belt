@@ -25,7 +25,7 @@ public class PlsFileInfoDTO {
     private String md5;
     private String module;
     private String path;
-    private Boolean sensitive;
+    private Boolean sensibility;
     private Date addTime;
     private Long addUser;
     private Integer restTimes;

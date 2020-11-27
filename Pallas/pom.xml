@@ -46,6 +46,7 @@
     <flyway.version>6.5.0</flyway.version>
     <druid.version>1.1.22</druid.version>
     <jjwt.version>0.11.2</jjwt.version>
+    <p6spy.version>3.9.1</p6spy.version>
     <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
     <dockerfile.skip>true</dockerfile.skip>
     <consul.host>127.0.0.1</consul.host>
@@ -171,6 +172,11 @@
         <groupId>com.alibaba</groupId>
         <artifactId>druid-spring-boot-starter</artifactId>
         <version>${druid.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>p6spy</groupId>
+        <artifactId>p6spy</artifactId>
+        <version>${p6spy.version}</version>
       </dependency>
       <dependency>
         <groupId>io.jsonwebtoken</groupId>

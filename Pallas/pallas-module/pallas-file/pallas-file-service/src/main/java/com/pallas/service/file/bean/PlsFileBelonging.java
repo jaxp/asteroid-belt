@@ -2,7 +2,7 @@ package com.pallas.service.file.bean;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pallas.service.file.enums.OrganizationType;
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

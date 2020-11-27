@@ -1,18 +1,36 @@
 package com.pallas.service.file.controller;
 
+import com.google.common.base.Charsets;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.PlsResult;
+import com.pallas.base.api.response.ResultType;
+import com.pallas.common.utils.FileUtils;
+import com.pallas.service.file.bean.PlsFileInfo;
+import com.pallas.service.file.constant.FileConstant;
 import com.pallas.service.file.dto.PlsFileUpload;
-import com.pallas.service.file.enums.Sensitive;
+import com.pallas.service.file.enums.Sensibility;
 import com.pallas.service.file.params.FileUpload;
 import com.pallas.service.file.service.IPlsFileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +53,7 @@ public class FileController {
     @PostMapping("/upload")
     public PlsResult upload(FileUpload fileUpload) {
         if (Objects.isNull(fileUpload.getFiles()) || fileUpload.getFiles().length == 0) {
-            throw PlsException.paramMissing("至少上传一个文件");
+            throw new PlsException(ResultType.PARAM_MISSING, "至少上传一个文件");
         }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, PlsConstant.HALF_HOUR);
@@ -46,12 +64,12 @@ public class FileController {
                     return new PlsFileUpload()
                         .setModule(fileUpload.getModule())
                         .setFileSize(e.getSize())
-                        .setSensitive(Sensitive.ANOYMOUS)
+                        .setSensibility(Sensibility.ANOYMOUS)
                         .setFileName(e.getOriginalFilename())
                         .setExpireTime(expireTime)
                         .setContent(e.getBytes());
                 } catch (IOException ex) {
-                    throw PlsException.paramMissing("文件获取失败");
+                    throw new PlsException("文件读取失败");
                 }
             })
             .collect(Collectors.toList());
@@ -60,6 +78,63 @@ public class FileController {
             return PlsResult.success(ids.get(0));
         }
         return PlsResult.success(ids);
+    }
+
+    @GetMapping("/download/{id}")
+    public void download(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        PlsFileInfo fileInfo = plsFileInfoService.getFile(id);
+        String filePath = FileUtils.getRoot() + fileInfo.getPath();
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new PlsException(ResultType.NOT_FOUND, "文件未找到");
+        }
+        // 浏览器兼容
+        String userAgent = request.getHeader(HttpHeaders.USER_AGENT).toLowerCase();
+        String showName = null;
+        if (userAgent.contains(FileConstant.AGENT_MSIE) || userAgent.contains(FileConstant.AGENT_GECKO)) {
+            showName = URLEncoder.encode(fileInfo.getOriginName(), Charsets.UTF_8.name());
+        } else {
+            showName = new String(fileInfo.getOriginName().getBytes(Charsets.UTF_8.name()), Charsets.ISO_8859_1.name());
+        }
+        // 设置Content-Type为文件的MimeType
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        // 设置文件名
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, FileConstant.CONTENT_DISPOSITION_PREFIX + showName);
+        response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
+        boolean successful = true;
+        try (
+            RandomAccessFile raf = new RandomAccessFile(file, "r");
+            FileChannel fileChannel = raf.getChannel();
+            ServletOutputStream os = response.getOutputStream()
+        ) {
+            response.setContentLengthLong(fileChannel.size());
+
+            int bufferSize = FileConstant.BUF_SIZE;
+            ByteBuffer buff = ByteBuffer.allocateDirect(786432);
+            byte[] byteArr = new byte[bufferSize];
+            int nRead, nGet;
+            while ((nRead = fileChannel.read(buff)) != -1) {
+                if (nRead == 0) {
+                    continue;
+                }
+                buff.position(0);
+                buff.limit(nRead);
+                while (buff.hasRemaining()) {
+                    nGet = Math.min(buff.remaining(), bufferSize);
+                    buff.get(byteArr, 0, nGet);
+                    os.write(byteArr, 0, nGet);
+                }
+                buff.clear();
+            }
+        } catch (IOException e) {
+            successful = false;
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            throw new PlsException("文件下载失败", e);
+        } finally {
+            if (successful && fileInfo.getRestTimes() > 0) {
+                plsFileInfoService.downloadOnce(fileInfo.getId());
+            }
+        }
     }
 
 }

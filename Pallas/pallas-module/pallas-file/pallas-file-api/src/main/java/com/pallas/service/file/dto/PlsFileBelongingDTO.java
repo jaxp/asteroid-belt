@@ -1,6 +1,6 @@
 package com.pallas.service.file.dto;
 
-import com.pallas.service.file.enums.OrganizationType;
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

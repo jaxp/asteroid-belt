@@ -25,25 +25,17 @@ spring:
         test-on-borrow: true
         test-on-return: false
         validation-query: select 1
-        validation-query-timeout: 20
+        validation-query-timeout: 60
         pool-prepared-statements: true
         max-pool-prepared-statement-per-connection-size: 20
-        filters: stat,wall
-        stat:
-          merge-sql: true
-          log-slow-sql: false
-          slow-sql-millis: 1
-        wall:
-          condition-and-alway-true-allow: true
-          condition-and-alway-false-allow: true
-          condition-double-const-allow: true
+        filters: stat
       primary: mysql
       datasource:
         mysql:
           username: root
           password: kI7ES+VBEmuAK3A30z6qr5S3vuBU1swuNI7kEwyr3saQFjeSmvzxRWp86MYctfxk/XvG04A5+KlMj0WujCzs9g==
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://127.0.0.1:3306/pls_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&useAffectedRows=true
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://127.0.0.1:3306/pls_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&useAffectedRows=true
           druid:
             initial-size: 10
             max-active: 50

@@ -66,4 +66,5 @@ public class PlsException extends RuntimeException {
     public static final PlsException paramInvalid(String paramName) {
         return new PlsException(ResultType.PARAM_INVALID, new StringBuilder("非法的参数【").append(paramName).append("】").toString());
     }
+
 }

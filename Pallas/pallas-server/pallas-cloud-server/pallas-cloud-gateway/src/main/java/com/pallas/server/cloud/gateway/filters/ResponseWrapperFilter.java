@@ -46,7 +46,9 @@ public class ResponseWrapperFilter implements GlobalFilter, Ordered {
             @Override
             public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
                 try {
-                    if (body instanceof Flux) {
+                    if (Objects.equals(originalResponse.getHeaders().getContentType(), MediaType.APPLICATION_OCTET_STREAM)) {
+                        return super.writeWith(body);
+                    } else if (body instanceof Flux) {
                         Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
                         return super.writeWith(fluxBody.buffer().map(dataBuffers -> {
                             StringBuilder sb = new StringBuilder();

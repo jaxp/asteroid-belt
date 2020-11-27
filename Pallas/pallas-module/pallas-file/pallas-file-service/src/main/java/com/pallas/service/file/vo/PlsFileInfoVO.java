@@ -1,6 +1,6 @@
 package com.pallas.service.file.vo;
 
-import com.pallas.service.file.enums.Sensitive;
+import com.pallas.service.file.enums.Sensibility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class PlsFileInfoVO {
     private Long fileSize;
     private String md5;
     private String module;
-    private Sensitive sensitive;
+    private Sensibility sensibility;
     private Date addTime;
     private Long addUser;
     private Integer restTimes;
