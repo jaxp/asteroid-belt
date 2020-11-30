@@ -1,5 +1,6 @@
 package com.pallas.service.captcha.builder;
 
+import com.pallas.service.captcha.entity.CaptchaClue;
 import com.pallas.service.captcha.entity.CaptchaResult;
 
 /**
@@ -14,19 +15,19 @@ public interface ICaptcha {
      * @param cid
      * @return
      */
-    Object build();
+    CaptchaClue build();
 
     /**
      * 初始化验证码
      */
-    CaptchaResult init(String cid);
+    CaptchaResult init();
 
     /**
      * 缓存校验id
      *
-     * @param cid
+     * @param result
      */
-    void cache(String cid, String value);
+    void cache(CaptchaResult result);
 
     /**
      * 校验验证码

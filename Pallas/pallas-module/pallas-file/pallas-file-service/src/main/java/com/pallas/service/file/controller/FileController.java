@@ -12,6 +12,7 @@ import com.pallas.service.file.dto.PlsFileUpload;
 import com.pallas.service.file.enums.Sensibility;
 import com.pallas.service.file.params.FileUpload;
 import com.pallas.service.file.service.IPlsFileInfoService;
+import com.pallas.service.user.api.IPlsUserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -47,6 +48,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/file")
 public class FileController {
 
+    @Autowired(required = false)
+    private IPlsUserApi plsUserClient;
     @Autowired
     private IPlsFileInfoService plsFileInfoService;
 
@@ -55,6 +58,8 @@ public class FileController {
         if (Objects.isNull(fileUpload.getFiles()) || fileUpload.getFiles().length == 0) {
             throw new PlsException(ResultType.PARAM_MISSING, "至少上传一个文件");
         }
+        Long addUser = Objects.nonNull(plsUserClient) ? plsUserClient.getCurrent().getId() : null;
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, PlsConstant.HALF_HOUR);
         Date expireTime = calendar.getTime();
@@ -63,7 +68,7 @@ public class FileController {
                 try {
                     return new PlsFileUpload()
                         .setModule(fileUpload.getModule())
-                        .setFileSize(e.getSize())
+                        .setAddUser(addUser)
                         .setSensibility(Sensibility.ANOYMOUS)
                         .setFileName(e.getOriginalFilename())
                         .setExpireTime(expireTime)

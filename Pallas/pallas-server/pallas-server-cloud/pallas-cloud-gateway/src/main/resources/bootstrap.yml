@@ -1,0 +1,56 @@
+server:
+  port: 8070
+spring:
+  application:
+    name: pallas-cloud-gateway
+  profiles:
+    active: @profileActive@
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: @consul.host@
+      port: 8500
+      discovery:
+        acl-token: @consul.token@
+      config:
+        enabled: true
+        acl-token: @consul.token@
+        prefix: config
+        default-context: pallas-cloud-gateway
+        profile-separator: '-'
+        format: YAML
+        data-key: data
+        watch:
+          enabled: true
+          delay: 1000
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: sample_route
+        uri: lb://pallas-cloud-sample
+        predicates:
+        - Path=/api/sample/**
+      - id: captcha_route
+        uri: lb://pallas-cloud-captcha
+        predicates:
+        - Path=/api/captcha/**
+      - id: file_route
+        uri: lb://pallas-cloud-file
+        predicates:
+        - Path=/api/file/**
+      - id: user_route
+        uri: lb://pallas-cloud-user
+        predicates:
+        - Path=/api/user/**
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

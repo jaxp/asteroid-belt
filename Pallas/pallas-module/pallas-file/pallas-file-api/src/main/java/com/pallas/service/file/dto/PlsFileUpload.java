@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 public class PlsFileUpload {
     private String module;
     private String fileName;
-    private Long fileSize;
     private byte[] content;
+    private Long addUser;
     private Integer restTimes;
     private Date expireTime;
     private Sensibility sensibility;

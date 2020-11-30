@@ -14,22 +14,31 @@ import lombok.Data;
 @AllArgsConstructor
 public class PlsException extends RuntimeException {
 
-    private static final int DEFAULT_CODE = 101;
     private int code;
 
     public PlsException(String msg) {
         super(msg);
-        this.code = DEFAULT_CODE;
+        this.code = ResultType.GENERAL_ERR.getCode();
     }
 
     public PlsException(Throwable cause) {
         super(cause);
-        this.code = DEFAULT_CODE;
+        this.code = ResultType.GENERAL_ERR.getCode();
     }
 
     public PlsException(String msg, Throwable cause) {
         super(msg, cause);
-        this.code = DEFAULT_CODE;
+        this.code = ResultType.GENERAL_ERR.getCode();
+    }
+
+    public PlsException(int code, String msg, Throwable cause) {
+        super(msg, cause);
+        this.code = code;
+    }
+
+    public PlsException(int code, String msg) {
+        super(msg);
+        this.code = code;
     }
 
     public PlsException(ResultType resultType) {

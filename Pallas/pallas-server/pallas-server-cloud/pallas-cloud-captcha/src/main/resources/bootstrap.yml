@@ -1,0 +1,41 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: pallas-cloud-captcha
+  profiles:
+    active: @profileActive@
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: @consul.host@
+      port: 8500
+      discovery:
+        health-check-interval: 10s
+        fail-fast: true
+        acl-token: @consul.token@
+      config:
+        enabled: true
+        acl-token: @consul.token@
+        prefix: config
+        default-context: pallas-cloud-user
+        profile-separator: '-'
+        format: YAML
+        data-key: data
+        watch:
+          enabled: true
+          delay: 1000
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

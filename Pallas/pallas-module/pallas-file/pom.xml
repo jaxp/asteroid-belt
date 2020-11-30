@@ -14,6 +14,7 @@
     <module>pallas-file-api</module>
     <module>pallas-file-service</module>
     <module>pallas-file-cloud-api</module>
+    <module>pallas-file-cloud-service</module>
   </modules>
   <packaging>pom</packaging>
 

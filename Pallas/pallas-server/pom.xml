@@ -12,9 +12,9 @@
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
   <modules>
-    <module>pallas-cloud-server</module>
-    <module>pallas-conf-server</module>
-    <module>pallas-server-common</module>
+    <module>pallas-server-base</module>
+    <module>pallas-server-cloud</module>
+    <module>pallas-server-single</module>
   </modules>
 
   <dependencies>

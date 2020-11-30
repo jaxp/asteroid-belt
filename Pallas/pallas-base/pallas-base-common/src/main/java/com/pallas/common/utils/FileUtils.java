@@ -32,7 +32,7 @@ public class FileUtils {
         path.append(File.separator)
             .append(calendar.get(Calendar.YEAR))
             .append(String.format("%02d", (calendar.get(Calendar.MONTH) + 1)))
-            .append(String.format("%02d", (calendar.get(Calendar.DAY_OF_MONTH) + 1))).append(File.separator);
+            .append(String.format("%02d", (calendar.get(Calendar.DAY_OF_MONTH) + 1)));
         return path.toString();
     }
 

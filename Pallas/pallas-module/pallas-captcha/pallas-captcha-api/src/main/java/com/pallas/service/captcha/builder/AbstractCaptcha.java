@@ -1,5 +1,6 @@
 package com.pallas.service.captcha.builder;
 
+import com.pallas.service.captcha.entity.CaptchaClue;
 import com.pallas.service.captcha.entity.CaptchaResult;
 import com.pallas.service.captcha.handler.ICaptchaGear;
 import com.pallas.service.captcha.handler.ICaptchaHandler;
@@ -32,17 +33,24 @@ public abstract class AbstractCaptcha implements ICaptcha {
         return this.captchaGear;
     }
 
+    public String getCid() {
+        return captchaHandler.buildId() + "_" + System.currentTimeMillis();
+    }
+
     @Override
-    public Object build() {
-        String cid = captchaHandler.buildId() + "_" + System.currentTimeMillis();
-        CaptchaResult result = init(cid);
-        cache(cid, result.getValue());
+    public CaptchaClue build() {
+        // 生成验证码
+        CaptchaResult result = init();
+        // 保存相关图片
+        captchaHandler.saveImages(result);
+        // 缓存验证码结果
+        cache(result);
         return result.getClue();
     }
 
     @Override
-    public void cache(String cid, String value) {
-        captchaHandler.cache(cid, value);
+    public void cache(CaptchaResult result) {
+        captchaHandler.cache(result.getClue().getCid(), result.getValue());
     }
 
     @Override

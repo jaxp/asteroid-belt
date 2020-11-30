@@ -17,6 +17,7 @@
     <module>pallas-user-api</module>
     <module>pallas-user-auth</module>
     <module>pallas-user-cloud-api</module>
+    <module>pallas-user-cloud-service</module>
   </modules>
 
 

@@ -10,10 +10,8 @@ import com.pallas.service.file.bean.PlsFileInfo;
 import com.pallas.service.file.dto.PlsFileUpload;
 import com.pallas.service.file.mapper.PlsFileInfoMapper;
 import com.pallas.service.file.service.IPlsFileInfoService;
-import com.pallas.service.user.api.IPlsUserApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +31,6 @@ import java.util.stream.Collectors;
 @Service
 public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileInfo> implements IPlsFileInfoService {
 
-    @Autowired(required = false)
-    private IPlsUserApi plsUserClient;
-
     @Override
     public Long upload(PlsFileUpload fileUpload) {
         return upload(Arrays.asList(fileUpload)).get(0);
@@ -44,7 +39,6 @@ public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileIn
     @Override
     @Transactional
     public List<Long> upload(List<PlsFileUpload> fileUploads) {
-        Long addUser = Objects.nonNull(plsUserClient) ? plsUserClient.getCurrent().getId() : null;
         List<PlsFileInfo> infos = fileUploads.stream()
             .map(e -> {
                 String fileName = e.getFileName();
@@ -55,13 +49,13 @@ public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileIn
                 return new PlsFileInfo()
                     .setModule(e.getModule())
                     .setMd5(DigestUtils.md5Hex(e.getContent()).toUpperCase())
-                    .setFileSize(e.getFileSize())
+                    .setFileSize(new Long(e.getContent().length))
                     .setExtension(extension)
                     .setOriginName(fileName)
                     .setSensibility(e.getSensibility())
                     .setExpireTime(e.getExpireTime())
                     .setRestTimes(e.getRestTimes())
-                    .setAddUser(addUser);
+                    .setAddUser(e.getAddUser());
             }).collect(Collectors.toList());
         saveBatch(infos);
         for (int i = 0; i < fileUploads.size(); i++) {

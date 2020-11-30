@@ -26,15 +26,12 @@
     <pallas-base-common.version>1.0.0-SNAPSHOT</pallas-base-common.version>
     <pallas-base-batis.version>1.0.0-SNAPSHOT</pallas-base-batis.version>
     <pallas-base-cache.version>1.0.0-SNAPSHOT</pallas-base-cache.version>
-    <pallas-user-api.version>1.0.0-SNAPSHOT</pallas-user-api.version>
-    <pallas-user-cloud-api.version>1.0.0-SNAPSHOT</pallas-user-cloud-api.version>
-    <pallas-user-auth.version>1.0.0-SNAPSHOT</pallas-user-auth.version>
-    <pallas-user-service.version>1.0.0-SNAPSHOT</pallas-user-service.version>
-    <pallas-file-api.version>1.0.0-SNAPSHOT</pallas-file-api.version>
-    <pallas-file-service.version>1.0.0-SNAPSHOT</pallas-file-service.version>
-    <pallas-captcha-api.version>1.0.0-SNAPSHOT</pallas-captcha-api.version>
-    <pallas-captcha-sliding.version>1.0.0-SNAPSHOT</pallas-captcha-sliding.version>
+
+    <pallas-user.version>1.0.0-SNAPSHOT</pallas-user.version>
+    <pallas-file.version>1.0.0-SNAPSHOT</pallas-file.version>
+    <pallas-captcha.version>1.0.0-SNAPSHOT</pallas-captcha.version>
     <pallas-server-common.version>1.0.0-SNAPSHOT</pallas-server-common.version>
+    <pallas-server-cloud-common.version>1.0.0-SNAPSHOT</pallas-server-cloud-common.version>
     <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
     <guava.version>18.0</guava.version>
     <commons-collections.version>4.4</commons-collections.version>
@@ -45,6 +42,7 @@
     <shardingsphere.version>4.1.1</shardingsphere.version>
     <flyway.version>6.5.0</flyway.version>
     <druid.version>1.1.22</druid.version>
+    <feign-okhttp.version>11.0</feign-okhttp.version>
     <jjwt.version>0.11.2</jjwt.version>
     <p6spy.version>3.9.1</p6spy.version>
     <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
@@ -84,42 +82,82 @@
       <dependency>
         <groupId>com.pallas</groupId>
         <artifactId>pallas-user-api</artifactId>
-        <version>${pallas-user-api.version}</version>
+        <version>${pallas-user.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
         <artifactId>pallas-user-cloud-api</artifactId>
-        <version>${pallas-user-cloud-api.version}</version>
+        <version>${pallas-user.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
         <artifactId>pallas-user-auth</artifactId>
-        <version>${pallas-user-auth.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.pallas</groupId>
-        <artifactId>pallas-captcha-api</artifactId>
-        <version>${pallas-captcha-api.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.pallas</groupId>
-        <artifactId>pallas-file-api</artifactId>
-        <version>${pallas-file-api.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.pallas</groupId>
-        <artifactId>pallas-file-service</artifactId>
-        <version>${pallas-file-service.version}</version>
+        <version>${pallas-user.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
         <artifactId>pallas-user-service</artifactId>
-        <version>${pallas-user-service.version}</version>
+        <version>${pallas-user.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-user-cloud-service</artifactId>
+        <version>${pallas-user.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-captcha-api</artifactId>
+        <version>${pallas-captcha.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-captcha-sliding</artifactId>
+        <version>${pallas-captcha.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-captcha-service</artifactId>
+        <version>${pallas-captcha.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-captcha-cloud-api</artifactId>
+        <version>${pallas-captcha.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-captcha-cloud-service</artifactId>
+        <version>${pallas-captcha.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-file-api</artifactId>
+        <version>${pallas-file.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-file-service</artifactId>
+        <version>${pallas-file.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-file-cloud-api</artifactId>
+        <version>${pallas-file.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-file-cloud-service</artifactId>
+        <version>${pallas-file.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>
         <artifactId>pallas-server-common</artifactId>
         <version>${pallas-server-common.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-server-cloud-common</artifactId>
+        <version>${pallas-server-cloud-common.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -173,6 +211,12 @@
         <artifactId>druid-spring-boot-starter</artifactId>
         <version>${druid.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.github.openfeign</groupId>
+        <artifactId>feign-okhttp</artifactId>
+        <version>${feign-okhttp.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>p6spy</groupId>
         <artifactId>p6spy</artifactId>

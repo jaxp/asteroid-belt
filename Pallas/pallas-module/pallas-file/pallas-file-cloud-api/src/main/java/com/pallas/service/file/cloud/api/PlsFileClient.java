@@ -5,7 +5,6 @@ import com.pallas.service.file.dto.PlsFileUpload;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,10 +17,10 @@ import java.util.List;
 public interface PlsFileClient extends IPlsFileApi {
 
     @Override
-    @RequestMapping(method = RequestMethod.POST, value = "/api/file/upload")
-    Long upload(@RequestParam PlsFileUpload fileUpload);
+    @RequestMapping(method = RequestMethod.POST, value = "/api/cloud/file/upload")
+    Long upload(PlsFileUpload fileUpload);
 
     @Override
-    @RequestMapping(method = RequestMethod.POST, value = "/api/file/uploadMulti")
-    List<Long> upload(@RequestParam List<PlsFileUpload> fileUploads);
+    @RequestMapping(method = RequestMethod.POST, value = "/api/cloud/file/uploadMulti")
+    List<Long> upload(List<PlsFileUpload> fileUploads);
 }
