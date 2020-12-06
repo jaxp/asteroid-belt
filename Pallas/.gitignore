@@ -1,5 +1,7 @@
 # maven ignore
 target/
+files/
+img/
 *.class
 *.jar
 *.war
