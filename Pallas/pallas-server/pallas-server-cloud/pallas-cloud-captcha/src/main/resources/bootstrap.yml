@@ -5,8 +5,6 @@ spring:
     name: pallas-cloud-captcha
   profiles:
     active: @profileActive@
-  autoconfigure:
-    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   cloud:
     loadbalancer:
       ribbon:
