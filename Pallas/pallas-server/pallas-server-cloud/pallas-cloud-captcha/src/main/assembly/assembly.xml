@@ -8,6 +8,10 @@
     <includeBaseDirectory>true</includeBaseDirectory>
     <fileSets>
         <fileSet>
+            <directory>src/main/resources/img</directory>
+            <outputDirectory>${file.separator}img</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>src/main/resources</directory>
             <includes>
                 <include>*.yml</include>
