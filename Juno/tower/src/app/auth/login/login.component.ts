@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TowerValidators } from '@/constants/validators';
 import { AuthService } from '../auth.service';
-import { EncryptService } from '@shared/services/encrypt.service';
-import { Router } from '@angular/router';
+import { SlideCaptchaComponent } from '@/app/shared/components/slide-captcha/slide-captcha.component';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.less']
 })
 export class LoginComponent implements OnInit {
+
+  @ViewChild('slideCaptcha')
+  private slideCaptcha: SlideCaptchaComponent;
 
   validateForm!: FormGroup;
   loginLoading = false;
@@ -32,13 +34,17 @@ export class LoginComponent implements OnInit {
       }
     }
     if (this.validateForm.valid) {
-      const params = this.validateForm.value;
-      this.loginLoading = true;
-      this.authService.login(params)
-        .subscribe(e => {
-          this.loginLoading = false;
-        });
+      this.slideCaptcha.refresh();
     }
+  }
+
+  login(): void {
+    const params = this.validateForm.value;
+    this.loginLoading = true;
+    this.authService.login(params)
+      .subscribe(e => {
+        this.loginLoading = false;
+      });
   }
 
   constructor(private fb: FormBuilder, private authService: AuthService) {

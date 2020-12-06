@@ -30,11 +30,12 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { ConstantPipe } from './pipes/constant.pipe';
 import { GeometricElfDirective } from './directives/geometric-elf.directive';
 import { GraphDirective } from './directives/graph.directive';
+import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.component';
 
 
 
 @NgModule({
-  declarations: [GeometricElfDirective, GraphDirective, ConstantPipe],
+  declarations: [GeometricElfDirective, GraphDirective, ConstantPipe, SlideCaptchaComponent],
   imports: [
     CommonModule,
     IconsProviderModule,
@@ -94,6 +95,7 @@ import { GraphDirective } from './directives/graph.directive';
     ReactiveFormsModule,
     FormsModule,
     GeometricElfDirective,
+    SlideCaptchaComponent,
     GraphDirective,
     ConstantPipe,
     HttpClientModule

@@ -30,19 +30,23 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       mergeMap((event: any) => {
         if (event instanceof HttpResponse) {
-          code = event.body.code;
-          if (code !== 200) {
-            if (code >= 10100 && code < 10200) {
-              this.authService.clearAuthorizationToken();
-            }
-            result = 'failed';
-            return throwError(event.body);
-          } else {
+          if (event.body.type === 'application/octet-stream') {
             result = 'succeeded';
-          }
-          const token = event.headers.get('authorization');
-          if (token) {
-            this.authService.setAuthorizationToken(token);
+          } else {
+            code = event.body.code;
+            if (code !== 200) {
+              if (code >= 10100 && code < 10200) {
+                this.authService.clearAuthorizationToken();
+              }
+              result = 'failed';
+              return throwError(event.body);
+            } else {
+              result = 'succeeded';
+            }
+            const token = event.headers.get('authorization');
+            if (token) {
+              this.authService.setAuthorizationToken(token);
+            }
           }
         }
         return of(event);

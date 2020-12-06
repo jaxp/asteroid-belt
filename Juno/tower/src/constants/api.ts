@@ -10,5 +10,12 @@ export const Api = Object.freeze({
   menu: {
     getMenus: '/api/user/menu/getMenus',
     enableMenu: '/api/user/menu/enableMenu',
+  },
+  captcha: {
+    slide: '/api/anon/captcha/slide',
+    validate: '/api/anon/captcha/validate'
+  },
+  file: {
+    download: '/api/anon/file/download/'
   }
 });

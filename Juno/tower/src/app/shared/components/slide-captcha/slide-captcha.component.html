@@ -1,0 +1,25 @@
+<ng-template #tplSlideCaptcha>
+  <nz-layout class="slide-captcha">
+    <nz-content>
+      <div class="slide-captcha-refresh">
+        <i nz-icon nzType="reload" nzTheme="outline" (click)="refresh()"></i>
+      </div>
+      <div class="slide-captcha-images">
+        <nz-spin nzSimple nzSize="large" [nzSpinning]="status.key === 0">
+        </nz-spin>
+        <img #tplImgBase class="slide-captcha-images-base" />
+        <img #tplImgCutout class="slide-captcha-images-cutout" [style]="{width: cutoutWidth + 'px', left: length + 'px', top: captcha.data.y * 100 + '%'}" />
+      </div>
+    </nz-content>
+    <nz-footer>
+      <div class="slide-captcha-bar">
+        <div class="slide-captcha-bar-tip" [style.paddingLeft.px]="length + cutoutWidth" [style.color]="status.color">{{status.tip}}</div>
+        <div class="slide-captcha-bar-indicator" [style.width.px]="length" [style.background]="status.bg"></div>
+        <button class="slide-captcha-bar-btn" [style.width.px]="cutoutWidth" nz-button (mousedown)="begin($event)" (mousemove)="slide($event)" (mouseup)="end($event)">
+          <i nz-icon nzType="double-right"></i>
+        </button>
+      </div>
+    </nz-footer>
+    <div class="slide-captcha-wrap" [style.display]="status?.key === 2 ? 'block' : 'none'" (mousemove)="slide($event)" (mouseup)="end($event)"></div>
+  </nz-layout>
+</ng-template>

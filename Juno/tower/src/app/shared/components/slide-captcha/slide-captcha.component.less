@@ -1,0 +1,58 @@
+.slide-captcha {
+  position: relative;
+  .ant-layout-footer {
+    padding: 0;
+    position: relative;
+  }
+  &-wrap {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+  }
+  &-refresh {
+    position: absolute;
+    text-align: right;
+    width: 100%;
+    z-index: 1;
+    color: white;
+    font-size: 20px;
+    padding: 5px;
+    i {
+      cursor: pointer;
+    }
+  }
+  &-images {
+    width: 100%;
+    z-index: 0;
+    position: relative;
+    &-base {
+      width: 100%;
+    }
+    &-cutout {
+      position: absolute;
+      left: 0;
+    }
+  }
+  &-bar {
+    padding-top: 1px;
+    height: 30px;
+    line-height: 30px;
+    display: flex;
+    &-indicator, &-btn, &-tip {
+      height: 100%;
+      text-align: center;
+      z-index: 1;
+    }
+    &-tip {
+      position: absolute;
+      width: 100%;
+      background: white;
+      color: #A7A7A7;
+      z-index: 0;
+    }
+  }
+}

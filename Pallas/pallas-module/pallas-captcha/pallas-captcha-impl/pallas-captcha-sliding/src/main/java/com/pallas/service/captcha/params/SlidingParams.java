@@ -23,8 +23,8 @@ public class SlidingParams {
     private int height;
     private int startX;
     private int startY;
-    private int aLength;
-    private int aRadius;
+    private int length;
+    private int radius;
     private int[][] data;
     private Map<String, Object> clueData;
 }

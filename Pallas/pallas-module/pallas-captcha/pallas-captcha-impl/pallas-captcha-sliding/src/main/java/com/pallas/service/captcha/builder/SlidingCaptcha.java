@@ -3,6 +3,7 @@ package com.pallas.service.captcha.builder;
 import com.google.common.base.Strings;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
+import com.pallas.base.api.response.ResultType;
 import com.pallas.service.captcha.entity.CaptchaClue;
 import com.pallas.service.captcha.entity.CaptchaImage;
 import com.pallas.service.captcha.entity.CaptchaResult;
@@ -37,18 +38,18 @@ import java.util.UUID;
  */
 @Slf4j
 public class SlidingCaptcha extends AbstractCaptcha {
-    // 方块与整个图的宽度比例
-    private static final double LENGTH = 0.15;
-    // 缺口与边长的比例
-    private static final double RADIUS = 0.35;
-    // 方块外围白色边框与边长的比例
-    private static final double BORDER = 0.1;
-    // 范围误差
-    private static final int GAP = 3;
     // 底部图片
     private static final String BASE_NAME = "base.png";
     // 方块图片
     private static final String CUTOUT_NAME = "cutout.png";
+    // 方块与整个图的宽度比例
+    private static final double CUTOUT_RATE = 0.12;
+    // 缺口与边长的比例
+    private static final double RADIUS = 0.35;
+    // 方块外围白色边框与边长的比例
+    private static final double BORDER = 0.05;
+    // 范围误差
+    private static final int GAP = 3;
     // 最终图片长度
     private static final int IMG_WIDTH = 200;
     // 最终图片高度
@@ -68,8 +69,7 @@ public class SlidingCaptcha extends AbstractCaptcha {
                 .setData(param.getClueData());
             // 验证码结果
             String result = new StringBuilder(param.getStartX() + "").append(PlsConstant.COLON)
-                .append(param.getWidth()).append(PlsConstant.COLON)
-                .append(UUID.randomUUID()).toString();
+                .append(param.getWidth()).toString();
             // 验证码
             return new CaptchaResult(clue, images, result);
         } catch (Exception e) {
@@ -96,14 +96,14 @@ public class SlidingCaptcha extends AbstractCaptcha {
             int cc = Integer.parseInt(codeArr[0]);
             int ct = Integer.parseInt(codeArr[1]);
             if (!enable || Math.abs(c * ct / t - cc) < GAP) {
-                captchaHandler().cacheCertificate(valueArr[2]);
-                return valueArr[2];
+                String certificate = UUID.randomUUID().toString();
+                captchaHandler().cacheCertificate(certificate);
+                return certificate;
             }
-        } catch (Exception e) {
         } finally {
             captchaHandler().expire(cid);
         }
-        return "";
+        throw new PlsException(ResultType.CAPTCHA_INVALID);
     }
 
     private SlidingParams loadImage() throws IOException {
@@ -130,51 +130,46 @@ public class SlidingCaptcha extends AbstractCaptcha {
     private void generateBlock(SlidingParams param) {
         int width = param.getWidth();
         int height = param.getHeight();
-        int aLength = new Double(height * LENGTH).intValue();
-        int aRadius = new Double(aLength * RADIUS).intValue();
-        param.setStartX(new Double(width * 0.2 + Math.random() * (width - aLength * 2 - width * 0.3)).intValue());
-        param.setStartY(new Double(height * 0.5 - aLength - aRadius).intValue());
-        param.setALength(aLength);
-        param.setARadius(aRadius);
+        int length = new Double(width * CUTOUT_RATE).intValue();
+        int radius = new Double(length * RADIUS / 2).intValue();
+        param.setStartX(new Double(width * 0.2 + Math.random() * (width - length - width * 0.3)).intValue());
+        param.setStartY(new Double(height * 0.2 + Math.random() * (height - length - radius - height * 0.3)).intValue());
+        param.setLength(length);
+        param.setRadius(radius);
 
-        int xLen = aLength * 2;
-        int yLen = aLength * 2 + aRadius;
-        int border = new Double(aLength * BORDER + "").intValue();
-        int sa = aRadius * aRadius;
-        int ia = (aRadius - border) * (aRadius - border);
-        int oa = (aRadius + border) * (aRadius + border);
+        int xLen = length;
+        int yLen = length + radius;
+        int border = new Double(length * BORDER + "").intValue();
+        int sa = radius * radius;
+        int ia = (radius - border) * (radius - border);
+        int oa = (radius + border) * (radius + border);
         int[][] data = new int[xLen][yLen];
         double result;
         for (int i = 0; i < xLen; i++) {
             for (int j = 0; j < yLen; j++) {
-                boolean leftBorder = i < border && (j > aRadius && j < aLength || j > aLength + aRadius * 2);
-                boolean rightBorder = i > aLength * 2 - border && j > aRadius;
-                boolean topBorder = j > aRadius && j < aRadius + border && (i < aLength - aRadius || i > aLength + aRadius);
-                boolean bottomBorder = j > aLength * 2 + aRadius - border;
+                boolean leftBorder = i < border && (j > radius && j < length / 2 || j > length / 2 + radius * 2);
+                boolean rightBorder = i > length - border && j > radius;
+                boolean topBorder = j > radius && j < radius + border && (i < length / 2 - radius || i > length / 2 + radius);
+                boolean bottomBorder = j > length + radius - border;
                 if (leftBorder || rightBorder || topBorder || bottomBorder) {
                     data[i][j] = 2;
                     continue;
                 }
-                if (i <= aRadius && j >= aLength && j <= aLength + aRadius * 2) {
-                    result = Math.pow(i, 2) + Math.pow(j - aRadius - aLength, 2);
+                if (i <= radius && j >= length / 2 && j <= length / 2 + radius * 2) {
+                    result = Math.pow(i, 2) + Math.pow(j - radius - length / 2, 2);
                     if (result < oa) {
                         data[i][j] = result <= sa ? 0 : 2;
                         continue;
                     }
                 }
-                if (i >= aLength - aRadius && i <= aLength + aRadius && j <= aRadius) {
-                    result = Math.pow(i - aLength, 2) + Math.pow(j - aRadius, 2);
+                if (i >= length / 2 - radius && i <= length / 2 + radius && j <= radius) {
+                    result = Math.pow(i - length / 2, 2) + Math.pow(j - radius, 2);
                     if (result > ia) {
                         data[i][j] = result > sa ? 0 : 2;
                         continue;
                     }
                 }
-                //if (i < aRadius && (Math.pow(i, 2) + Math.pow(j - aRadius - aLength, 2) <= pa)
-                //    || j < aRadius && (Math.pow(i - aLength, 2) + Math.pow(j - aRadius, 2) > pa)) {
-                //  data[i][j] = 0;
-                //  continue;
-                //}
-                if (j > aRadius || i > aLength - aRadius && i < aLength + aRadius) {
+                if (j > radius || i > length / 2 - radius && i < length / 2 + radius) {
                     data[i][j] = 1;
                 }
             }
@@ -182,18 +177,18 @@ public class SlidingCaptcha extends AbstractCaptcha {
         param.setData(data);
     }
 
-    private List<CaptchaImage> cutImage(SlidingParams param) throws IOException {
+    private List<CaptchaImage> cutImage(SlidingParams param) {
         BufferedImage originImage = param.getOriginImage();
         int width = param.getWidth();
         int height = param.getHeight();
-        int aLength = param.getALength();
-        int aRadius = param.getARadius();
+        int length = param.getLength();
+        int radius = param.getRadius();
         int startX = param.getStartX();
         int startY = param.getStartY();
-        int data[][] = param.getData();
+        int[][] data = param.getData();
         try {
-            int aWidth = aLength * 2;
-            int aHeight = aLength * 2 + aRadius;
+            int aWidth = length;
+            int aHeight = length + radius;
             BufferedImage baseImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             BufferedImage cutoutImage = new BufferedImage(aWidth, aHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics2D = cutoutImage.createGraphics();
@@ -259,8 +254,8 @@ public class SlidingCaptcha extends AbstractCaptcha {
             }
             //CompressUtils.fromBufferedImage2(blurBaseImage, "jpg");
             Map<String, Object> clueData = new HashMap<>(2);
-            clueData.put("rate", LENGTH);
-            clueData.put("y", 0.5 - LENGTH - LENGTH * RADIUS);
+            clueData.put("rate", CUTOUT_RATE);
+            clueData.put("y", new Double(startY) / height);
             param.setClueData(clueData);
             return images;
         } catch (Exception e) {

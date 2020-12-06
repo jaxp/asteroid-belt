@@ -59,3 +59,8 @@ export interface User {
   updTime: string;
 }
 
+export interface Captcha {
+  cid: string;
+  images: string[];
+  data: {rate: number, y: number};
+}
