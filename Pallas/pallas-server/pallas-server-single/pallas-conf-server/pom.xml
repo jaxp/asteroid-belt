@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.pallas</groupId>
-    <artifactId>pallas-server</artifactId>
+    <artifactId>pallas-server-single</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <groupId>com.pallas</groupId>
