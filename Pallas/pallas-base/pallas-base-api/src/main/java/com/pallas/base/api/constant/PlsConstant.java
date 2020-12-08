@@ -11,6 +11,7 @@ public class PlsConstant {
     public static final String DOT = ".";
     public static final String COLON = ":";
     public static final String QUOTE = "\"";
+    public static final String SEPARATOR = "/";
     public static final String SINGLE_QUOTE = "\"";
     public static final String UNDERLINE = "_";
     public static final String CROSSBAR = "-";

@@ -4,6 +4,7 @@ import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.PlsResult;
 import com.pallas.base.api.response.ResultType;
+import com.pallas.service.captcha.annotation.Captcha;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.cache.RsaKeyCacher;
 import com.pallas.service.user.converter.PlsMenuConverter;
@@ -50,6 +51,7 @@ public class AuthController {
         return PlsResult.success(rsaKeyCacher.getPublicKeyStr());
     }
 
+    @Captcha
     @PostMapping("/login")
     public PlsResult login(@RequestBody UserPwdLoginParam param, HttpServletResponse response) {
         try {

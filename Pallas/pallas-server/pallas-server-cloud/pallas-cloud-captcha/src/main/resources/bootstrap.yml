@@ -20,7 +20,7 @@ spring:
         enabled: true
         acl-token: @consul.token@
         prefix: config
-        default-context: pallas-cloud-user
+        default-context: pallas-cloud-captcha
         profile-separator: '-'
         format: YAML
         data-key: data

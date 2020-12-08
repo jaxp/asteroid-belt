@@ -18,6 +18,10 @@ public class PlsCaptchaService implements IPlsCaptchaApi {
 
     @Override
     public boolean validate(String certificate) {
-        return captchaHandler.existCertificate(certificate);
+        if (captchaHandler.existCertificate(certificate)) {
+            captchaHandler.expireCertificate(certificate);
+            return true;
+        }
+        return false;
     }
 }

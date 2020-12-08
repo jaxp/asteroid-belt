@@ -24,6 +24,10 @@
       <artifactId>pallas-base-batis</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.minio</groupId>
+      <artifactId>minio</artifactId>
+    </dependency>
+    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
     </dependency>

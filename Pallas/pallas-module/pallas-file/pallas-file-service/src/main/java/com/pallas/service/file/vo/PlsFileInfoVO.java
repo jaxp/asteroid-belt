@@ -1,5 +1,6 @@
 package com.pallas.service.file.vo;
 
+import com.pallas.service.file.enums.FileStatus;
 import com.pallas.service.file.enums.Sensibility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class PlsFileInfoVO {
     private Long fileSize;
     private String md5;
     private String module;
+    private FileStatus status;
     private Sensibility sensibility;
     private Date addTime;
     private Long addUser;

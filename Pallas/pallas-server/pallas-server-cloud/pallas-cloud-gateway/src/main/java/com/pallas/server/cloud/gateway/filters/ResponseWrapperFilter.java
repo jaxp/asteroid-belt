@@ -34,6 +34,9 @@ import java.util.Objects;
 @Component
 public class ResponseWrapperFilter implements GlobalFilter, Ordered {
 
+    private static final String TEXT_CONTENT_TYPE = "text";
+    private static final String JSON_CONTENT_TYPE = "json";
+
     @Autowired
     private ObjectMapper jsonMapper;
 
@@ -46,7 +49,9 @@ public class ResponseWrapperFilter implements GlobalFilter, Ordered {
             @Override
             public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
                 try {
-                    if (Objects.equals(originalResponse.getHeaders().getContentType(), MediaType.APPLICATION_OCTET_STREAM)) {
+                    MediaType contentType = originalResponse.getHeaders().getContentType();
+                    String contentTypeValue = contentType.toString();
+                    if (!contentTypeValue.contains(TEXT_CONTENT_TYPE) && !contentTypeValue.contains(JSON_CONTENT_TYPE)) {
                         return super.writeWith(body);
                     } else if (body instanceof Flux) {
                         Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
@@ -62,7 +67,7 @@ public class ResponseWrapperFilter implements GlobalFilter, Ordered {
                             byte[] resultContent = null;
                             try {
                                 if (originalResponse.getStatusCode().equals(HttpStatus.OK)) {
-                                    if (originalResponse.getHeaders().getContentType().isCompatibleWith(MediaType.TEXT_PLAIN)) {
+                                    if (contentType.isCompatibleWith(MediaType.TEXT_PLAIN)) {
                                         result = jsonMapper.writeValueAsString(PlsResult.success(result));
                                         originalResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON);
                                     } else {

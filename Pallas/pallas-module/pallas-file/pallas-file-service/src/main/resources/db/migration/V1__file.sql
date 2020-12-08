@@ -7,7 +7,7 @@ CREATE TABLE `pls_f_info`
     `file_size`   int          DEFAULT NULL COMMENT '文件大小',
     `md5`         varchar(64)  DEFAULT NULL COMMENT 'md5',
     `module`      varchar(64)  DEFAULT NULL COMMENT '模块',
-    `path`        varchar(512) DEFAULT NULL COMMENT '路径',
+    `status`        tinyint DEFAULT NULL COMMENT '文件状态',
     `sensibility`   tinyint(1)   DEFAULT 0 COMMENT '敏感文件',
     `rest_times`  int          DEFAULT -1 COMMENT '剩余下载次数',
     `expire_time` datetime     DEFAULT NULL COMMENT '过期时间',
@@ -28,7 +28,7 @@ CREATE TABLE `pls_f_belonging`
     `id`                bigint(20) unsigned NOT NULL COMMENT '编号',
     `file_id`           bigint(20) unsigned NOT NULL COMMENT '文件编号',
     `organization`      bigint(20) unsigned NOT NULL COMMENT '组织',
-    `organization_type` tinyint(1) DEFAULT NULL COMMENT '组织类型',
+    `organization_type` tinyint DEFAULT NULL COMMENT '组织类型',
     PRIMARY KEY (`id`),
     KEY `idx_file_id` (`file_id`) USING HASH,
     KEY `idx_organization` (`organization`) USING HASH

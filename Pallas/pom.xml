@@ -30,8 +30,10 @@
     <pallas-user.version>1.0.0-SNAPSHOT</pallas-user.version>
     <pallas-file.version>1.0.0-SNAPSHOT</pallas-file.version>
     <pallas-captcha.version>1.0.0-SNAPSHOT</pallas-captcha.version>
+
     <pallas-server-common.version>1.0.0-SNAPSHOT</pallas-server-common.version>
     <pallas-server-cloud-common.version>1.0.0-SNAPSHOT</pallas-server-cloud-common.version>
+
     <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
     <guava.version>18.0</guava.version>
     <commons-collections.version>4.4</commons-collections.version>
@@ -46,6 +48,8 @@
     <jjwt.version>0.11.2</jjwt.version>
     <p6spy.version>3.9.1</p6spy.version>
     <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
+    <minio.version>8.0.3</minio.version>
+
     <dockerfile.skip>true</dockerfile.skip>
     <consul.host>127.0.0.1</consul.host>
     <consul.token></consul.token>
@@ -193,6 +197,11 @@
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
         <version>${flyway.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.minio</groupId>
+        <artifactId>minio</artifactId>
+        <version>${minio.version}</version>
       </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>

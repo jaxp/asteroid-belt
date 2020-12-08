@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pallas.service.file.enums.Sensibility;
+import com.pallas.service.file.enums.FileStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,9 +47,9 @@ public class PlsFileInfo {
      */
     private String module;
     /**
-     * 路径
+     * 状态
      */
-    private String path;
+    private FileStatus status;
     /**
      * 是否有归属人
      */

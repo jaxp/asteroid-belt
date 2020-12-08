@@ -36,6 +36,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-undertow</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.pallas</groupId>
+      <artifactId>pallas-captcha-api</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

@@ -38,10 +38,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(): void {
+  login(certificate): void {
     const params = this.validateForm.value;
     this.loginLoading = true;
-    this.authService.login(params)
+    this.authService.login(params, certificate)
       .subscribe(e => {
         this.loginLoading = false;
       });

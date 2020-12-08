@@ -1,11 +1,11 @@
 package com.pallas.service.file.controller;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.PlsResult;
 import com.pallas.base.api.response.ResultType;
-import com.pallas.common.utils.FileUtils;
 import com.pallas.service.file.bean.PlsFileInfo;
 import com.pallas.service.file.constant.FileConstant;
 import com.pallas.service.file.dto.PlsFileUpload;
@@ -13,6 +13,12 @@ import com.pallas.service.file.enums.Sensibility;
 import com.pallas.service.file.params.FileUpload;
 import com.pallas.service.file.service.IPlsFileInfoService;
 import com.pallas.service.user.api.IPlsUserApi;
+import io.minio.GetObjectArgs;
+import io.minio.GetObjectResponse;
+import io.minio.MinioClient;
+import io.minio.StatObjectArgs;
+import io.minio.StatObjectResponse;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,16 +28,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +52,8 @@ public class FileController {
     private IPlsUserApi plsUserClient;
     @Autowired
     private IPlsFileInfoService plsFileInfoService;
+    @Autowired
+    private MinioClient minioClient;
 
     @PostMapping("/upload")
     public PlsResult upload(FileUpload fileUpload) {
@@ -86,13 +88,17 @@ public class FileController {
     }
 
     @GetMapping("/download/{id}")
-    public void download(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    public void download(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlsFileInfo fileInfo = plsFileInfoService.getFile(id);
-        String filePath = FileUtils.getRoot() + fileInfo.getPath();
-        File file = new File(filePath);
-        if (!file.exists()) {
-            throw new PlsException(ResultType.NOT_FOUND, "文件未找到");
-        }
+        String bucketName = fileInfo.getModule();
+        String fileName = Strings.isNullOrEmpty(fileInfo.getExtension()) ? (fileInfo.getId() + "")
+            : (fileInfo.getId() + PlsConstant.DOT + fileInfo.getExtension());
+        boolean successful = true;
+        StatObjectResponse stat = minioClient.statObject(StatObjectArgs.builder()
+            .bucket(bucketName)
+            .object(fileName)
+            .build());
+        response.setContentType(stat.contentType());
         // 浏览器兼容
         String userAgent = request.getHeader(HttpHeaders.USER_AGENT).toLowerCase();
         String showName = null;
@@ -101,37 +107,17 @@ public class FileController {
         } else {
             showName = new String(fileInfo.getOriginName().getBytes(Charsets.UTF_8.name()), Charsets.ISO_8859_1.name());
         }
-        // 设置Content-Type为文件的MimeType
-        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        // 设置文件名
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, FileConstant.CONTENT_DISPOSITION_PREFIX + showName);
         response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
-        boolean successful = true;
         try (
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
-            FileChannel fileChannel = raf.getChannel();
-            ServletOutputStream os = response.getOutputStream()
+            GetObjectResponse in = minioClient.getObject(
+                GetObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .build())
         ) {
-            response.setContentLengthLong(fileChannel.size());
-
-            int bufferSize = FileConstant.BUF_SIZE;
-            ByteBuffer buff = ByteBuffer.allocateDirect(786432);
-            byte[] byteArr = new byte[bufferSize];
-            int nRead, nGet;
-            while ((nRead = fileChannel.read(buff)) != -1) {
-                if (nRead == 0) {
-                    continue;
-                }
-                buff.position(0);
-                buff.limit(nRead);
-                while (buff.hasRemaining()) {
-                    nGet = Math.min(buff.remaining(), bufferSize);
-                    buff.get(byteArr, 0, nGet);
-                    os.write(byteArr, 0, nGet);
-                }
-                buff.clear();
-            }
-        } catch (IOException e) {
+            IOUtils.copy(in, response.getOutputStream());
+        } catch (Exception e) {
             successful = false;
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             throw new PlsException("文件下载失败", e);

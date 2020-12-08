@@ -2,6 +2,7 @@ package com.pallas.service.file.bo;
 
 import com.pallas.common.utils.SpringUtils;
 import com.pallas.service.file.bean.PlsFileBelonging;
+import com.pallas.service.file.enums.FileStatus;
 import com.pallas.service.file.enums.Sensibility;
 import com.pallas.service.file.service.IPlsFileBelongingService;
 import com.pallas.service.file.service.IPlsFileInfoService;
@@ -31,7 +32,7 @@ public class PlsFileInfoBO {
     private Long fileSize;
     private String md5;
     private String module;
-    private String path;
+    private FileStatus status;
     private Sensibility sensibility;
     private Date addTime;
     private Long addUser;

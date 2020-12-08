@@ -30,9 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       mergeMap((event: any) => {
         if (event instanceof HttpResponse) {
-          if (event.body.type === 'application/octet-stream') {
-            result = 'succeeded';
-          } else {
+          if (event.headers.get('content-type') === 'application/json') {
             code = event.body.code;
             if (code !== 200) {
               if (code >= 10100 && code < 10200) {
@@ -47,6 +45,8 @@ export class AuthInterceptor implements HttpInterceptor {
             if (token) {
               this.authService.setAuthorizationToken(token);
             }
+          } else {
+            result = 'succeeded';
           }
         }
         return of(event);

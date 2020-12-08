@@ -1,5 +1,6 @@
 package com.pallas.service.file.dto;
 
+import com.pallas.service.file.enums.FileStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class PlsFileInfoDTO {
     private Long fileSize;
     private String md5;
     private String module;
-    private String path;
+    private FileStatus status;
     private Boolean sensibility;
     private Date addTime;
     private Long addUser;

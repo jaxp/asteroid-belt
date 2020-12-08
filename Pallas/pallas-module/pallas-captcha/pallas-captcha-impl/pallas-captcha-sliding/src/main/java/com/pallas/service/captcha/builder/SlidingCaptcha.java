@@ -85,23 +85,22 @@ public class SlidingCaptcha extends AbstractCaptcha {
     @Override
     public String check(String cid, String checkCode, boolean enable) {
         String value = captchaHandler().getCache(cid);
-        if (Strings.isNullOrEmpty(value)) {
-            return "";
-        }
-        try {
-            String[] valueArr = value.split(PlsConstant.COLON);
-            String[] codeArr = checkCode.split(PlsConstant.COLON);
-            int c = Integer.parseInt(valueArr[0]);
-            int t = Integer.parseInt(valueArr[1]);
-            int cc = Integer.parseInt(codeArr[0]);
-            int ct = Integer.parseInt(codeArr[1]);
-            if (!enable || Math.abs(c * ct / t - cc) < GAP) {
-                String certificate = UUID.randomUUID().toString();
-                captchaHandler().cacheCertificate(certificate);
-                return certificate;
+        if (!Strings.isNullOrEmpty(value)) {
+            try {
+                String[] valueArr = value.split(PlsConstant.COLON);
+                String[] codeArr = checkCode.split(PlsConstant.COLON);
+                int c = Integer.parseInt(valueArr[0]);
+                int t = Integer.parseInt(valueArr[1]);
+                int cc = Integer.parseInt(codeArr[0]);
+                int ct = Integer.parseInt(codeArr[1]);
+                if (!enable || Math.abs(c * ct / t - cc) < GAP) {
+                    String certificate = UUID.randomUUID().toString();
+                    captchaHandler().cacheCertificate(certificate);
+                    return certificate;
+                }
+            } finally {
+                captchaHandler().expire(cid);
             }
-        } finally {
-            captchaHandler().expire(cid);
         }
         throw new PlsException(ResultType.CAPTCHA_INVALID);
     }

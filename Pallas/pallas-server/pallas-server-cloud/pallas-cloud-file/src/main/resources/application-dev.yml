@@ -1,3 +1,9 @@
+pls:
+  file:
+    minio:
+      url: http://10.106.0.185:9000
+      access_key: root
+      secret_key: 12345678
 spring:
   redis:
     host: localhost

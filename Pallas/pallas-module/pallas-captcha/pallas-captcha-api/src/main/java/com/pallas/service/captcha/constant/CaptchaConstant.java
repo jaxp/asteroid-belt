@@ -7,6 +7,8 @@ package com.pallas.service.captcha.constant;
  */
 public final class CaptchaConstant {
 
+    public static final String CAPTCHA_HEADER = "captcha";
+
     public static final String KEY_PREFIX = "captcha:";
 
     public static final String CERTIFICATE_PREFIX = "captcha:certificate:";

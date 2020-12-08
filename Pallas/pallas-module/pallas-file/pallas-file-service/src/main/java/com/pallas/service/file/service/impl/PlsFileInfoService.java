@@ -5,17 +5,23 @@ import com.google.common.base.Strings;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
-import com.pallas.common.utils.FileUtils;
 import com.pallas.service.file.bean.PlsFileInfo;
+import com.pallas.service.file.constant.ContentType;
 import com.pallas.service.file.dto.PlsFileUpload;
+import com.pallas.service.file.enums.FileStatus;
 import com.pallas.service.file.mapper.PlsFileInfoMapper;
 import com.pallas.service.file.service.IPlsFileInfoService;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +36,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileInfo> implements IPlsFileInfoService {
+
+    @Autowired
+    private MinioClient minioClient;
 
     @Override
     public Long upload(PlsFileUpload fileUpload) {
@@ -52,6 +61,7 @@ public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileIn
                     .setFileSize(new Long(e.getContent().length))
                     .setExtension(extension)
                     .setOriginName(fileName)
+                    .setStatus(FileStatus.PREPARED)
                     .setSensibility(e.getSensibility())
                     .setExpireTime(e.getExpireTime())
                     .setRestTimes(e.getRestTimes())
@@ -62,13 +72,34 @@ public class PlsFileInfoService extends ServiceImpl<PlsFileInfoMapper, PlsFileIn
             PlsFileInfo fileInfo = infos.get(i);
             String fileName = Strings.isNullOrEmpty(fileInfo.getExtension()) ? (fileInfo.getId() + "")
                 : (fileInfo.getId() + PlsConstant.DOT + fileInfo.getExtension());
+            String bucketName = fileInfo.getModule();
+            FileStatus status = FileStatus.SUCCESS;
             try {
-                String filePath = FileUtils.writeFile(fileName, fileUploads.get(i).getContent(), fileInfo.getModule());
-                update().set("path", filePath)
+                if (!minioClient.bucketExists(
+                    BucketExistsArgs.builder()
+                        .bucket(bucketName)
+                        .build())
+                ) {
+                    minioClient.makeBucket(
+                        MakeBucketArgs.builder()
+                            .bucket(bucketName)
+                            .build()
+                    );
+                }
+                byte[] content = fileUploads.get(i).getContent();
+                minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .contentType(ContentType.get(fileInfo.getExtension()))
+                    .stream(new ByteArrayInputStream(content), content.length, -1)
+                    .build());
+            } catch (Exception e) {
+                status = FileStatus.FAIL;
+                log.error("文件上传异常：【{}】", infos.get(i).getId() + "", e);
+            } finally {
+                update().set("status", status)
                     .eq("id", fileInfo.getId())
                     .update();
-            } catch (IOException e) {
-                log.error("文件上传异常：【{}】", infos.get(i).getId() + "", e);
             }
         }
         return infos.stream().map(PlsFileInfo::getId).collect(Collectors.toList());

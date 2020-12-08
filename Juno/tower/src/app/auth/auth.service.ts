@@ -76,21 +76,24 @@ export class AuthService {
       .subscribe(e => this.authorities = e.data);
   }
 
-  login(data: { username: string, password: string }): Observable<Result<User>> {
+  login(data: { username: string, password: string }, certificate: string): Observable<Result<User>> {
     return this.encryptService.getEncrypted(data.password).pipe(
-      flatMap(encryptedPwd => this.http.post<Result<User>>(Api.auth.login, { username: data.username, password: encryptedPwd }).pipe(
-        tap(res => {
-          this.user = res.data;
-          this.router.navigate(['/page']);
-        }),
-        catchError(err => {
-          this.message.error(err.msg);
-          if (err.code === 10001) {
-            this.encryptService.clearPublicKey();
-          }
-          return of(null);
-        })
-      )));
+      flatMap(encryptedPwd =>
+        this.http.post<Result<User>>(Api.auth.login, { username: data.username, password: encryptedPwd }, {
+          headers: { captcha: certificate }
+        }).pipe(
+          tap(res => {
+            this.user = res.data;
+            this.router.navigate(['/page']);
+          }),
+          catchError(err => {
+            this.message.error(err.msg);
+            if (err.code === 10001) {
+              this.encryptService.clearPublicKey();
+            }
+            return of(null);
+          })
+        )));
   }
 
   logout(): void {
@@ -117,5 +120,5 @@ export class AuthService {
   }
 
   constructor(private http: HttpClient, private router: Router, private treeService: TreeService,
-              private message: NzMessageService, private encryptService: EncryptService) { }
+    private message: NzMessageService, private encryptService: EncryptService) { }
 }
