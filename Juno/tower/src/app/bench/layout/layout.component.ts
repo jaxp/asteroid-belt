@@ -21,7 +21,7 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getUser()
       .subscribe(user => this.user = user);
-    this.authService.getAuthorities();
+    this.authService.getAuthorities('menu');
   }
 
 }

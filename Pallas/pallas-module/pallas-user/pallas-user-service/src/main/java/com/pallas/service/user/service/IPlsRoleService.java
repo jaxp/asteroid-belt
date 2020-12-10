@@ -5,6 +5,7 @@ import com.pallas.service.user.bean.PlsRole;
 import com.pallas.service.user.bo.PlsRoleBO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,7 +20,15 @@ public interface IPlsRoleService extends IService<PlsRole> {
      * @param userId
      * @return
      */
-    Set<Long> getRoleIds(Long userId);
+    Map<Long, Integer> getUserRoles(Long userId);
+
+    /**
+     * 获取有效角色
+     *
+     * @param userId
+     * @return
+     */
+    Set<Long> validRoleIds(Long userId);
 
     /**
      * 获取角色

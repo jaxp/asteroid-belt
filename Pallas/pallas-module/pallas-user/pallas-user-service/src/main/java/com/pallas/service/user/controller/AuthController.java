@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,9 +78,9 @@ public class AuthController {
         return PlsResult.success(menuConverter.bo2vo(authService.getMenus()));
     }
 
-    @GetMapping("/getAuthorities")
-    public PlsResult getAuthorities() {
-        return PlsResult.success(authService.getAuthorities());
+    @GetMapping("/getAuthorities/{resourceType}")
+    public PlsResult getAuthorities(@PathVariable String resourceType) {
+        return PlsResult.success(authService.getAuthorities(resourceType));
     }
 
     @GetMapping("/logout")

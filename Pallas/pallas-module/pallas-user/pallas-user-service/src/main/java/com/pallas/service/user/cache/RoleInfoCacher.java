@@ -1,6 +1,5 @@
 package com.pallas.service.user.cache;
 
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,15 +7,12 @@ import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.cache.cacher.AbstractHashCacher;
 import com.pallas.service.user.bean.PlsAuthority;
-import com.pallas.service.user.bean.PlsAuthoritySet;
 import com.pallas.service.user.bean.PlsMenu;
-import com.pallas.service.user.bean.PlsMenuSet;
 import com.pallas.service.user.bean.PlsRole;
-import com.pallas.service.user.enums.OrganizationType;
+import com.pallas.service.user.constant.Permission;
+import com.pallas.service.user.constant.ResourceType;
 import com.pallas.service.user.service.IPlsAuthorityService;
-import com.pallas.service.user.service.IPlsAuthoritySetService;
 import com.pallas.service.user.service.IPlsMenuService;
-import com.pallas.service.user.service.IPlsMenuSetService;
 import com.pallas.service.user.service.IPlsRoleService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -38,20 +33,14 @@ import java.util.stream.Collectors;
 public class RoleInfoCacher extends AbstractHashCacher<String> {
 
     private ThreadLocal<Long> context = new ThreadLocal<>();
-    private static final String ROLE = "role";
-    private static final String MENUS = "menus";
-    private static final String AUTHORITIES = "authorities";
+    private static final String DATA = "data";
 
     @Autowired
     private IPlsRoleService plsRoleService;
     @Autowired
     private IPlsMenuService plsMenuService;
     @Autowired
-    private IPlsMenuSetService plsMenuSetService;
-    @Autowired
     private IPlsAuthorityService plsAuthorityService;
-    @Autowired
-    private IPlsAuthoritySetService plsAuthoritySetService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -78,34 +67,30 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
         Map<String, String> result = new HashMap<>(3);
         if (Objects.nonNull(role)) {
             try {
-                result.put(ROLE, objectMapper.writeValueAsString(role));
-
-                List<PlsMenuSet> menuSets = plsMenuSetService.query()
-                    .eq("organization", role.getId())
-                    .eq("organization_type", OrganizationType.ROLE)
-                    .list();
+                Map<String, List<PlsAuthority>> authorityMap =
+                    plsAuthorityService.getAuthorityMap(role.getId());
                 List<PlsMenu> menus = plsMenuService.query()
                     .select("id")
                     .ge("grade", role.getGrade())
                     .list();
-                Set<Long> menuIds = menuSets.stream().map(PlsMenuSet::getMenuId).collect(Collectors.toSet());
-                menuIds.addAll(menus.stream().map(PlsMenu::getId).collect(Collectors.toSet()));
-                result.put(MENUS, objectMapper.writeValueAsString(menuIds));
-
-                List<PlsAuthoritySet> authoritySets = plsAuthoritySetService.query()
-                    .eq("organization", role.getId())
-                    .eq("organization_type", OrganizationType.ROLE)
-                    .list();
-                Set<Long> authIds = authoritySets.stream().map(PlsAuthoritySet::getAuthorityId).collect(Collectors.toSet());
-                QueryChainWrapper<PlsAuthority> wrapper = plsAuthorityService.query()
-                    .select("authority")
-                    .ge("grade", role.getGrade());
-                if (CollectionUtils.isNotEmpty(authIds)) {
-                    wrapper.or().in("id", authIds);
+                if (CollectionUtils.isNotEmpty(menus)) {
+                    List<PlsAuthority> menuAuthorities = menus.stream()
+                        .map(e -> new PlsAuthority()
+                            .setResource(e.getId())
+                            .setPermission(Permission.ALL)
+                        ).collect(Collectors.toList());
+                    if (authorityMap.containsKey(ResourceType.MENU)) {
+                        menuAuthorities.addAll(authorityMap.get(ResourceType.MENU));
+                    }
+                    authorityMap.put(ResourceType.MENU, menuAuthorities);
                 }
-                List<PlsAuthority> plsAuthorities = wrapper.list();
-                List<String> authorities = plsAuthorities.stream().map(PlsAuthority::getAuthority).collect(Collectors.toList());
-                result.put(AUTHORITIES, objectMapper.writeValueAsString(authorities));
+                result.put(DATA, objectMapper.writeValueAsString(role));
+                for (Map.Entry<String, List<PlsAuthority>> entry : authorityMap.entrySet()) {
+                    result.put(entry.getKey(), objectMapper.writeValueAsString(
+                        entry.getValue().stream()
+                            .collect(Collectors.toMap(PlsAuthority::getResource, PlsAuthority::getPermission))
+                    ));
+                }
             } catch (JsonProcessingException e) {
                 throw new PlsException("系统缓存加载失败");
             }
@@ -113,19 +98,11 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
         return result;
     }
 
-    public Set<Long> getMenus() {
-        String data = this.getData(MENUS);
+    public Map<Long, Integer> getAuthorities(String resourceType) {
+        String data = this.getData(resourceType);
         try {
-            return objectMapper.readValue(data, new TypeReference<Set<Long>>(){});
-        } catch (JsonProcessingException e) {
-            throw new PlsException("系统缓存读取失败");
-        }
-    }
-
-    public List<String> getAuthorities() {
-        String data = this.getData(AUTHORITIES);
-        try {
-            return objectMapper.readValue(data, new TypeReference<List<String>>(){});
+            return objectMapper.readValue(data, new TypeReference<Map<Long, Integer>>() {
+            });
         } catch (JsonProcessingException e) {
             throw new PlsException("系统缓存读取失败");
         }

@@ -7,6 +7,8 @@ import com.pallas.service.user.bo.PlsUserBO;
 import com.pallas.service.user.cache.RoleInfoCacher;
 import com.pallas.service.user.cache.TokenCacher;
 import com.pallas.service.user.cache.UserInfoCacher;
+import com.pallas.service.user.constant.Permission;
+import com.pallas.service.user.constant.ResourceType;
 import com.pallas.service.user.converter.PlsMenuConverter;
 import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.properties.AuthProperties;
@@ -18,7 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author: jax
@@ -64,21 +69,39 @@ public class AuthService implements IAuthService {
 
     @Override
     public List<PlsMenuBO> getMenus() {
-        Set<Long> menuIds = userInfoCacher.getMenuIds();
-        Set<Long> roleIds = userInfoCacher.getRoleIds();
-        for (Long roleId : roleIds) {
-            menuIds.addAll(roleInfoCacher.role(roleId).getMenus());
-        }
+        Map<Long, Integer> menuMap = getAuthorities(ResourceType.MENU);
+        Set<Long> menuIds = menuMap.entrySet().stream()
+            .filter(e -> !Permission.forbidden(e.getValue()))
+            .map(e -> e.getKey())
+            .collect(Collectors.toSet());
         List<PlsMenu> menus = plsMenuService.listByIds(menuIds);
         return plsMenuConverter.do2bo(menus);
     }
 
     @Override
-    public List<String> getAuthorities() {
-        List<String> authorities = userInfoCacher.getAuthorities();
-        Set<Long> roleIds = userInfoCacher.getRoleIds();
+    public Map<Long, Integer> getAuthorities(String resourceType) {
+        Map<Long, Integer> authorities = userInfoCacher.getAuthorities(resourceType);
+        Set<Long> forbiddenIds = authorities.entrySet().stream()
+            .filter(e -> Permission.forbidden(e.getValue()))
+            .map(e -> e.getKey())
+            .collect(Collectors.toSet());
+        // 角色权限
+        Map<Long, Integer> roleMap = userInfoCacher.getAuthorities(ResourceType.ROLE);
+        Set<Long> roleIds = roleMap.entrySet().stream()
+            .filter(e -> !Permission.forbidden(e.getValue()))
+            .map(e -> e.getKey())
+            .collect(Collectors.toSet());
         for (Long roleId : roleIds) {
-            authorities.addAll(roleInfoCacher.role(roleId).getAuthorities());
+            Map<Long, Integer> roleAuthorityMap = roleInfoCacher.role(roleId)
+                .getAuthorities(resourceType);
+            for (Map.Entry<Long, Integer> entry : roleAuthorityMap.entrySet()) {
+                Long key = entry.getKey();
+                if (forbiddenIds.contains(key)) {
+                    continue;
+                }
+                Integer value = entry.getValue();
+                authorities.put(key, Optional.ofNullable(authorities.get(key)).orElse(0) | value);
+            }
         }
         return authorities;
     }

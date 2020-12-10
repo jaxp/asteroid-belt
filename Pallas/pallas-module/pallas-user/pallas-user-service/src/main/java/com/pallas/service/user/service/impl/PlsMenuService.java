@@ -2,17 +2,15 @@ package com.pallas.service.user.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pallas.service.user.bean.PlsAuthority;
 import com.pallas.service.user.bean.PlsMenu;
-import com.pallas.service.user.bean.PlsMenuSet;
 import com.pallas.service.user.bo.PlsMenuBO;
-import com.pallas.service.user.cache.UserInfoCacher;
+import com.pallas.service.user.constant.Permission;
+import com.pallas.service.user.constant.ResourceType;
 import com.pallas.service.user.converter.PlsMenuConverter;
-import com.pallas.service.user.enums.Permission;
 import com.pallas.service.user.mapper.PlsMenuMapper;
+import com.pallas.service.user.service.IPlsAuthorityService;
 import com.pallas.service.user.service.IPlsMenuService;
-import com.pallas.service.user.service.IPlsMenuSetService;
-import com.pallas.service.user.service.IPlsRoleService;
-import com.pallas.service.user.service.IPlsRoleSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -34,23 +31,15 @@ import java.util.stream.Collectors;
 public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implements IPlsMenuService {
 
     @Autowired
-    private IPlsMenuSetService plsMenuSetService;
-    @Autowired
-    private IPlsRoleService plsRoleService;
-    @Autowired
-    private IPlsRoleSetService plsRoleSetService;
-    @Autowired
-    private UserInfoCacher userInfoCacher;
-    @Autowired
     private PlsMenuConverter plsMenuConverter;
+    @Autowired
+    private IPlsAuthorityService plsAuthorityService;
 
     @Override
-    public Set<Long> getMenuIds(Long organization) {
-        List<PlsMenuSet> menusets = plsMenuSetService.query()
-            .eq("organization", organization)
-            .list();
-        Set<Long> menuIds = menusets.stream().map(PlsMenuSet::getMenuId).collect(Collectors.toSet());
-        return menuIds;
+    public Map<Long, Integer> getMenus(Long organization) {
+        List<PlsAuthority> authorities = plsAuthorityService.getAuthorities(organization, ResourceType.MENU);
+        return authorities.stream()
+            .collect(Collectors.toMap(PlsAuthority::getResource, PlsAuthority::getPermission));
     }
 
     @Override
@@ -63,15 +52,13 @@ public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implemen
         if (CollectionUtils.isEmpty(organizations)) {
             return new ArrayList<>();
         }
-        List<PlsMenuSet> menusets = plsMenuSetService.query()
-            .in("organization", organizations)
-            .list();
-        if (CollectionUtils.isEmpty(menusets)) {
+        List<PlsAuthority> authorities = plsAuthorityService.getAuthorities(organizations, ResourceType.MENU);
+        if (CollectionUtils.isEmpty(authorities)) {
             return new ArrayList<>();
         }
-        Map<Long, Permission> menuIdPermissionMap = menusets.stream()
-            .collect(Collectors.toMap(PlsMenuSet::getMenuId, PlsMenuSet::getPermission));
-        List<PlsMenu> menus = listByIds(menuIdPermissionMap.values());
+        Map<Long, Integer> menuIdPermissionMap = authorities.stream()
+            .collect(Collectors.toMap(PlsAuthority::getResource, PlsAuthority::getPermission));
+        List<PlsMenu> menus = listByIds(menuIdPermissionMap.keySet());
         List<PlsMenuBO> menuBOS = plsMenuConverter.do2bo(menus);
         menuBOS.forEach(e -> e.loadPermission(menuIdPermissionMap));
         return menuBOS;
@@ -86,7 +73,7 @@ public class PlsMenuService extends ServiceImpl<PlsMenuMapper, PlsMenu> implemen
             .ge("grade", grade)
             .list();
         List<PlsMenuBO> menuBOS = plsMenuConverter.do2bo(menus);
-        menuBOS.forEach(e -> e.setPermission(Permission.EDIT_DELETE));
+        menuBOS.forEach(e -> e.setPermission(Permission.ALL));
         return menuBOS;
     }
 

@@ -71,8 +71,8 @@ export class AuthService {
     }
   }
 
-  getAuthorities(): void {
-    this.http.get<Result<string[]>>(Api.auth.getAuthorities)
+  getAuthorities(type: string): void {
+    this.http.get<Result<string[]>>(Api.auth.getAuthorities + type)
       .subscribe(e => this.authorities = e.data);
   }
 

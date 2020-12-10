@@ -5,6 +5,7 @@ import com.pallas.service.user.bo.PlsMenuBO;
 import com.pallas.service.user.bo.PlsUserBO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: jax
@@ -45,7 +46,7 @@ public interface IAuthService {
      *
      * @return
      */
-    List<String> getAuthorities();
+    Map<Long, Integer> getAuthorities(String resourceType);
 
     /**
      * 校验token

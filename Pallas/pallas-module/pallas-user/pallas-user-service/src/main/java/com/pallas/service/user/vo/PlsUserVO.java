@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: jax
@@ -61,5 +62,5 @@ public class PlsUserVO {
     /**
      * 权限
      */
-    private List<String> authorities;
+    private Map<String, List<Long>> authorities;
 }

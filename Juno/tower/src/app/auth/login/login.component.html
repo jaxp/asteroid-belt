@@ -30,4 +30,4 @@
     </form>
   </nz-card>
 </div>
-<app-slide-captcha #slideCaptcha (succeed)="login($event)"></app-slide-captcha>
+<app-slide-captcha #slideCaptcha (succeed)="login($event)" (closed)="loginLoading = false"></app-slide-captcha>

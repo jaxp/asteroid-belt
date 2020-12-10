@@ -1,7 +1,10 @@
 package com.pallas.service.user.bean;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,28 +28,37 @@ public class PlsAuthority implements GrantedAuthority {
     @TableId
     private Long id;
     /**
-     * 名称
+     * 组织
      */
-    private String name;
+    private Long organization;
+    /**
+     * 组织类型
+     */
+    private OrganizationType organizationType;
+    /**
+     * 权限级别
+     */
+    private Integer permission;
+    /**
+     * 资源类型
+     */
+    private String resourceType;
+    /**
+     * 权限资源
+     */
+    private Long resource;
     /**
      * 标识
      */
     private String authority;
     /**
-     * 等级
+     * 新增用户
      */
-    private Integer grade;
-    /**
-     * 是否可用
-     */
-    private Boolean enabled;
+    private Long addUser;
     /**
      * 新增时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date addTime;
-    /**
-     * 更新时间
-     */
-    private Date updTime;
 
 }

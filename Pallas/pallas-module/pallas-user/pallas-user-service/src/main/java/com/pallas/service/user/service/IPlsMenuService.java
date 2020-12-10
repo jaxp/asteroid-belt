@@ -6,7 +6,7 @@ import com.pallas.service.user.bo.PlsMenuBO;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * @author: jax
@@ -20,7 +20,7 @@ public interface IPlsMenuService extends IService<PlsMenu> {
      * @param organization
      * @return
      */
-    Set<Long> getMenuIds(Long organization);
+    Map<Long, Integer> getMenus(Long organization) ;
 
     /**
      * 获取菜单

@@ -1,6 +1,5 @@
 package com.pallas.service.user.bo;
 
-import com.pallas.service.user.enums.Permission;
 import com.pallas.service.user.enums.menu.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,14 +27,14 @@ public class PlsMenuBO {
     private Boolean disabled;
     private MenuType type;
     private String url;
-    private Permission permission;
+    private Integer permission;
     private Integer grade;
     private Long addUser;
     private Long updUser;
     private Date addTime;
     private Date updTime;
 
-    public void loadPermission(Map<Long, Permission> permissionMap) {
+    public void loadPermission(Map<Long, Integer> permissionMap) {
         this.permission = permissionMap.get(this.id);
     }
 }

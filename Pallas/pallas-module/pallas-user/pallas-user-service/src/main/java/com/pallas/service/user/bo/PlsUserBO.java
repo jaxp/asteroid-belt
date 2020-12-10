@@ -1,7 +1,7 @@
 package com.pallas.service.user.bo;
 
 import com.pallas.common.utils.SpringUtils;
-import com.pallas.service.user.enums.Permission;
+import com.pallas.service.user.constant.Permission;
 import com.pallas.service.user.service.IPlsMenuService;
 import com.pallas.service.user.service.IPlsRoleService;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class PlsUserBO {
     private List<PlsMenuBO> roleMenus;
     private List<PlsMenuBO> menus;
 
-    private Map<Long, Permission> permissionMap;
+    private Map<Long, Integer> permissionMap;
 
     private IPlsRoleService roleService;
     private IPlsMenuService menuService;
@@ -85,11 +85,11 @@ public class PlsUserBO {
         return this.menus;
     }
 
-    public Permission getPermission(Long menuId) {
+    public int getPermission(Long menuId) {
         return Optional.ofNullable(this.getPermissionMap().get(menuId)).orElse(Permission.NONE);
     }
 
-    private Map<Long, Permission> getPermissionMap() {
+    private Map<Long, Integer> getPermissionMap() {
         if (Objects.isNull(permissionMap)) {
             this.permissionMap = this.getMenus().stream()
                 .collect(Collectors.toMap(PlsMenuBO::getId, PlsMenuBO::getPermission));

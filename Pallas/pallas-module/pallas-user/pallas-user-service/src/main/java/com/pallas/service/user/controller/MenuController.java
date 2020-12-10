@@ -4,8 +4,8 @@ import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.PlsResult;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.service.user.bo.PlsMenuBO;
+import com.pallas.service.user.constant.Permission;
 import com.pallas.service.user.converter.PlsMenuConverter;
-import com.pallas.service.user.enums.Permission;
 import com.pallas.service.user.param.MenuModifyParam;
 import com.pallas.service.user.service.IAuthService;
 import com.pallas.service.user.service.IPlsMenuService;
@@ -49,9 +49,9 @@ public class MenuController {
         if (Objects.isNull(menuModifyParam.getId())) {
             throw PlsException.paramMissing("菜单编号");
         }
-        Permission permission = authService.getUser()
+        int permission = authService.getUser()
             .getPermission(menuModifyParam.getId());
-        if (!Objects.equals(Permission.EDIT_DELETE, permission)) {
+        if (!Permission.canEdit(permission)) {
             throw new PlsException(ResultType.PARAM_UNAUTHORIZED);
         }
         plsMenuService.update()

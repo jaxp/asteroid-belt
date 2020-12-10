@@ -1,6 +1,5 @@
 package com.pallas.service.user.vo;
 
-import com.pallas.service.user.enums.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,7 +49,7 @@ public class PlsMenuVO {
     /**
      * 权限
      */
-    private Permission permission;
+    private Integer permission;
     /**
      * 是否可用
      */

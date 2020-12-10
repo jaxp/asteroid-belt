@@ -5,7 +5,7 @@ package com.pallas.service.user.constant;
  * @time: 2020/9/27 13:27
  * @desc:
  */
-public class UserConstant {
+public final class UserConstant {
     /**
      * 用户编号header
      */
@@ -14,4 +14,5 @@ public class UserConstant {
      * 用户token对应header
      */
     public static final String TOKEN_HEADER = "pallas-token-header";
+
 }

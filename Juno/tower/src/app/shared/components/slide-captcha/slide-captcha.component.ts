@@ -55,6 +55,7 @@ export class SlideCaptchaComponent {
 
   @Input() width: number = 400;
   @Output() succeed = new EventEmitter<string>();
+  @Output() closed = new EventEmitter();
 
   ref: NzModalRef;
   captcha: Captcha;
@@ -86,6 +87,9 @@ export class SlideCaptchaComponent {
           nzFooter: null
         });
         this.ref.afterClose.subscribe(() => {
+          if (this.status.key !== statusMap.success.key) {
+            this.closed.emit();
+          }
           this.ref = null;
         });
         this.ref.afterOpen.subscribe(() => {

@@ -27,10 +27,6 @@ public class PlsAuthorityDTO {
      */
     private String authority;
     /**
-     * 是否可用
-     */
-    private Boolean enabled;
-    /**
      * 新增时间
      */
     private Date addTime;

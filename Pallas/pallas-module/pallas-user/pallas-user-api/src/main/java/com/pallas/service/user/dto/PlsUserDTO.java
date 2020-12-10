@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author: jax
@@ -58,8 +57,4 @@ public class PlsUserDTO {
      * 密码过期
      */
     private Boolean pwdExpired;
-    /**
-     * 权限
-     */
-    private List<String> authorities;
 }

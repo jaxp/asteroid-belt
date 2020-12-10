@@ -5,7 +5,7 @@ export const Api = Object.freeze({
     logout: '/api/user/auth/logout',
     getUser: '/api/user/auth/getUser',
     getMenus: '/api/user/auth/getMenus',
-    getAuthorities: '/api/user/auth/getAuthorities'
+    getAuthorities: '/api/user/auth/getAuthorities/'
   },
   menu: {
     getMenus: '/api/user/menu/getMenus',

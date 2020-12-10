@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
       }
     }
     if (this.validateForm.valid) {
+      this.loginLoading = true;
       this.slideCaptcha.refresh();
     }
   }
