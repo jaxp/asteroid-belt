@@ -1,6 +1,6 @@
 package com.pallas.service.user.converter;
 
-import com.pallas.common.converter.CommonConverter;
+import com.pallas.common.converter.CloudConverter;
 import com.pallas.service.user.bean.PlsMenu;
 import com.pallas.service.user.bo.PlsMenuBO;
 import com.pallas.service.user.dto.PlsMenuDTO;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @desc:
  */
 @Component
-public class PlsMenuConverter extends CommonConverter<PlsMenu, PlsMenuBO, PlsMenuDTO, PlsMenuVO> {
+public class PlsMenuConverter extends CloudConverter<PlsMenu, PlsMenuBO, PlsMenuDTO, PlsMenuVO> {
 
     @Override
     public PlsMenuVO bo2vo(PlsMenuBO plsMenuBO) {

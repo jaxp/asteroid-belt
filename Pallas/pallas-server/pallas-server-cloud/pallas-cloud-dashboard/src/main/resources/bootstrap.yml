@@ -1,0 +1,57 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: pallas-cloud-dashboard
+  profiles:
+    active: @profileActive@
+  flyway:
+    encoding: utf-8
+    baseline-version: 0
+    baseline-on-migrate: true
+    table: flyway_dashboard_schema_history
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: @consul.host@
+      port: 8500
+      discovery:
+        health-check-interval: 10s
+        fail-fast: true
+        acl-token: @consul.token@
+      config:
+        enabled: true
+        acl-token: @consul.token@
+        prefix: config
+        default-context: pallas-cloud-dashboard
+        profile-separator: '-'
+        format: YAML
+        data-key: data
+        watch:
+          enabled: true
+          delay: 1000
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-enums-package: com.pallas.**.enums;com.pallas.**.enums.*
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+      table-prefix: pls_
+      insert-strategy: not_null
+      update-strategy: not_null
+      select-strategy: not_null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

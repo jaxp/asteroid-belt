@@ -1,6 +1,6 @@
 package com.pallas.service.user.converter;
 
-import com.pallas.common.converter.CommonConverter;
+import com.pallas.common.converter.CloudConverter;
 import com.pallas.service.user.bean.PlsRole;
 import com.pallas.service.user.bo.PlsRoleBO;
 import com.pallas.service.user.dto.PlsRoleDTO;
@@ -13,5 +13,5 @@ import org.springframework.stereotype.Component;
  * @desc:
  */
 @Component
-public class PlsRoleConverter extends CommonConverter<PlsRole, PlsRoleBO, PlsRoleDTO, PlsRoleVO> {
+public class PlsRoleConverter extends CloudConverter<PlsRole, PlsRoleBO, PlsRoleDTO, PlsRoleVO> {
 }

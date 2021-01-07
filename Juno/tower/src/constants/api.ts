@@ -15,6 +15,11 @@ export const Api = Object.freeze({
     slide: '/api/anon/captcha/slide',
     validate: '/api/anon/captcha/validate'
   },
+  dashboard: {
+    hasDevAuth: '/api/dashboard/hasDevAuth',
+    list: '/api/dashboard/',
+    save: '/api/dashboard/save'
+  },
   file: {
     download: '/api/anon/file/download/'
   }

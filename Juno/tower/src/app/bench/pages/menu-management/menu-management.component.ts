@@ -8,6 +8,18 @@ import { tap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
+const menuOps = {
+  new: {
+    title: '新增子菜单'
+  },
+  update: {
+    title: '修改菜单'
+  },
+  delete: {
+    title: '删除菜单'
+  }
+};
+
 @Component({
   selector: 'app-menu-management',
   templateUrl: './menu-management.component.html',
@@ -18,17 +30,6 @@ export class MenuManagementComponent implements OnInit {
   @ViewChild(NzTreeComponent)
   private tree: NzTreeComponent;
 
-  menuOps = {
-    new: {
-      title: '新增子菜单'
-    },
-    update: {
-      title: '修改菜单'
-    },
-    delete: {
-      title: '删除菜单'
-    }
-  };
   menuOp = null;
 
   tree$: Observable<TreeNode<Menu>[]>;
@@ -68,12 +69,12 @@ export class MenuManagementComponent implements OnInit {
   newMenu(event: MouseEvent, node: NzTreeNode): void {
     this.setSelected(node);
     event.stopPropagation();
-    this.menuOp = this.menuOps.new;
+    this.menuOp = menuOps.new;
   }
   editMenu(event: MouseEvent, node: NzTreeNode): void {
     this.setSelected(node);
     event.stopPropagation();
-    this.menuOp = this.menuOps.update;
+    this.menuOp = menuOps.update;
   }
   close(): void {
     this.menuOp = null;

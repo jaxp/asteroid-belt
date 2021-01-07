@@ -1,0 +1,32 @@
+<div class="editor-container" class="fullscreen">
+  <nz-layout class="edit-body-container">
+    <nz-sider nzTheme="light" nzWidth="500px">
+      <nz-layout>
+        <nz-header class="editor-header-bar">
+          <button nz-button nzType="primary" (click)="preview()">预览</button>
+        </nz-header>
+        <nz-content class="editor-body-code">
+          <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)">
+          </nz-code-editor>
+        </nz-content>
+      </nz-layout>
+    </nz-sider>
+    <nz-content class="editor-preview">
+      <nz-layout>
+        <nz-header class="editor-header-bar">
+          <nz-space>
+            <nz-space-item>
+              <button nz-button (click)="close()">关闭</button>
+            </nz-space-item>
+            <nz-space-item>
+              <button nz-button nzType="primary" (click)="save()">保存</button>
+            </nz-space-item>
+          </nz-space>
+        </nz-header>
+        <nz-content class="edit-preview-body">
+          <app-echarts #tplEcharts [data]="data"></app-echarts>
+        </nz-content>
+      </nz-layout>
+    </nz-content>
+  </nz-layout>
+</div>

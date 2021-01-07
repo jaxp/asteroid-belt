@@ -2,27 +2,17 @@
   <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menuTree }"></ng-container>
   <ng-template #menuTpl let-menus>
     <ng-container *ngFor="let node of menus">
-      <li
-        *ngIf="!node.children || node.children.length == 0"
-        nz-menu-item
-        [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24"
-        [nzDisabled]="node.disabled"
-        [nzSelected]="node.selected"
-      >
+      <li *ngIf="!node.children || node.children.length == 0" nz-menu-item
+        [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24" [nzDisabled]="node.disabled"
+        [nzSelected]="node.selected">
         <a [routerLink]="'/page' + node.origin.url">
           <i nz-icon [nzType]="node.origin.icon" *ngIf="node.origin.icon"></i>
           <span>{{ node.title }}</span>
         </a>
       </li>
-      <li
-        *ngIf="node.children && node.children.length > 0"
-        nz-submenu
-        [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24"
-        [nzOpen]="node.expanded"
-        [nzTitle]="node.title"
-        [nzIcon]="node.origin.icon"
-        [nzDisabled]="node.disabled"
-      >
+      <li *ngIf="node.children && node.children.length > 0" nz-submenu
+        [nzPaddingLeft]="nzInlineCollapsed ? 0 : node.level * 24" [nzOpen]="node.expanded" [nzTitle]="node.title"
+        [nzIcon]="node.origin.icon" [nzDisabled]="node.disabled">
         <ul>
           <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: node.children }"></ng-container>
         </ul>

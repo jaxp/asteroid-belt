@@ -30,6 +30,7 @@
     <pallas-user.version>1.0.0-SNAPSHOT</pallas-user.version>
     <pallas-file.version>1.0.0-SNAPSHOT</pallas-file.version>
     <pallas-captcha.version>1.0.0-SNAPSHOT</pallas-captcha.version>
+    <pallas-dashboard.version>1.0.0-SNAPSHOT</pallas-dashboard.version>
 
     <pallas-server-common.version>1.0.0-SNAPSHOT</pallas-server-common.version>
     <pallas-server-cloud-common.version>1.0.0-SNAPSHOT</pallas-server-cloud-common.version>
@@ -132,6 +133,26 @@
         <groupId>com.pallas</groupId>
         <artifactId>pallas-captcha-cloud-service</artifactId>
         <version>${pallas-captcha.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-dashboard-api</artifactId>
+        <version>${pallas-dashboard.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-dashboard-service</artifactId>
+        <version>${pallas-dashboard.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-dashboard-cloud-api</artifactId>
+        <version>${pallas-dashboard.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.pallas</groupId>
+        <artifactId>pallas-dashboard-cloud-service</artifactId>
+        <version>${pallas-dashboard.version}</version>
       </dependency>
       <dependency>
         <groupId>com.pallas</groupId>

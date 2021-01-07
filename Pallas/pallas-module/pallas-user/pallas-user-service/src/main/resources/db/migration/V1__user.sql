@@ -21,7 +21,7 @@ CREATE TABLE `pls_u_user`
 
 INSERT INTO `pls_db`.`pls_u_user`(`id`, `username`, `password`, `telephone`, `email`, `add_time`, `upd_time`, `enabled`,
                                   `account_expired`, `account_locked`, `pwd_expired`)
-VALUES (1, 'admin', '{bcrypt}$2a$10$fH1GkNhHY5xVtC5l1KRm3O.PvkULJbIWqIso1xfHIDPniFaCFeGCC', NULL, NULL, now(), now(), 1,
+VALUES (1000000000000000001, 'admin', '{bcrypt}$2a$10$fH1GkNhHY5xVtC5l1KRm3O.PvkULJbIWqIso1xfHIDPniFaCFeGCC', NULL, NULL, now(), now(), 1,
         0, 0, 0);
 
 DROP TABLE IF EXISTS `pls_u_menu`;
@@ -46,13 +46,13 @@ CREATE TABLE `pls_u_menu`
   DEFAULT CHARSET = utf8mb4;
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `grade`,
                                   `add_user`, `upd_user`, `add_time`, `upd_time`)
-VALUES (0, null, '主页', 'home', 1, 0, 0, '/home', 0, 1, 1, now(), now());
+VALUES (1100000000000000001, null, '主页', 'home', 1, 0, 0, '/home', 0, 1000000000000000001, 1000000000000000001, now(), now());
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `grade`,
                                   `add_user`, `upd_user`, `add_time`, `upd_time`)
-VALUES (1, null, '系统管理', 'project', 1, 0, 1, null, 0, 1, 1, now(), now());
+VALUES (1100000000000000002, null, '系统管理', 'project', 1, 0, 1, null, 0, 1000000000000000001, 1000000000000000001, now(), now());
 INSERT INTO `pls_db`.`pls_u_menu`(`id`, `pid`, `title`, `icon`, `enabled`, `disabled`, `type`, `url`, `grade`,
                                   `add_user`, `upd_user`, `add_time`, `upd_time`)
-VALUES (2, 1, '菜单管理', 'menu', 1, 0, 0, '/menu', 0, 1, 1, now(), now());
+VALUES (1100000000000000003, 1100000000000000002, '菜单管理', 'menu', 1, 0, 0, '/menu', 0, 1000000000000000001, 1000000000000000001, now(), now());
 
 DROP TABLE IF EXISTS `pls_u_role`;
 CREATE TABLE `pls_u_role`
@@ -69,7 +69,7 @@ CREATE TABLE `pls_u_role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 INSERT INTO `pls_u_role`(`id`, `pid`, `role`, `name`, `grade`, `enabled`, `add_time`, `upd_time`)
-VALUES (1, null, 'admin', '超级管理员', 0, 1, now(), now());
+VALUES (1110000000000000001, null, 'admin', '超级管理员', 0, 1, now(), now());
 
 DROP TABLE IF EXISTS `pls_u_authority`;
 CREATE TABLE `pls_u_authority`
@@ -91,4 +91,7 @@ CREATE TABLE `pls_u_authority`
   DEFAULT CHARSET = utf8mb4;
 INSERT INTO `pls_u_authority`(`id`, `authority`, `organization`, `organization_type`, `permission`, `resource`,
                               `resource_type`, `add_user`, `add_time`)
-VALUES (1, '超级管理员', 1, 0, 15, 1, 'role', 1, now());
+VALUES (1, '超级管理员', 1000000000000000001, 0, 15, 1110000000000000001, 'role', 1000000000000000001, now());
+INSERT INTO `pls_u_authority`(`id`, `authority`, `organization`, `organization_type`, `permission`, `resource`,
+                              `resource_type`, `add_user`, `add_time`)
+VALUES (2, '超级管理员', 1110000000000000001, 1, 15, 0, 'dashboard', 1000000000000000001, now());

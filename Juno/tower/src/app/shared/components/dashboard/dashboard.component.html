@@ -1,0 +1,83 @@
+<div class="dashboard-container" [ngStyle]="{'width': width, 'height': height}">
+  <nz-layout>
+    <nz-content class="dashboard-body">
+      <div class="dashboard-body-charts">
+        <app-echarts *ngFor="let item of data" [data]="item" [editable]="true"
+          [ngStyle]="{width: item.width, height: item.height}" (edit)="openEditor($event)"></app-echarts>
+      </div>
+      <nz-divider class="dashboard-body-add" *ngIf="canDev$ | async" [nzText]="text" (click)="newDashboard()">
+        <ng-template #text><i nz-icon nzType="plus"></i> 新增图表</ng-template>
+      </nz-divider>
+    </nz-content>
+  </nz-layout>
+</div>
+<app-editor *ngIf="current" [data]="current" (editorClose)="closeEditor()" (editorSave)="saveDashboard($event)">
+</app-editor>
+
+<nz-modal [nzKeyboard]="false" [nzMaskClosable]="false" [nzClosable]="false" [nzTitle]="op?.title"
+  [nzFooter]="tplFormFooter" [(nzVisible)]="op">
+  <nz-layout class="dashboard-form-container">
+    <nz-content>
+      <form nz-form [formGroup]="formData">
+        <nz-collapse nzGhost>
+          <nz-collapse-panel nzHeader="图表信息" [nzActive]="true">
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>
+                <span>名称</span>
+              </nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="请输入名称！">
+                <input nz-input id="name" formControlName="name" autocomplete="off" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="height" nzRequired>
+                <span>高度</span>
+              </nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="请输入高度！">
+                <input nz-input id="height" formControlName="height" autocomplete="off" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="width" nzRequired>
+                <span>宽度</span>
+              </nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="请输入宽度！">
+                <input nz-input id="width" formControlName="width" autocomplete="off" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="sort" nzRequired>排序</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="请输入排序！">
+                <input nz-input id="sort" formControlName="sort" autocomplete="off" />
+              </nz-form-control>
+            </nz-form-item>
+          </nz-collapse-panel>
+          <nz-collapse-panel nzHeader="模板信息">
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="templateName">模板名称</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input id="templateName" formControlName="templateName" autocomplete="off" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="templateRemark">模板备注</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input id="templateRemark" formControlName="templateRemark" autocomplete="off" />
+              </nz-form-control>
+            </nz-form-item>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </form>
+    </nz-content>
+  </nz-layout>
+</nz-modal>
+<ng-template #tplFormFooter>
+  <nz-space>
+    <nz-space-item>
+      <button nz-button (click)="backToEditor()"><i nz-icon nzType="arrow-left"></i>返回编辑</button>
+    </nz-space-item>
+    <nz-space-item>
+      <button nz-button nzType="primary" [nzLoading]="loading" (click)="save()">保存</button>
+    </nz-space-item>
+  </nz-space>
+</ng-template>

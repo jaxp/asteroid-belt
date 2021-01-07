@@ -62,5 +62,40 @@ export interface User {
 export interface Captcha {
   cid: string;
   images: string[];
-  data: {rate: number, y: number};
+  data: { rate: number, y: number };
+}
+
+export class Dashboard {
+  id: string;
+  label: string;
+  sort: number;
+  height: string;
+  width: string;
+  templateId: string;
+  content: string;
+  addUser: string;
+  updUser: string;
+  addTime: string;
+  updTime: string;
+  template?: DashboardTemplate;
+  data?: DashboardData[];
+}
+export class DashboardTemplate {
+  id: string;
+  type: number;
+  name: string;
+  content: string;
+  remark: string;
+  addUser: string;
+  updUser: string;
+  addTime: string;
+  updTime: string;
+  data?: DashboardData[];
+}
+export class DashboardData {
+  id: string;
+  templateId: string;
+  label: string;
+  uri: string;
+  params: string;
 }

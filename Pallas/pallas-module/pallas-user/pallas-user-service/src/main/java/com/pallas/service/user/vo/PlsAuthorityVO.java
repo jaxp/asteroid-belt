@@ -1,5 +1,6 @@
 package com.pallas.service.user.vo;
 
+import com.pallas.service.user.enums.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,24 +19,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class PlsAuthorityVO {
     private Long id;
-    /**
-     * 名称
-     */
-    private String name;
-    /**
-     * 标识
-     */
+    private Long organization;
+    private OrganizationType organizationType;
+    private Integer permission;
+    private String resourceType;
+    private Long resource;
     private String authority;
-    /**
-     * 是否可用
-     */
-    private Boolean enabled;
-    /**
-     * 新增时间
-     */
+    private Long addUser;
     private Date addTime;
-    /**
-     * 更新时间
-     */
-    private Date updTime;
 }

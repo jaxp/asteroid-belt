@@ -1,6 +1,6 @@
 package com.pallas.service.user.converter;
 
-import com.pallas.common.converter.CommonConverter;
+import com.pallas.common.converter.CloudConverter;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.bo.PlsUserBO;
 import com.pallas.service.user.dto.PlsUserDTO;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @desc:
  */
 @Component
-public class PlsUserConverter extends CommonConverter<PlsUser, PlsUserBO, PlsUserDTO, PlsUserVO> {
+public class PlsUserConverter extends CloudConverter<PlsUser, PlsUserBO, PlsUserDTO, PlsUserVO> {
 
     @Override
     public PlsUserBO do2bo(PlsUser d) {

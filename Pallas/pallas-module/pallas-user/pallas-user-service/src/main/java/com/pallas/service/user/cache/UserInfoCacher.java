@@ -9,6 +9,8 @@ import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.service.user.bean.PlsAuthority;
 import com.pallas.service.user.bean.PlsUser;
+import com.pallas.service.user.constant.Permission;
+import com.pallas.service.user.constant.ResourceType;
 import com.pallas.service.user.dto.PlsUserDTO;
 import com.pallas.service.user.service.IPlsAuthorityService;
 import com.pallas.service.user.service.IPlsUserService;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -128,6 +131,14 @@ public class UserInfoCacher extends UserCacher {
         Map<Long, Integer> result = this.getInfo(resourceType, new TypeReference<Map<Long, Integer>>() {
         });
         return Optional.ofNullable(result).orElseGet(() -> new HashMap<>());
+    }
+
+    public Set<Long> getRoles() {
+        Map<Long, Integer> roles = getAuthorities(ResourceType.ROLE);
+        return roles.entrySet().stream()
+            .filter(e -> !Permission.forbidden(e.getValue()))
+            .map(e -> e.getKey())
+            .collect(Collectors.toSet());
     }
 
     private <T> T getInfo(String key, TypeReference<T> reference) {

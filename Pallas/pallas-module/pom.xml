@@ -16,6 +16,7 @@
     <module>pallas-user</module>
     <module>pallas-captcha</module>
     <module>pallas-file</module>
+    <module>pallas-dashboard</module>
   </modules>
   <dependencies>
     <dependency>

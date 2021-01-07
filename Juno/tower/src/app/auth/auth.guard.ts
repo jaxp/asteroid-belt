@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivateChild, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -22,17 +23,21 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return this.canActivate(route, state);
   }
 
-  checkLogin(url: string): true | UrlTree {
-    this.authService.openMenu(url);
-    const isLogin = this.authService.isLogin();
-    if (url === '/login') {
-      if (isLogin) {
-        return this.router.parseUrl('/page');
-      }
-      return true;
+  checkLogin(url: string): Observable<true | UrlTree> {
+    const online = this.authService.online();
+    if (online) {
+      return this.authService.getUser().pipe(
+        map(e => {
+          if (url === '/login') {
+            return this.router.parseUrl('/page');
+          }
+          this.authService.openMenu(url);
+          this.authService.redirectUrl = url;
+          return true;
+        })
+      );
+    } else {
+      return of(url === '/login' || this.router.parseUrl('/login'));
     }
-    if (isLogin) { return true; }
-    this.authService.redirectUrl = url;
-    return this.router.parseUrl('/login');
   }
 }

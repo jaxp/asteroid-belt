@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @time: 2020/9/27 16:35
  * @desc:
  */
-@FeignClient("pallas-cloud-user")
+@FeignClient(name = "pallas-cloud-user", contextId = "user")
 public interface PlsUserClient extends IPlsUserApi {
 
     @Override

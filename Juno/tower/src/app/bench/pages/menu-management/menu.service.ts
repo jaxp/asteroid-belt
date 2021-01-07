@@ -16,7 +16,6 @@ export class MenuService {
   enableMenu(id: string, enabled: boolean): Observable<Result<any>> {
     return this.http.post<Result<any>>(Api.menu.enableMenu, {id, enabled}).pipe(
       catchError(err => {
-        console.log(err);
         return of(err);
       })
     );
@@ -26,7 +25,6 @@ export class MenuService {
     return this.http.get<Result<Menu[]>>(Api.menu.getMenus).pipe(
       map(res => this.buildMenuTree(res.data)),
       catchError(err => {
-        console.log(err);
         return of(err);
       })
     );

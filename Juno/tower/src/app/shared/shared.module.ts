@@ -12,6 +12,7 @@ import { IconsProviderModule } from '../icons-provider.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
@@ -25,17 +26,21 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 import { ConstantPipe } from './pipes/constant.pipe';
 import { GeometricElfDirective } from './directives/geometric-elf.directive';
-import { GraphDirective } from './directives/graph.directive';
 import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { EchartsComponent } from './components/dashboard/echarts/echarts.component';
+import { EditorComponent } from './components/dashboard/editor/editor.component';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 
 
 @NgModule({
-  declarations: [GeometricElfDirective, GraphDirective, ConstantPipe, SlideCaptchaComponent],
+  declarations: [GeometricElfDirective, ConstantPipe, SlideCaptchaComponent, DashboardComponent, EchartsComponent, EditorComponent],
   imports: [
     CommonModule,
     IconsProviderModule,
@@ -46,6 +51,8 @@ import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.
     NzCardModule,
     NzCheckboxModule,
     NzGridModule,
+    NzDividerModule,
+    NzCollapseModule,
     NzInputModule,
     NzTreeModule,
     NzPageHeaderModule,
@@ -61,6 +68,7 @@ import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.
     NzCarouselModule,
     NzSwitchModule,
     NzPopconfirmModule,
+    NzCodeEditorModule,
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -76,6 +84,8 @@ import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.
     NzCardModule,
     NzCheckboxModule,
     NzGridModule,
+    NzDividerModule,
+    NzCollapseModule,
     NzInputModule,
     NzTreeModule,
     NzPageHeaderModule,
@@ -96,7 +106,7 @@ import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.
     FormsModule,
     GeometricElfDirective,
     SlideCaptchaComponent,
-    GraphDirective,
+    DashboardComponent,
     ConstantPipe,
     HttpClientModule
   ]

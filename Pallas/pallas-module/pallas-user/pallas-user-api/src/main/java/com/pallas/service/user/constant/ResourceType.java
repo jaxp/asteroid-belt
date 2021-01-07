@@ -14,4 +14,8 @@ public final class ResourceType {
      * 菜单权限
      */
     public static final String MENU = "menu";
+    /**
+     * 图表权限
+     */
+    public static final String DASHBOARD = "dashboard";
 }

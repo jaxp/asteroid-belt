@@ -8,11 +8,12 @@ import { of } from 'rxjs/internal/observable/of';
 import { catchError, finalize, mergeMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { HttpStatus } from '@/constants/http-status';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private messageService: NzMessageService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const started = Date.now();
@@ -55,6 +56,7 @@ export class AuthInterceptor implements HttpInterceptor {
         const error = err.error || err;
         code = error.code;
         error.msg = error.msg || HttpStatus[code] && HttpStatus[code].zh || '服务器异常';
+        this.messageService.error(error.msg);
         return throwError(error);
       }),
       finalize(() => {
