@@ -2,7 +2,7 @@ package com.pallas.service.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pallas.service.user.bean.PlsUser;
-import com.pallas.service.user.cache.UserInfoCacher;
+import com.pallas.service.user.cache.UserInfoCache;
 import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.dto.PlsUserDTO;
 import com.pallas.service.user.mapper.PlsUserMapper;
@@ -21,11 +21,11 @@ public class PlsUserService extends ServiceImpl<PlsUserMapper, PlsUser> implemen
     @Autowired
     private PlsUserConverter plsUserConverter;
     @Autowired
-    private UserInfoCacher userInfoCacher;
+    private UserInfoCache userInfoCache;
 
     @Override
     public PlsUserDTO getCurrent() {
-        return userInfoCacher.getUser();
+        return userInfoCache.getUser();
     }
 
     @Override

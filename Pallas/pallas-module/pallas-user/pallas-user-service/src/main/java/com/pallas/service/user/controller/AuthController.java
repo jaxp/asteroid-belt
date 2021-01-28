@@ -6,7 +6,7 @@ import com.pallas.base.api.response.PlsResult;
 import com.pallas.base.api.response.ResultType;
 import com.pallas.service.captcha.annotation.Captcha;
 import com.pallas.service.user.bean.PlsUser;
-import com.pallas.service.user.cache.RsaKeyCacher;
+import com.pallas.service.user.cache.RsaKeyCache;
 import com.pallas.service.user.converter.PlsMenuConverter;
 import com.pallas.service.user.converter.PlsUserConverter;
 import com.pallas.service.user.param.UserPwdLoginParam;
@@ -45,11 +45,11 @@ public class AuthController {
     @Autowired
     private PlsMenuConverter menuConverter;
     @Autowired
-    private RsaKeyCacher rsaKeyCacher;
+    private RsaKeyCache rsaKeyCache;
 
     @GetMapping("/getKey")
     public PlsResult getKey() {
-        return PlsResult.success(rsaKeyCacher.getPublicKeyStr());
+        return PlsResult.success(rsaKeyCache.getPublicKeyStr());
     }
 
     @Captcha
@@ -57,7 +57,7 @@ public class AuthController {
     public PlsResult login(@RequestBody UserPwdLoginParam param, HttpServletResponse response) {
         try {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(param.getUsername(), rsaKeyCacher.decrypt(param.getPassword()));
+                new UsernamePasswordAuthenticationToken(param.getUsername(), rsaKeyCache.decrypt(param.getPassword()));
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             PlsUser user = (PlsUser) authentication.getPrincipal();
             String token = authService.login(user);

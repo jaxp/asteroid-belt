@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.response.PlsResult;
+import com.pallas.service.user.cache.TokenCache;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class ResponseWrapperFilter implements GlobalFilter, Ordered {
 
     @Autowired
     private ObjectMapper jsonMapper;
+    @Autowired
+    private TokenCache tokenCache;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

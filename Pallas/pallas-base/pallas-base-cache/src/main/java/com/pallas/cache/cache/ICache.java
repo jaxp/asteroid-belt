@@ -1,11 +1,11 @@
-package com.pallas.cache.cacher;
+package com.pallas.cache.cache;
 
 /**
  * @author: jax
  * @time: 2020/8/30 14:31
  * @desc:
  */
-public interface ICacher<T> {
+public interface ICache<T> {
 
     /**
      * 缓存key

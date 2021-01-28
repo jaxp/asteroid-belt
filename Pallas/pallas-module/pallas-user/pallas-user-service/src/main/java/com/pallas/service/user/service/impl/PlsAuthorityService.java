@@ -2,7 +2,7 @@ package com.pallas.service.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pallas.service.user.bean.PlsAuthority;
-import com.pallas.service.user.cache.UserInfoCacher;
+import com.pallas.service.user.cache.UserInfoCache;
 import com.pallas.service.user.constant.Permission;
 import com.pallas.service.user.enums.OrganizationType;
 import com.pallas.service.user.mapper.PlsAuthorityMapper;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuthority> implements IPlsAuthorityService {
 
     @Autowired
-    private UserInfoCacher userInfoCacher;
+    private UserInfoCache userInfoCache;
 
     @Override
     public List<PlsAuthority> getAllAuthorities(long organization) {
@@ -91,8 +91,8 @@ public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuth
 
     @Override
     public Integer getAuthority(String resourceType, Long resource) {
-        Set<Long> organizations = userInfoCacher.getRoles();
-        Long userId = userInfoCacher.getUserId();
+        Set<Long> organizations = userInfoCache.getRoles();
+        Long userId = userInfoCache.getUserId();
         organizations.add(userId);
         List<PlsAuthority> auths = query()
             .select("organization_type", "permission")
@@ -115,8 +115,8 @@ public class PlsAuthorityService extends ServiceImpl<PlsAuthorityMapper, PlsAuth
 
     @Override
     public Map<Long, Integer> getAuthorityMap(Set<Long> resources) {
-        Set<Long> organizations = userInfoCacher.getRoles();
-        Long userId = userInfoCacher.getUserId();
+        Set<Long> organizations = userInfoCache.getRoles();
+        Long userId = userInfoCache.getUserId();
         organizations.add(userId);
         List<PlsAuthority> auths = query()
             .select("resource", "organization_type", "permission")

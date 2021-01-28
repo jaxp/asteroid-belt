@@ -1,7 +1,7 @@
 package com.pallas.server.cloud.gateway.config;
 
 import com.pallas.server.cloud.gateway.exception.GlobalExceptionHandler;
-import com.pallas.service.user.cache.UserCacher;
+import com.pallas.service.user.cache.UserCache;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
@@ -61,8 +61,8 @@ public class GatewayConfig {
     }
 
     @Bean
-    public UserCacher userCacher() {
-        return new UserCacher();
+    public UserCache userCache() {
+        return new UserCache();
     }
 
     @Bean

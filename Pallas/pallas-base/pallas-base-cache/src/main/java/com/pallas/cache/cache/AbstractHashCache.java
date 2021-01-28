@@ -1,4 +1,4 @@
-package com.pallas.cache.cacher;
+package com.pallas.cache.cache;
 
 import org.springframework.data.redis.core.HashOperations;
 
@@ -9,7 +9,7 @@ import java.util.Map;
  * @time: 2020/8/31 9:37
  * @desc:
  */
-public abstract class AbstractHashCacher<T> extends AbstractDataloader<Map<String, T>> {
+public abstract class AbstractHashCache<T> extends AbstractDataloader<Map<String, T>> {
 
     public HashOperations<String, String, T> ops() {
         return this.getTemplate().opsForHash();

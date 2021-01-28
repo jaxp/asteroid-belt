@@ -1,11 +1,10 @@
 package com.pallas.server.cloud.user.interceptor;
 
-import com.pallas.service.user.cache.TokenCacher;
-import com.pallas.service.user.cache.UserCacher;
+import com.pallas.service.user.cache.TokenCache;
+import com.pallas.service.user.cache.UserCache;
 import com.pallas.service.user.constant.UserConstant;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -21,21 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private UserCacher userCacher;
+    private UserCache userCache;
     @Autowired
-    private TokenCacher tokenCacher;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private TokenCache tokenCache;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String userId = request.getHeader(UserConstant.USER_ID_HEADER);
         if (StringUtils.isNotBlank(userId)) {
-            userCacher.setUserId(Long.parseLong(userId));
+            userCache.setUserId(Long.parseLong(userId));
         }
         String token = request.getHeader(UserConstant.TOKEN_HEADER);
         if (StringUtils.isNotBlank(token)) {
-            tokenCacher.setContext(Long.parseLong(token));
+            tokenCache.setContext(token);
         }
         return true;
     }

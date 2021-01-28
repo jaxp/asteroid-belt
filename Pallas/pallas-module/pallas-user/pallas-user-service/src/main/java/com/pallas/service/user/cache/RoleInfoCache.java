@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
-import com.pallas.cache.cacher.AbstractHashCacher;
+import com.pallas.cache.cache.AbstractHashCache;
 import com.pallas.service.user.bean.PlsAuthority;
 import com.pallas.service.user.bean.PlsMenu;
 import com.pallas.service.user.bean.PlsRole;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @desc:
  */
 @Component
-public class RoleInfoCacher extends AbstractHashCacher<String> {
+public class RoleInfoCache extends AbstractHashCache<String> {
 
     private ThreadLocal<Long> context = new ThreadLocal<>();
     private static final String DATA = "data";
@@ -44,7 +44,7 @@ public class RoleInfoCacher extends AbstractHashCacher<String> {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public RoleInfoCacher role(long roleId) {
+    public RoleInfoCache role(long roleId) {
         this.context.set(roleId);
         return this;
     }

@@ -1,3 +1,7 @@
+pls:
+  auth:
+    expire-time: 1000
+    refresh-time: 180
 spring:
   redis:
     host: #host

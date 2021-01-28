@@ -1,6 +1,5 @@
 package com.pallas.service.user.cache;
 
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,17 +11,15 @@ import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.constant.Permission;
 import com.pallas.service.user.constant.ResourceType;
 import com.pallas.service.user.dto.PlsUserDTO;
+import com.pallas.service.user.properties.AuthProperties;
 import com.pallas.service.user.service.IPlsAuthorityService;
 import com.pallas.service.user.service.IPlsUserService;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.security.PrivateKey;
 import java.time.Duration;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +34,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class UserInfoCacher extends UserCacher {
+public class UserInfoCache extends UserCache {
 
     private static final String ID = "id";
     private static final String USERNAME = "username";
@@ -49,6 +46,8 @@ public class UserInfoCacher extends UserCacher {
     private IPlsUserService plsUserService;
     @Autowired
     private IPlsAuthorityService plsAuthorityService;
+    @Autowired
+    private AuthProperties authProperties;
 
     @Override
     public Map<String, String> loadData() {
@@ -62,31 +61,19 @@ public class UserInfoCacher extends UserCacher {
      * 缓存用户
      *
      * @param user
-     * @param expireTime
      * @return
      */
-    public String cacheUser(PlsUser user, Long expireTime) {
+    public String cacheUser(PlsUser user) {
         // 设置当前上下文
         setUserId(user.getId());
-        long sid = IdWorker.getId();
         // 清空用户数据
         clear();
         // 缓存用户数据
         cacheData(toUserMap(user));
-        // 生成token
-        PrivateKey privateKey = rsaKeyCacher.getPrivateKey();
-        String token = Jwts.builder()
-            .setExpiration(new Date(System.currentTimeMillis() + expireTime * 60 * 1000))
-            .setIssuedAt(new Date())
-            .setId(sid + "")
-            .setSubject(user.getId() + "")
-            .signWith(privateKey)
-            .compact();
-        tokenCacher.cacheData(tokenCacher.buildToken(sid, token, expireTime));
         // 设置过期时间
-        expire(Duration.ofMinutes(expireTime));
-        tokenCacher.expire(Duration.ofMinutes(expireTime));
-        return token;
+        expire(Duration.ofMinutes(authProperties.getExpireTime()));
+        // 生成token
+        return tokenCache.cacheToken(user.getId());
     }
 
     private Map<String, String> toUserMap(PlsUser user) {

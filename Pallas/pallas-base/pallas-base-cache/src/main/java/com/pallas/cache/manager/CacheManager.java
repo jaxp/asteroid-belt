@@ -1,6 +1,6 @@
 package com.pallas.cache.manager;
 
-import com.pallas.cache.cacher.ICacher;
+import com.pallas.cache.cache.ICache;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ public class CacheManager {
         this.factory = factory;
     }
 
-    public void register(ICacher dataLoader) {
+    public void register(ICache dataLoader) {
         if (dataLoader.clearOnInit()) {
             if (dataLoader.ifExist()) {
                 dataLoader.clear();

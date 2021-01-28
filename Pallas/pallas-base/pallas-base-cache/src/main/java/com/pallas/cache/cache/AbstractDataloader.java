@@ -1,4 +1,4 @@
-package com.pallas.cache.cacher;
+package com.pallas.cache.cache;
 
 import com.pallas.cache.manager.CacheManager;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.time.Duration;
  * @desc:
  */
 @Data
-public abstract class AbstractDataloader<T> implements ICacher<T> {
+public abstract class AbstractDataloader<T> implements ICache<T> {
 
     @Autowired
     private CacheManager cacheManager;

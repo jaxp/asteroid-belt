@@ -1,9 +1,11 @@
 package com.pallas.server.cloud.gateway.filters;
 
+import com.google.common.base.Strings;
+import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
-import com.pallas.service.user.cache.TokenCacher;
-import com.pallas.service.user.cache.UserCacher;
+import com.pallas.service.user.cache.TokenCache;
+import com.pallas.service.user.cache.UserCache;
 import com.pallas.service.user.constant.UserConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -29,9 +31,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
     private static final String BEARER_TOKEN_HEADER = "Authorization";
 
     @Autowired
-    private UserCacher userCacher;
+    private UserCache userCache;
     @Autowired
-    private TokenCacher tokenCacher;
+    private TokenCache tokenCache;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -39,10 +41,14 @@ public class AuthFilter implements GlobalFilter, Ordered {
             HttpHeaders headers = exchange.getRequest().getHeaders();
             String authorization = headers.getFirst(BEARER_TOKEN_HEADER);
             if (StringUtils.isNotBlank(authorization)) {
-                if (userCacher.validate(authorization.substring(BEARER_TOKEN_PREFIX.length()))) {
+                if (tokenCache.validate(authorization.substring(BEARER_TOKEN_PREFIX.length()))) {
+                    String newToken = tokenCache.refreshToken();
+                    if (!Strings.isNullOrEmpty(newToken)) {
+                        exchange.getResponse().getHeaders().set(PlsConstant.AUTHORIZATION_HEADER, newToken);
+                    }
                     exchange.getRequest().mutate()
-                        .header(UserConstant.USER_ID_HEADER, userCacher.getUserId() + "")
-                        .header(UserConstant.TOKEN_HEADER, tokenCacher.getContext() + "")
+                        .header(UserConstant.USER_ID_HEADER, userCache.getUserId() + "")
+                        .header(UserConstant.TOKEN_HEADER, tokenCache.getContext() + "")
                         .build();
                     return chain.filter(exchange);
                 }

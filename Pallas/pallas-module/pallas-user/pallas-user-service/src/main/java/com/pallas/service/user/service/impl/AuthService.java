@@ -4,14 +4,13 @@ import com.pallas.service.user.bean.PlsMenu;
 import com.pallas.service.user.bean.PlsUser;
 import com.pallas.service.user.bo.PlsMenuBO;
 import com.pallas.service.user.bo.PlsUserBO;
-import com.pallas.service.user.cache.RoleInfoCacher;
-import com.pallas.service.user.cache.TokenCacher;
-import com.pallas.service.user.cache.UserInfoCacher;
+import com.pallas.service.user.cache.RoleInfoCache;
+import com.pallas.service.user.cache.TokenCache;
+import com.pallas.service.user.cache.UserInfoCache;
 import com.pallas.service.user.constant.Permission;
 import com.pallas.service.user.constant.ResourceType;
 import com.pallas.service.user.converter.PlsMenuConverter;
 import com.pallas.service.user.converter.PlsUserConverter;
-import com.pallas.service.user.properties.AuthProperties;
 import com.pallas.service.user.service.IAuthService;
 import com.pallas.service.user.service.IPlsMenuService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +34,11 @@ import java.util.stream.Collectors;
 public class AuthService implements IAuthService {
 
     @Autowired
-    private UserInfoCacher userInfoCacher;
+    private UserInfoCache userInfoCache;
     @Autowired
-    private TokenCacher tokenCacher;
+    private TokenCache tokenCache;
     @Autowired
-    private RoleInfoCacher roleInfoCacher;
-    @Autowired
-    private AuthProperties authProperties;
+    private RoleInfoCache roleInfoCache;
     @Autowired
     private IPlsMenuService plsMenuService;
     @Autowired
@@ -51,20 +48,20 @@ public class AuthService implements IAuthService {
 
     @Override
     public String login(PlsUser user) {
-        return userInfoCacher.cacheUser(user, authProperties.getExpireTime());
+        return userInfoCache.cacheUser(user);
     }
 
     @Override
     public void logout() {
-        tokenCacher.clear();
-        if (CollectionUtils.isEmpty(tokenCacher.tokenKeysOfSameUser())) {
-            userInfoCacher.clear();
+        tokenCache.clear();
+        if (CollectionUtils.isEmpty(tokenCache.tokenKeysOfSameUser())) {
+            userInfoCache.clear();
         }
     }
 
     @Override
     public PlsUserBO getUser() {
-        return plsUserConverter.dto2bo(userInfoCacher.getUser());
+        return plsUserConverter.dto2bo(userInfoCache.getUser());
     }
 
     @Override
@@ -80,19 +77,19 @@ public class AuthService implements IAuthService {
 
     @Override
     public Map<Long, Integer> getAuthorities(String resourceType) {
-        Map<Long, Integer> authorities = userInfoCacher.getAuthorities(resourceType);
+        Map<Long, Integer> authorities = userInfoCache.getAuthorities(resourceType);
         Set<Long> forbiddenIds = authorities.entrySet().stream()
             .filter(e -> Permission.forbidden(e.getValue()))
             .map(e -> e.getKey())
             .collect(Collectors.toSet());
         // 角色权限
-        Map<Long, Integer> roleMap = userInfoCacher.getAuthorities(ResourceType.ROLE);
+        Map<Long, Integer> roleMap = userInfoCache.getAuthorities(ResourceType.ROLE);
         Set<Long> roleIds = roleMap.entrySet().stream()
             .filter(e -> !Permission.forbidden(e.getValue()))
             .map(e -> e.getKey())
             .collect(Collectors.toSet());
         for (Long roleId : roleIds) {
-            Map<Long, Integer> roleAuthorityMap = roleInfoCacher.role(roleId)
+            Map<Long, Integer> roleAuthorityMap = roleInfoCache.role(roleId)
                 .getAuthorities(resourceType);
             for (Map.Entry<Long, Integer> entry : roleAuthorityMap.entrySet()) {
                 Long key = entry.getKey();
@@ -108,6 +105,6 @@ public class AuthService implements IAuthService {
 
     @Override
     public Boolean validate(String token) {
-        return userInfoCacher.validate(token);
+        return tokenCache.validate(token);
     }
 }

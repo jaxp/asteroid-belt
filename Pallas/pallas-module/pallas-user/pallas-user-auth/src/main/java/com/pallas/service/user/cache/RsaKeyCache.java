@@ -3,7 +3,7 @@ package com.pallas.service.user.cache;
 import com.pallas.base.api.constant.PlsConstant;
 import com.pallas.base.api.exception.PlsException;
 import com.pallas.base.api.response.ResultType;
-import com.pallas.cache.cacher.AbstractHashCacher;
+import com.pallas.cache.cache.AbstractHashCache;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ import java.util.Map;
  * @desc:
  */
 @Component
-public class RsaKeyCacher extends AbstractHashCacher<String> {
+public class RsaKeyCache extends AbstractHashCache<String> {
 
     private static final String PRIVATE_KEY = "private";
     private static final String PUBLIC_KEY = "public";
